@@ -351,11 +351,11 @@ export namespace Views {
                         .placeHolder(placeholder)
                         .width('100%')
                         .value(value)
-                        .noRecordTemplate(data =>
+                      /*   .noRecordTemplate(data =>
                             HStack({ alignment: cLeading })(
                                 UIButtonView().text('Ekle').onClick(() => console.log('click'))
                             )
-                        )
+                        ) */
                         .allowFiltering(true)
                         .change(change),
 
