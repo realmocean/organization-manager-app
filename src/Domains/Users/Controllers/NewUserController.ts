@@ -71,10 +71,10 @@ export class NewUserController extends UIController {
 
 
     private ActionPost() {
-        const orgUI = useOrgUIProvider();
+       /*  const orgUI = useOrgUIProvider();
         orgUI.selectEmployee(true);
 
-        return;
+        return; */
 
         if (this.isEmployeeIDdInvalid || this.isEmployeeNamedInvalid) {
             this.formPostTried = true;
