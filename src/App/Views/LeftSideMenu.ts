@@ -27,9 +27,9 @@ const menuModel = [
                 link: '/app(tenantmanager)/employee/list'
             },
             {
-                name: 'Organization Units',
+                name: 'Departments',
                 icon: '\\d200',
-                link: '/app(tenantmanager)/organization_unit/list'
+                link: '/app(tenantmanager)/department/list'
             },
             {
                 name: 'Positions',

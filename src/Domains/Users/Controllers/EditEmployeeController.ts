@@ -29,7 +29,7 @@ import { UIDropdownListView } from '@realmocean/dropdowns';
 const fontFamily = '"proxima-nova", "proxima nova", "helvetica neue", "helvetica", "arial", sans-serif'
 const img = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEoAAABKCAYAAAAc0MJxAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAZdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuMTZEaa/1AAABCUlEQVR4Xu3aMUoDQQCG0VzCY3gOm1zEThAsrT2GR/ImQtpAVjaCRVjxWxxxCa94A9P9fN3A7O4e9gSfx/008T2hIqEioSKhIqEioSKhIqEioSKhIqGiYaFuX07T6+F9k+ZtS5vXECoSKhIqEioSKhIqEioSKhoW6ub5ND29HTZp3ra0eY1hoa6dUJFQkVCRUJFQkVCRUJFQ0bBQnjCRUJFQkVCRUJFQkVCRUJFQkVCcCRUJFQkVCRUJFQkVCRUJFQ0L5ZNG5AkTCRUJFQkVCRUJFQkVCRUJVT0ez4O2aN62uHmFcaEuXY777/sv/V2oKyNUJFQkVCRUJFQkVCRUJFQkVPQVip/sdx+ddLpvQckwsAAAAABJRU5ErkJggg=='
 
-export class NewUserController extends UIController {
+export class EditEmployeeController extends UIController {
 
     @State()
     private formPostTried: boolean;
@@ -42,6 +42,9 @@ export class NewUserController extends UIController {
 
     @Binding(true)
     private isEmployeeIDdInvalid: boolean;
+
+    @Binding()
+    private employeeRecordId: string;
 
     @Binding()
     private employeeName: string;
@@ -64,34 +67,53 @@ export class NewUserController extends UIController {
     private departments: IDepartment[];
 
     @State()
-    private employeeTitle: IEmployeeTitle;
+    private employeeTitle: string;
 
     @State()
-    private employeeDepartment: IDepartment;
+    private employeeDepartment: string;
 
 
-    private ActionPost() {
-       /*  const orgUI = useOrgUIProvider();
-        orgUI.selectEmployee(true);
+    private action_update() {
 
-        return; */
-
-        if (this.isEmployeeIDdInvalid || this.isEmployeeNamedInvalid) {
-            this.formPostTried = true;
-        } else {
-            RealmBrokerClient.CreateEmployee(this.employeeId, this.employeeName,
-                this.employeeLastName, this.employeeTitle?.Id, this.employeeDepartment?.Id).then(() => {
-                    this.navigotor('/app(tenantmanager)/employee/list', { replace: true });
-                })
-        }
+        /*   if (this.isEmployeeIDdInvalid || this.isEmployeeNamedInvalid) {
+              this.formPostTried = true;
+          } else { */
+        const orgService = useOrgProvider();
+        orgService.updateEmployee({
+            Id: this.employeeId,
+            RecordId: this.employeeRecordId,
+            Name: this.employeeName,
+            LastName: this.employeeLastName,
+            TitleId: this.employeeTitle,
+            DepartmentId: this.employeeDepartment
+        }).then(() => {
+            this.navigotor('/app(tenantmanager)/employee/list', { replace: true });
+        })
+        //}
     }
 
-    protected override BindRouterParams({ }) {
+    protected override BindRouterParams({ employee_id }) {
 
-       // console.log(useApplication());
+        this.employeeId = employee_id;
+        // console.log(useApplication());
+        this.BeginUpdate();
+
 
 
         const orgService = useOrgProvider();
+
+        orgService.getEmployeeById(employee_id).then(employee => {
+
+            this.employeeRecordId = employee.RecordId;
+            this.employeeName = employee.Name;
+            this.employeeLastName = employee.LastName;
+            this.employeeTitle = employee.TitleId;
+
+            this.EndUpdate();
+            this.employeeDepartment = employee.DepartmentId;
+
+
+        })
         Promise.all([
             orgService.getTitles(),
             orgService.getDepartments(),
@@ -100,6 +122,8 @@ export class NewUserController extends UIController {
             this.titles = titles;
             this.departments = departments;
         })
+
+
     }
 
     private ActionCancel() {
@@ -111,17 +135,17 @@ export class NewUserController extends UIController {
         return (
             UIScene(this.titles == null ? Spinner() :
                 Views.FormView({
-                    header: `New Employee`,
+                    header: `Edit Employee`,
                     content: (
                         VStack({ alignment: cTopLeading, spacing: 10 })(
-                            Views.InputTextView('Employee ID *', 'Enter Employee Record ID', $(this.employeeId), true, $(this.isEmployeeIDdInvalid), 'ID is required.', this.formPostTried),
+                            Views.InputTextView('Employee ID *', 'Enter Employee Record ID', $(this.employeeRecordId), true, $(this.isEmployeeIDdInvalid), 'ID is required.', this.formPostTried),
                             Views.InputTextView('Name *', 'Enter Employee First Name', $(this.employeeName), true, $(this.isEmployeeNamedInvalid), 'Name is required.', this.formPostTried),
                             Views.InputTextView('Last Name', 'Enter Employee Last Name', $(this.employeeLastName)),
-                            Views.InputDropdownListView('Title', 'Please select employee title', this.titles, this.employeeTitle?.Id, (e) => this.employeeTitle = e.itemData as any),
-                            Views.InputDropdownListView('Department', 'Please select employee department', this.departments, this.employeeDepartment?.Id, (e) => this.employeeDepartment = e.itemData as any),
+                            Views.InputDropdownListView('Title', 'Please select employee title', this.titles, this.employeeTitle, (e: any) => this.employeeTitle = e.itemData.Id as any),
+                            Views.InputDropdownListView('Department', 'Please select employee department', this.departments, this.employeeDepartment, (e: any) => this.employeeDepartment = e.itemData.Id as any),
                             //Views.InputDropdownListView('Department', 'Please select employee department', [], this.employeeDepartment?.Id, (e) => void 0),
 
-                            Views.AcceptButton({ label: 'Create Employee', action: () => this.ActionPost() }),
+                            Views.AcceptButton({ label: 'Update Employee', action: () => this.action_update() }),
 
                         ).padding(10).foregroundColor('#676767').height()
                             .marginTop('10px')

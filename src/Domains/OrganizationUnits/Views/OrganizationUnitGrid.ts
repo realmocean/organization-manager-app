@@ -1,4 +1,4 @@
-import { IGetOrganizationUnitResponse, IGetTitleResponse } from '@realmocean/common';
+import { IDepartment, IGetOrganizationUnitResponse, IGetTitleResponse } from '@realmocean/common';
 import { cLeading, Color, HStack } from '@tuval/forms';
 
 import { ITableViewColumn, Views } from '../../../Views/Views';
@@ -7,31 +7,34 @@ import { ITableViewColumn, Views } from '../../../Views/Views';
 const columns: ITableViewColumn[] = [
     {
         title: 'Code',
-        key: "org_unit_record_id",
+        key: "RecordId",
         width:'33%'
     },
     {
         title: 'Name',
-        key: "org_unit_name",
+        key: "Name",
         width:'66%'
     },
     {
-        title: 'Action',
-        view: (title: IGetTitleResponse) => (
+        title: '',
+        view: (department: IDepartment) => (
             HStack({ alignment: cLeading })(
-                Views.ActionBar([
+                Views.ActionContextMenu([
                     {
+                        title: 'Edit',
                         icon: '\\d202',
                         tooltip: 'Edit',
-                        link: `/app(tenantmanager)/organization_unit/edit/${title.title_id}`,
-                        linkState: { title: title }
+                        iconColor: '#505A64',
+                        link: `/app(tenantmanager)/department/edit/${department.Id}`,
+                        linkState: { position: department }
                     },
                     {
+                        title: 'Delete',
                         icon: '\\d390',
-                        tooltip: 'Delete Title',
+                        tooltip: 'Delete',
                         iconColor: Color.red400,
-                        link: `/app(tenantmanager)/organization_unit/delete/${title.title_id}`,
-                        linkState: { title: title }
+                        link: `/app(tenantmanager)/employee/delete/${department.Id}`,
+                        linkState: { position: department }
                     }
                 ])
             )
@@ -39,6 +42,6 @@ const columns: ITableViewColumn[] = [
     }
 ]
 
-export const OrganizationUnitGrid = (titles: IGetOrganizationUnitResponse[]) => (
-    Views.TableView(columns, titles)
-)
+export const OrganizationUnitGrid = (titles: IDepartment[]) => {
+    return Views.TableView(columns, titles)
+}

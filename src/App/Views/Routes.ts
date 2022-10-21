@@ -1,6 +1,6 @@
 import { UIRoute, UIRoutes, bindNavigate, bindState, useEffect } from '@tuval/forms';
 import { DashboardController } from '../../Domains/Dashboard/Controllers/DashboardController';
-import { EditEmployeeController } from '../../Domains/Users/Controllers/EditAccountController';
+import { EditEmployeeController } from '../../Domains/Users/Controllers/EditEmployeeController';
 import { NewUserController } from '../../Domains/Users/Controllers/NewUserController';
 import { UserListController } from '../../Domains/Users/Controllers/UserListController';
 import { UsersController } from '../../Domains/Users/Controllers/UsersController';
@@ -16,6 +16,8 @@ import { PositionsController } from '../../Domains/Positions/Controllers/Positio
 import { PositionListController } from '../../Domains/Positions/Controllers/PositionList.Controller';
 import { NewPositionController } from '../../Domains/Positions/Controllers/NewPositionController';
 import { EditPositionController } from '../../Domains/Positions/Controllers/EditPositionController';
+import { DeleteEmployeeController } from '../../Domains/Users/Controllers/deleteEmployeeController';
+import { EditDepartmentController } from '../../Domains/OrganizationUnits/Controllers/EditDepartmentController';
 
 export const Routes = () => {
     const [LoggedIn, setLoggedIn] = bindState(null);
@@ -33,10 +35,13 @@ export const Routes = () => {
     return UIRoutes(
         UIRoute(
             UIRoute('/app(tenantmanager)/dashboard', DashboardController),
+
+            // MARK: Emplkoyee routes
             UIRoute(
                 UIRoute('list', UserListController),
                 UIRoute('add', NewUserController),
                 UIRoute('edit/:employee_id', EditEmployeeController),
+                UIRoute('delete/:employee_id', DeleteEmployeeController),
             )('employee', UsersController),
 
             // MARK: Titles Routes
@@ -50,8 +55,8 @@ export const Routes = () => {
             UIRoute(
                 UIRoute('list', OrganizationUnitListController),
                 UIRoute('add', NewOrganizationUnitController),
-                UIRoute('edit/:title_id', EditTitleController),
-            )('organization_unit', OrganizationUnitsController),
+                UIRoute('edit/:department_id', EditDepartmentController),
+            )('department', OrganizationUnitsController),
             UIRoute(
                 UIRoute('list', PositionListController),
                 UIRoute('add', NewPositionController),

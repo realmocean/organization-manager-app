@@ -21,10 +21,7 @@ const columns: ITableViewColumn[] = [
                         .fontWeight('400')
                         .fontFamily('"Public Sans", sans-serif')
                 )
-
             )
-
-
         )
     },
     {
@@ -48,7 +45,7 @@ const columns: ITableViewColumn[] = [
                     {
                         title: 'Delete',
                         icon: '\\d390',
-                        tooltip: 'Delete Title',
+                        tooltip: 'Delete',
                         iconColor: Color.red400,
                         link: `/app(tenantmanager)/employee/delete/${employee.Id}`,
                         linkState: { position: employee }
