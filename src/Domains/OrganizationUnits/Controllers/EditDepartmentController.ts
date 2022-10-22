@@ -48,18 +48,18 @@ export class EditDepartmentController extends UIController {
 
       
         const orgService = useOrgProvider();
+       
+         const orgUIService = useOrgUIProvider();
+        orgUIService.selectAccount(false) 
 
-      /*   const orgUIService = useOrgUIProvider();
-        orgUIService.selectAccount(false) */
-
-         orgService.updateDepartment({
+       /*   orgService.updateDepartment({
             Id: this.departmentId,
             RecordId: this.departmentRecordId,
             Name: this.departmentName,
             ParentId: ''
         }).then(() => {
             this.navigotor('/app(tenantmanager)/department/list', { replace: true });
-        }) 
+        })  */
         
     }
 
