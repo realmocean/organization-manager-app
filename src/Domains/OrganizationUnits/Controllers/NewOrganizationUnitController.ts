@@ -28,7 +28,7 @@ export class NewOrganizationUnitController extends UIController {
             this.formPostTried = true;
         } else {
             RealmBrokerClient.CreateOrganizationUnit(this.organizationUnitRecordId, this.organizationUnitName).then(() => {
-                this.navigotor('/app(tenantmanager)/organization_unit/list', { replace: true });
+                this.navigotor('/app(tenantmanager)/department/list', { replace: true });
             })
         }
     }
@@ -42,13 +42,13 @@ export class NewOrganizationUnitController extends UIController {
         return (
             UIScene(
                 Views.FormView({
-                    header: `New Organization Unit`,
+                    header: `New Department`,
                     content: (
                         VStack({ alignment: cTopLeading, spacing: 10 })(
-                            Views.InputTextView('Organization Unit ID *', 'Enter Title Record ID', $(this.organizationUnitRecordId), true, $(this.isOrganizationUnitRecordId), 'ID is required.', this.formPostTried),
-                            Views.InputTextView('Name *', 'Enter Organization Name', $(this.organizationUnitName), true, $(this.isOrganizationUnitName), 'Name is required.', this.formPostTried),
+                            Views.InputTextView('Department Record ID *', 'Department Record ID *', $(this.organizationUnitRecordId), true, $(this.isOrganizationUnitRecordId), 'ID is required.', this.formPostTried),
+                            Views.InputTextView('Name *', 'Name *', $(this.organizationUnitName), true, $(this.isOrganizationUnitName), 'Name is required.', this.formPostTried),
 
-                            Views.AcceptButton({ label: 'Create Organization unit', action: () => this.ActionPost() }),
+                            Views.AcceptButton({ label: 'Create Department', action: () => this.ActionPost() }),
 
                         ).padding(10).foregroundColor('#676767').height()
                             .marginTop('10px')

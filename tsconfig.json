@@ -15,7 +15,7 @@
     "strictPropertyInitialization": false, // yapılandırıcıda kullanılmaması için false yapıldı
     "sourceMap": true,
     "declaration": true,
-    "noImplicitThis": false,
+    "noImplicitThis": true,
     "noImplicitAny": false,
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,

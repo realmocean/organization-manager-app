@@ -79,8 +79,8 @@ export class NewUserController extends UIController {
         if (this.isEmployeeIDdInvalid || this.isEmployeeNamedInvalid) {
             this.formPostTried = true;
         } else {
-            RealmBrokerClient.CreateEmployee(this.employeeId, this.employeeName,
-                this.employeeLastName, this.employeeTitle?.Id, this.employeeDepartment?.Id).then(() => {
+            RealmBrokerClient.CreateEmployee(this.employeeId, this.employeeName ?? '',
+                this.employeeLastName ?? '', this.employeeTitle?.Id ?? '', this.employeeDepartment?.Id ?? '').then(() => {
                     this.navigotor('/app(tenantmanager)/employee/list', { replace: true });
                 })
         }

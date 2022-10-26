@@ -18,6 +18,9 @@ import { NewPositionController } from '../../Domains/Positions/Controllers/NewPo
 import { EditPositionController } from '../../Domains/Positions/Controllers/EditPositionController';
 import { DeleteEmployeeController } from '../../Domains/Users/Controllers/deleteEmployeeController';
 import { EditDepartmentController } from '../../Domains/OrganizationUnits/Controllers/EditDepartmentController';
+import { IssuesController } from '../../Domains/Issues/Controller/IssuesController';
+import { IssueListController } from '../../Domains/Issues/Controller/IssueListController';
+import { NewIssueController } from '../../Domains/Issues/Controller/NewIssueController';
 
 export const Routes = () => {
     const [LoggedIn, setLoggedIn] = bindState(null);
@@ -62,6 +65,11 @@ export const Routes = () => {
                 UIRoute('add', NewPositionController),
                 UIRoute('edit/:position_id', EditPositionController),
             )('position', PositionsController),
+
+            UIRoute(
+                UIRoute('list', IssueListController),
+                UIRoute('new', NewIssueController),
+            )('issue', IssuesController),
 
 
 

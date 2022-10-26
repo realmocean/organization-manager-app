@@ -43,14 +43,24 @@ const menuModel = [
             }
         ]
     },
+  
     {
         title: 'Other',
         subItems: [
             {
-                name: 'Notifications'
+                name: 'Issues',
+                icon: '\\d235',
+                link: '/app(tenantmanager)/issue/list'
             },
             {
-                name: 'Settings'
+                name: 'Notifications',
+                icon: '\\d235',
+                link: '/app(tenantmanager)/issue/list'
+            },
+            {
+                name: 'Settings',
+                icon: '\\d235',
+                link: '/app(tenantmanager)/issue/list'
             }
         ]
     },
@@ -89,7 +99,7 @@ export const LeftSideMenuView = (realmName: string, selectedItem: string) => (
                         .padding('1rem')
                         .textTransform('uppercase')
                 ).height(),
-                ...ForEach(menu.subItems)((subItem: any) =>
+                ...ForEach((menu as any).subItems)((subItem: any) =>
                     UIRouteLink(subItem.link ?? '')(
                         HStack({ alignment: cLeading, spacing: 10 })(
                             subItem.icon ? Icon(subItem.icon).size(24) : null,

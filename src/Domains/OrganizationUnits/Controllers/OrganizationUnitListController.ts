@@ -57,7 +57,7 @@ export class OrganizationUnitListController extends UIController {
                                             .onTextChange((value) => this.Search_Action(value))
                                     ).height().border('solid 1px #dfdfdf').padding(10).width(300).cornerRadius(5),
                                     Spacer(),
-                                    Views.AcceptRouteButton({ label: 'New Organization Unit', link: '/app(tenantmanager)/organization_unit/add' })
+                                    Views.AcceptRouteButton({ label: 'New Organization Unit', link: '/app(tenantmanager)/department/add' })
                                 ).height().marginBottom('24px'),
                                 OrganizationUnitGrid(this.organizationUnits)
                             )
