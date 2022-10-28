@@ -21,6 +21,9 @@ import { EditDepartmentController } from '../../Domains/OrganizationUnits/Contro
 import { IssuesController } from '../../Domains/Issues/Controller/IssuesController';
 import { IssueListController } from '../../Domains/Issues/Controller/IssueListController';
 import { NewIssueController } from '../../Domains/Issues/Controller/NewIssueController';
+import { DeleteDepartmentController } from '../../Domains/OrganizationUnits/Controllers/DeleteDepartmentController';
+import { DeletePositionController } from '../../Domains/Positions/Controllers/DeletePositionController';
+import { DeleteTitleController } from '../../Domains/Titles/Controllers/DeleteTitleController';
 
 export const Routes = () => {
     const [LoggedIn, setLoggedIn] = bindState(null);
@@ -52,6 +55,7 @@ export const Routes = () => {
                 UIRoute('list', TitleListController),
                 UIRoute('add', NewTitleController),
                 UIRoute('edit/:title_id', EditTitleController),
+                UIRoute('delete/:title_id', DeleteTitleController),
             )('title', TitlesController),
 
             // MARK: Organization Units Routes
@@ -59,11 +63,13 @@ export const Routes = () => {
                 UIRoute('list', OrganizationUnitListController),
                 UIRoute('add', NewOrganizationUnitController),
                 UIRoute('edit/:department_id', EditDepartmentController),
+                UIRoute('delete/:department_id', DeleteDepartmentController),
             )('department', OrganizationUnitsController),
             UIRoute(
                 UIRoute('list', PositionListController),
                 UIRoute('add', NewPositionController),
                 UIRoute('edit/:position_id', EditPositionController),
+                UIRoute('delete/:position_id', DeletePositionController),
             )('position', PositionsController),
 
             UIRoute(

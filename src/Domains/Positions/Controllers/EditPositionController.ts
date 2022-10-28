@@ -23,7 +23,8 @@ export class EditPositionController extends UIController {
     @Binding(true)
     private isPositionNamedInvalid: boolean;
 
-    protected BindRouterParams({ position }: { position: IPosition }) {
+    protected BindRouterParams({ position_id,position }: { position_id: string, position: IPosition }) {
+       
         if (position) {
             this.position = position;
 

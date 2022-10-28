@@ -1,4 +1,4 @@
-import { Color, cTopLeading, HStack, IconLibrary, State, UIController, UIScene, VStack } from '@tuval/forms';
+import { cLeading, Color, cTopLeading, HStack, IconLibrary, State, UIController, UIScene, VStack, Text } from '@tuval/forms';
 
 import { LeftSideMenuView } from '../../../App/Views/LeftSideMenu';
 import { Views } from '../../../Views/Views';
@@ -68,6 +68,11 @@ export class DashboardController extends UIController {
                         title: 'Dashboard',
                         content: (
                             VStack({ alignment: cTopLeading, spacing: 20 })(
+                                HStack({ alignment: cLeading })(
+                                    Text('Dashboard')
+                                        .foregroundColor('#444')
+                                        .fontFamily(fontFamily).fontSize('2.4rem').fontWeight('300'),
+                                ).height().marginBottom('24px'),
                                 HStack({ alignment: cTopLeading, spacing: 10 })(
                                     /*  DashboardItem(IconLibrary.Visibility, 'Logins', '1300', 'AVG'),
                                      DashboardItem(IconLibrary.Visibility, 'App Downloads', '1300', 'AVG') */

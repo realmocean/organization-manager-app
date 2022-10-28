@@ -1,12 +1,12 @@
 import { $, Binding, bindNavigate, cTopLeading, State, UIController, UIScene, VStack } from '@tuval/forms';
 
-import { IGetTitleResponse, RealmBrokerClient } from '@realmocean/common';
+import { IEmployeeTitle, IGetTitleResponse, RealmBrokerClient, useOrgProvider } from '@realmocean/common';
 import { Views } from '../../../Views/Views';
 
 export class EditTitleController extends UIController {
 
     @State()
-    private title: IGetTitleResponse;
+    private title: IEmployeeTitle;
 
     @State()
     private formPostTried: boolean;
@@ -23,23 +23,24 @@ export class EditTitleController extends UIController {
     @Binding(true)
     private isTitleNamedInvalid: boolean;
 
-    protected BindRouterParams({ title }: { title: IGetTitleResponse }) {
-        if (title) {
+    protected BindRouterParams({ title_id }) {
+
+        const orgService = useOrgProvider();
+        
+        orgService.getTitleById(title_id).then(title =>{
             this.title = title;
 
-            this.titleRecordId = title.title_record_id;
-            this.titleName = title.title_name;
-        }
+            this.titleRecordId = title.RecordId;
+            this.titleName = title.Name;
+        })
+       
     }
     private ActionPost() {
-        console.log(this.isTitleRecordIdInvalid, ' ', this.isTitleNamedInvalid);
-        if (this.isTitleRecordIdInvalid || this.isTitleNamedInvalid) {
-            this.formPostTried = true;
-        } else {
-            RealmBrokerClient.UpdateTitle(this.title.title_id, this.titleRecordId, this.titleName).then(() => {
+      
+            RealmBrokerClient.UpdateTitle(this.title.Id, this.titleRecordId, this.titleName).then(() => {
                 this.navigotor('/app(tenantmanager)/title/list', { replace: true });
             })
-        }
+        
     }
 
     private ActionCancel() {

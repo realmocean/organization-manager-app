@@ -33,7 +33,7 @@ const columns: ITableViewColumn[] = [
                         icon: '\\d390',
                         tooltip: 'Delete Title',
                         iconColor: Color.red400,
-                        link: `/app(tenantmanager)/title/delete/${position.Id}`,
+                        link: `/app(tenantmanager)/position/delete/${position.Id}`,
                         linkState: { position: position }
                     }
                 ])

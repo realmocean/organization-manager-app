@@ -12,16 +12,11 @@ import {
 import { bindNavigate, Color } from '@tuval/forms';
 
 
-
-
-
-import { IEmployee, ITenant, useOrgProvider } from '@realmocean/common';
-import { LeftSideMenuView } from '../../../App/Views/LeftSideMenu';
+import { IDepartment, IEmployee, useOrgProvider } from '@realmocean/common';
 import { Views } from '../../../Views/Views';
 
-const fontFamily = '"proxima-nova", "proxima nova", "helvetica neue", "helvetica", "arial", sans-serif'
-const img = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEoAAABKCAYAAAAc0MJxAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAZdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuMTZEaa/1AAABCUlEQVR4Xu3aMUoDQQCG0VzCY3gOm1zEThAsrT2GR/ImQtpAVjaCRVjxWxxxCa94A9P9fN3A7O4e9gSfx/008T2hIqEioSKhIqEioSKhIqEioSKhIqGiYaFuX07T6+F9k+ZtS5vXECoSKhIqEioSKhIqEioSKhoW6ub5ND29HTZp3ra0eY1hoa6dUJFQkVCRUJFQkVCRUJFQ0bBQnjCRUJFQkVCRUJFQkVCRUJFQkVCcCRUJFQkVCRUJFQkVCRUJFQ0L5ZNG5AkTCRUJFQkVCRUJFQkVCRUJVT0ez4O2aN62uHmFcaEuXY777/sv/V2oKyNUJFQkVCRUJFQkVCRUJFQkVPQVip/sdx+ddLpvQckwsAAAAABJRU5ErkJggg=='
-export class DeleteEmployeeController extends UIController {
+
+export class DeleteDepartmentController extends UIController {
 
     private tenantName: string;
 
@@ -29,7 +24,7 @@ export class DeleteEmployeeController extends UIController {
     private deleting: boolean;
 
     @State()
-    private employee: IEmployee;
+    private department: IDepartment;
 
     public Invalidate() {
     }
@@ -37,11 +32,11 @@ export class DeleteEmployeeController extends UIController {
     private isLoading() {
     }
 
-    public BindRouterParams({ employee_id }) {
+    public BindRouterParams({ department_id }) {
 
         const orgService = useOrgProvider();
-        orgService.getEmployeeById(employee_id).then(result => {
-            this.employee = result;
+        orgService.getDepartmentById(department_id).then(result => {
+            this.department = result;
         })
 
     }
@@ -53,8 +48,8 @@ export class DeleteEmployeeController extends UIController {
     private action_Delete() {
         this.deleting = true;
         const orgService = useOrgProvider();
-        orgService.deleteEmployee(this.employee.Id).then(result =>
-            this.navigotor('/app(tenantmanager)/employee/list')
+        orgService.deleteDepartment(this.department.Id).then(result =>
+            this.navigotor('/app(tenantmanager)/department/list')
         )
     }
 
@@ -66,15 +61,15 @@ export class DeleteEmployeeController extends UIController {
                 UIScene(
                     HStack({ alignment: cTopLeading })(
                         Views.RightSidePage({
-                            title: `Delete Employee`,
+                            title: `Delete Department`,
                             content: (
-                                this.employee ?
+                                this.department ?
                                     ScrollView({ axes: cVertical, alignment: cTop })(
                                         VStack({ alignment: cTop, spacing: 10 })(
 
                                             Icon('\\e14b').fontSize(50).foregroundColor(Color.red),
                                             Text(`
-## ${this.employee?.Name}
+## ${this.department?.Name}
 ### Are you sure you want to delete this employee?
 - This cannot be undone
 - Only Organization Managers can delete employees`)
@@ -82,7 +77,7 @@ export class DeleteEmployeeController extends UIController {
                                             ,
                                             HStack({ alignment: cTrailing })(
                                                 Button(
-                                                    Text('Delete this employee')
+                                                    Text('Delete this department')
                                                 )
                                                     .loading(this.deleting)
                                                     .color('danger')

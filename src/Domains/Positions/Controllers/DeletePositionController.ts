@@ -12,16 +12,11 @@ import {
 import { bindNavigate, Color } from '@tuval/forms';
 
 
-
-
-
-import { IEmployee, ITenant, useOrgProvider } from '@realmocean/common';
-import { LeftSideMenuView } from '../../../App/Views/LeftSideMenu';
+import { IDepartment, IEmployee, IPosition, useOrgProvider } from '@realmocean/common';
 import { Views } from '../../../Views/Views';
 
-const fontFamily = '"proxima-nova", "proxima nova", "helvetica neue", "helvetica", "arial", sans-serif'
-const img = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEoAAABKCAYAAAAc0MJxAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAZdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuMTZEaa/1AAABCUlEQVR4Xu3aMUoDQQCG0VzCY3gOm1zEThAsrT2GR/ImQtpAVjaCRVjxWxxxCa94A9P9fN3A7O4e9gSfx/008T2hIqEioSKhIqEioSKhIqEioSKhIqGiYaFuX07T6+F9k+ZtS5vXECoSKhIqEioSKhIqEioSKhoW6ub5ND29HTZp3ra0eY1hoa6dUJFQkVCRUJFQkVCRUJFQ0bBQnjCRUJFQkVCRUJFQkVCRUJFQkVCcCRUJFQkVCRUJFQkVCRUJFQ0L5ZNG5AkTCRUJFQkVCRUJFQkVCRUJVT0ez4O2aN62uHmFcaEuXY777/sv/V2oKyNUJFQkVCRUJFQkVCRUJFQkVPQVip/sdx+ddLpvQckwsAAAAABJRU5ErkJggg=='
-export class DeleteEmployeeController extends UIController {
+
+export class DeletePositionController extends UIController {
 
     private tenantName: string;
 
@@ -29,7 +24,7 @@ export class DeleteEmployeeController extends UIController {
     private deleting: boolean;
 
     @State()
-    private employee: IEmployee;
+    private position: IPosition;
 
     public Invalidate() {
     }
@@ -37,27 +32,22 @@ export class DeleteEmployeeController extends UIController {
     private isLoading() {
     }
 
-    public BindRouterParams({ employee_id }) {
-
+    public BindRouterParams({ position_id }) {
+        
         const orgService = useOrgProvider();
-        orgService.getEmployeeById(employee_id).then(result => {
-            this.employee = result;
+        orgService.getPosition(position_id).then(result => {
+            this.position = result;
         })
 
     }
-    public BindModel() {
-
-    }
-
 
     private action_Delete() {
         this.deleting = true;
         const orgService = useOrgProvider();
-        orgService.deleteEmployee(this.employee.Id).then(result =>
-            this.navigotor('/app(tenantmanager)/employee/list')
+        orgService.deletePosition(this.position.Id).then(result =>
+            this.navigotor('/app(tenantmanager)/position/list')
         )
     }
-
 
     public LoadView(): any {
         this.navigotor = bindNavigate();
@@ -66,23 +56,23 @@ export class DeleteEmployeeController extends UIController {
                 UIScene(
                     HStack({ alignment: cTopLeading })(
                         Views.RightSidePage({
-                            title: `Delete Employee`,
+                            title: `Delete Department`,
                             content: (
-                                this.employee ?
+                                this.position ?
                                     ScrollView({ axes: cVertical, alignment: cTop })(
                                         VStack({ alignment: cTop, spacing: 10 })(
 
                                             Icon('\\e14b').fontSize(50).foregroundColor(Color.red),
                                             Text(`
-## ${this.employee?.Name}
-### Are you sure you want to delete this employee?
+## ${this.position?.Name}
+### Are you sure you want to delete this position?
 - This cannot be undone
-- Only Organization Managers can delete employees`)
+- Only Organization Managers can delete position`)
                                                 .render(RenderingTypes.Markdown)
                                             ,
                                             HStack({ alignment: cTrailing })(
                                                 Button(
-                                                    Text('Delete this employee')
+                                                    Text('Delete this position')
                                                 )
                                                     .loading(this.deleting)
                                                     .color('danger')

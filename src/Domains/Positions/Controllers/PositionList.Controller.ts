@@ -62,6 +62,11 @@ export class PositionListController extends UIController {
                         this.isLoading() ?
                             VStack(Spinner()) :
                             VStack({ alignment: cTopLeading })(
+                                HStack({ alignment: cLeading })(
+                                    Text('Positions')
+                                        .foregroundColor('#444')
+                                        .fontFamily(fontFamily).fontSize('2.4rem').fontWeight('300'),
+                                ).height().marginBottom('24px'),
                                 HStack({ alignment: cLeading, spacing: 15 })(
                                     // MARK: Search Box
                                     HStack(
@@ -69,11 +74,7 @@ export class PositionListController extends UIController {
                                             .onTextChange((value) => this.Search_Action(value))
                                     ).height().border('solid 1px #dfdfdf').padding(10).width(300).cornerRadius(5),
                                     Spacer(),
-                                    Views.AcceptRouteButton({ label: 'New Position', link: '/app(tenantmanager)/position/add' }),
-                                    // UICheckBox().checked(this.checked).label(this.label).change((args) => this.checked = args.checked),
-                                    UIButton(
-                                        Text('BBB')
-                                    ).action(() => this.action_SelectPosition())
+                                    Views.AcceptRouteButton({ label: 'New Position', link: '/app(tenantmanager)/position/add' })
                                 ).height().marginBottom('24px'),
                                 PositionGrid(this.positions)
                             )

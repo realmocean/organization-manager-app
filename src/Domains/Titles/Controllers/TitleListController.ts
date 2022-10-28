@@ -1,6 +1,6 @@
 
 import { VStack, cTopLeading, cLeading, HStack, Text, Spacer, TextField, UITable, TableColumn, Icon, IconLibrary, UIContextMenu, UIAppearance, UIScene, UIController, cTop, State, Spinner, UIRouteLink } from '@tuval/forms';
-import { RealmBrokerClient, IGetTitleResponse } from '@realmocean/common';
+import { RealmBrokerClient, IGetTitleResponse, useOrgProvider, IEmployeeTitle } from '@realmocean/common';
 import { ActionButton } from '../../../Views/ActionButton';
 import { Services } from '../../../Services/Services';
 import { ITableViewColumn, Views } from '../../../Views/Views';
@@ -12,7 +12,7 @@ const fontFamily = '"proxima-nova", "proxima nova", "helvetica neue", "helvetica
 export class TitleListController extends UIController {
 
     @State()
-    private titles: IGetTitleResponse[];
+    private titles: IEmployeeTitle[];
 
     @State()
     private showingTitles: any[];
@@ -23,8 +23,9 @@ export class TitleListController extends UIController {
 
 
     public BindRouterParams({ tenant_id, tenant_name }) {
+        const orgService = useOrgProvider();
         //  if (this.tenants == null) {
-        RealmBrokerClient.GetTitles().then(titles => {
+            orgService.getTitles().then(titles => {
             this.showingTitles = this.titles = titles;
         })
     }
@@ -41,6 +42,11 @@ export class TitleListController extends UIController {
                             this.isLoading() ?
                                 VStack(Spinner()) :
                                 VStack({ alignment: cTopLeading })(
+                                    HStack({ alignment: cLeading })(
+                                        Text('Titles')
+                                            .foregroundColor('#444')
+                                            .fontFamily(fontFamily).fontSize('2.4rem').fontWeight('300'),
+                                    ).height().marginBottom('24px'),
                                     HStack({ alignment: cLeading, spacing: 15 })(
                                         // MARK: Search Box
                                         HStack(
