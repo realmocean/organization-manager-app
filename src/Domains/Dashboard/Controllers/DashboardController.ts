@@ -1,4 +1,5 @@
-import { cLeading, Color, cTopLeading, HStack, IconLibrary, State, UIController, UIScene, VStack, Text } from '@tuval/forms';
+import { useOrgUIProvider } from '@realmocean/common';
+import { cLeading, Color, cTopLeading, HStack, IconLibrary, State, UIController, UIScene, VStack, Text, Button } from '@tuval/forms';
 
 import { LeftSideMenuView } from '../../../App/Views/LeftSideMenu';
 import { Views } from '../../../Views/Views';
@@ -53,6 +54,7 @@ export class DashboardController extends UIController {
     public LoadView() {
         return (
             UIScene(
+               
                 /*   HStack(
                       AutoComplete().items(this.showingItems)
                           .searchMethod((e) => this.search(e.query))
