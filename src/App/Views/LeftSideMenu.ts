@@ -1,24 +1,26 @@
 import { VStack, cTopLeading, Icon, IconLibrary, Text, ForEach, HStack, cLeading, bindState, Color, UIRouteLink, cHorizontal } from '@tuval/forms';
 import { theme } from '../../Theme';
 
-const fontFamily = '"proxima-nova", "proxima nova", "helvetica neue", "helvetica", "arial", sans-serif';
+//const fontFamily = '"proxima-nova", "proxima nova", "helvetica neue", "helvetica", "arial", sans-serif';\
+
+const fontFamily = '"SF Pro Text","Helvetica Neue","SegoeUI",sans-serif';
 
 const backgroundColor = 'white';
 
 const menuModel = [
     {
-        title: 'Insights',
-        subItems: [
+        title: 'Dashboard',
+       /*  subItems: [
             {
                 name: 'Dashboard',
                 icon: IconLibrary.Dashboard1,
                 link: '/app(realmmanager)/dashboard'
 
             }
-        ]
+        ] */
     },
     {
-        title: 'Organization',
+        title: 'Company',
         subItems: [
 
             {
@@ -43,10 +45,15 @@ const menuModel = [
             }
         ]
     },
-  
+
     {
         title: 'Other',
         subItems: [
+            {
+                name: 'Brokers',
+                icon: '\\d235',
+                link: '/app(tenantmanager)/broker/list'
+            },
             {
                 name: 'Issues',
                 icon: '\\d235',
@@ -64,6 +71,18 @@ const menuModel = [
             }
         ]
     },
+    {
+        title: 'Marketplace',
+        link: '/app(tenantmanager)/marketplace/list'
+       /*  subItems: [
+            {
+                name: 'Dashboard',
+                icon: IconLibrary.Dashboard1,
+                link: '/app(realmmanager)/dashboard'
+
+            }
+        ] */
+    },
 
 ]
 
@@ -73,11 +92,11 @@ export const LeftSideMenuView = (realmName: string, selectedItem: string) => (
             Icon('\\d1f1').size(26),
 
         ).height().padding(),
-        HStack({ alignment: cLeading , spacing: 10})(
+        HStack({ alignment: cLeading, spacing: 10 })(
             Text('Organization Manager')
                 .foregroundColor(theme.surfaceground)
                 .fontWeight('500')
-        ).height().padding(cHorizontal,'1rem'),
+        ).height(40).padding(cHorizontal, '1rem'),
 
         /*   HStack({ alignment: cTopLeading })(
               Icon((IconLibrary as any).DonutLarge).size(30).paddingLeft('15px'),
@@ -89,41 +108,65 @@ export const LeftSideMenuView = (realmName: string, selectedItem: string) => (
           ).height(), */
         ...ForEach(menuModel)(menu =>
             VStack({ alignment: cTopLeading })(
-                HStack({ alignment: cLeading })(
+
+                menu.link == null ?
+                HStack({ alignment: cLeading, spacing: 3 })(
+                    Icon('\\e5cf').size(20) .foregroundColor( menu.subItems == null  ? 'transparent' : 'white'),
                     Text(menu.title)
                         .fontWeight('500')
-                        .fontSize('0.8rem').lineHeight('0.8rem')
-                        .foregroundColor(theme.gray600)
+                        .fontSize('14px').lineHeight('18px')
+                        .foregroundColor(Color.white)
                         .kerning('.06rem')
-                        .fontFamily(theme.fontFamily)
-                        .padding('1rem')
-                        .textTransform('uppercase')
-                ).height(),
+                        .fontFamily('"SF Pro Text","Helvetica Neue","SegoeUI",sans-serif'/* theme.fontFamily */)
+                        //.paddingLeft('1rem')
+                        //.textTransform('uppercase')
+                ).height(28) : 
+                
+                UIRouteLink(menu.link ?? '')(
+                    HStack({ alignment: cLeading, spacing: 3 })(
+                        Icon('\\e5cf').size(20) .foregroundColor( menu.subItems == null  ? 'transparent' : 'white'),
+                        Text(menu.title)
+                            .fontWeight('500')
+                            .fontSize('14px').lineHeight('18px')
+                            .foregroundColor(Color.white)
+                            .kerning('.06rem')
+                            .fontFamily('"SF Pro Text","Helvetica Neue","SegoeUI",sans-serif'/* theme.fontFamily */)
+                            //.paddingLeft('1rem')
+                            //.textTransform('uppercase')
+                    ).height(28)
+                    .background({ default: selectedItem === menu.title ? '#617294' : '', hover: '#283d5c' })
+                ).width('100%')
+
+                ,
+
+
                 ...ForEach((menu as any).subItems)((subItem: any) =>
-                    UIRouteLink(subItem.link ?? '')(
+                    UIRouteLink(subItem?.link ?? '')(
                         HStack({ alignment: cLeading, spacing: 10 })(
-                            subItem.icon ? Icon(subItem.icon).size(24) : null,
+                            //subItem.icon ? Icon(subItem.icon).size(24) : null,
                             Text(subItem.name)
                                 .fontFamily(fontFamily)
-                                .fontSize(16)
-                                .lineHeight('1rem')
+                                .fontSize(13)
+                                .lineHeight('17px')
                         )
+                            .paddingLeft('25px')
                             .cornerRadius(theme.borderRadius)
-                            .padding('1rem')
+                            .height(27)
                             .foregroundColor(theme.surfaceground)
-                            .background({ default: selectedItem === subItem.name ? theme.gray800 : '', hover: theme.gray800 })
-                            .fontWeight('500')
+                            .background({ default: selectedItem === subItem.name ? '#617294' : '', hover: '#283d5c' })
+                            .fontWeight('400')
                             // .fontWeight(selectedItem == subItem.name ? '700' : '400')
                             .cursor('pointer')
                     ).width('100%')
 
                 )
             ).height()
-                .borderBottom('1px solid rgba(180,188,199,.32)')
-                .paddingBottom('20px')
+            .borderTop('1px solid #203650')
+               // .borderBottom('1px solid #8393AE')
+               // .paddingBottom('20px')
         )
     ).width(220).minWidth('220px').maxWidth('220px')
-        .background({ default: theme.gray900 })
+        .background({ default: '#0D232E' })
         .fontSize(16)
         .foregroundColor(Color.white)
 )

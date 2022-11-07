@@ -24,6 +24,8 @@ import { NewIssueController } from '../../Domains/Issues/Controller/NewIssueCont
 import { DeleteDepartmentController } from '../../Domains/OrganizationUnits/Controllers/DeleteDepartmentController';
 import { DeletePositionController } from '../../Domains/Positions/Controllers/DeletePositionController';
 import { DeleteTitleController } from '../../Domains/Titles/Controllers/DeleteTitleController';
+import { MarketplaceController } from '../../Domains/Marketplace/Controllers/MarketplaceController';
+import { MarketplaceListController } from '../../Domains/Marketplace/Controllers/MarketplaceListController';
 
 export const Routes = () => {
     const [LoggedIn, setLoggedIn] = bindState(null);
@@ -76,6 +78,13 @@ export const Routes = () => {
                 UIRoute('list', IssueListController),
                 UIRoute('new', NewIssueController),
             )('issue', IssuesController),
+
+
+            // Marketplace
+            UIRoute(
+                UIRoute('list', MarketplaceListController),
+           
+            )('marketplace', MarketplaceController),
 
 
 

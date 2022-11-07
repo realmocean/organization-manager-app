@@ -12,6 +12,7 @@ import { theme } from '../Theme';
 
 
 const fontFamily = '"proxima-nova", "proxima nova", "helvetica neue", "helvetica", "arial", sans-serif'
+const fontFamily2 = "'Roboto', 'Chinese Quote', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'"
 
 const error_pic = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTExLjI2NDYgMy40MTM2NkMxMS43MjEyIDMuMTU2ODEgMTIuMjc4OCAzLjE1NjgxIDEyLjczNTQgMy40MTM2NkwxOS4yMzU0IDcuMDY5OTFDMTkuNzA3NyA3LjMzNTU4IDIwIDcuODM1MzYgMjAgOC4zNzcyN1YxNS42MjI3QzIwIDE2LjE2NDYgMTkuNzA3NyAxNi42NjQ0IDE5LjIzNTQgMTYuOTMwMUwxMi43MzU0IDIwLjU4NjNDMTIuMjc4OCAyMC44NDMyIDExLjcyMTIgMjAuODQzMiAxMS4yNjQ2IDIwLjU4NjNMNC43NjQ2MSAxNi45MzAxQzQuMjkyMjkgMTYuNjY0NCA0IDE2LjE2NDYgNCAxNS42MjI3VjguMzc3MjdDNCA3LjgzNTM2IDQuMjkyMjkgNy4zMzU1OSA0Ljc2NDYxIDcuMDY5OTFMMTEuMjY0NiAzLjQxMzY2WiIgZmlsbD0iI0ZGM0EyRSIvPgo8cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTExIDcuNEMxMSA3LjE3OTA5IDExLjE3OTEgNyAxMS40IDdIMTIuNkMxMi44MjA5IDcgMTMgNy4xNzkwOSAxMyA3LjRWMTIuNkMxMyAxMi44MjA5IDEyLjgyMDkgMTMgMTIuNiAxM0gxMS40QzExLjE3OTEgMTMgMTEgMTIuODIwOSAxMSAxMi42VjcuNFoiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNMTEgMTZDMTEgMTUuNDQ3NyAxMS40NDc3IDE1IDEyIDE1QzEyLjU1MjMgMTUgMTMgMTUuNDQ3NyAxMyAxNkMxMyAxNi41NTIzIDEyLjU1MjMgMTcgMTIgMTdDMTEuNDQ3NyAxNyAxMSAxNi41NTIzIDExIDE2WiIgZmlsbD0id2hpdGUiLz4KPC9zdmc+';
 const validateEmail = (email) => {
@@ -131,20 +132,34 @@ export namespace Views {
     export const FormView = ({ header, content }: { header: string, content: UIView }) => (
         VStack(
             VStack({ alignment: cTop })(
-                VStack(
+                VStack({alignment:cLeading})(
                     // Toggle().checked(this.checked).onToggleChange((value) => this.checked = value),
-                    Text(header).fontSize('1.7rem')
+                    Text(header)
+                    .fontFamily(fontFamily2)
+                    .fontWeight('600')
+                    .maxWidth('325px')
+                    .fontSize('20px')
                         .marginTop('10px'),
-                ).height(),
+                )
+                .transition('padding-bottom 0.15s ease-out')
+                .shadow('0 5px 10px 0 rgb(0 0 0 / 2%)')
+                .margin('0 0 20px 0')
+                .padding('32px 24px 32px 46px')
+                .background('#ffffff')
+                .height(),
                 ScrollView({ axes: cVertical, alignment: cTop })(
                     VStack({ alignment: cTop })(
                         content
                     )
-                        .border('2px solid #f1f1f1').padding('1rem').margin('2rem')
+                       // .border('2px solid #f1f1f1')
+                        .padding('1rem').margin('2rem')
+                        .cornerRadius(25)
+                        .shadow('0 0 10px -2px rgb(0 0 0 / 20%)')
+                        .background('#ffffff')
                         .width(600).height()
                 ).alignment(cTop),
 
-            ).padding(20)
+            ).background('#F6F6F6')
         )
     )
 
@@ -491,7 +506,8 @@ export namespace Views {
         VStack({ alignment: cTopLeading })(
 
             content
-        ).padding(20).borderTop(`solid 1px ${theme.surfaceborder}`)
+        ).borderTop(`solid 1px ${theme.surfaceborder}`)
+        .background('#F6F6F6')
     )
 
     export const AcceptRouteButton = ({ label, link }: { label: string, link: string }) => (
