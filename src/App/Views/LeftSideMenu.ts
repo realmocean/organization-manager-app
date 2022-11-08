@@ -52,7 +52,7 @@ const menuModel = [
             {
                 name: 'Brokers',
                 icon: '\\d235',
-                link: '/app(tenantmanager)/broker/list'
+                link: '/app(tenantmanager)/broker/installed'
             },
             {
                 name: 'Issues',

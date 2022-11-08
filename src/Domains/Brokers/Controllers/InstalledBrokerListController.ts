@@ -1,10 +1,10 @@
 
-import { IEmployee, useOrgProvider } from '@realmocean/common';
+import { IEmployee, RealmBrokerClient, useOrgProvider } from '@realmocean/common';
 import { cLeading, Color, cTopLeading, cVertical, ForEach, HStack, ScrollView, Spacer, Spinner, State, Text, TextField, UIController, VStack } from '@tuval/forms';
-import { RealmBrokerClient } from '../../../Services/RealmBrokerClient';
+
 import { ITableViewColumn, Views } from '../../../Views/Views';
-import { BrokerAddonCard } from '../Views/BrokerAddonCard';
-import { InstallBrokerDialog } from './InstallBrokerController';
+import { BrokerAddonCard } from '../../Marketplace/Views/BrokerAddonCard';
+
 
 const fontFamily = '"proxima-nova", "proxima nova", "helvetica neue", "helvetica", "arial", sans-serif'
 
@@ -450,7 +450,7 @@ const addons = [
 ]
 
 
-export class MarketplaceListController extends UIController {
+export class InstalledBrokerListController extends UIController {
 
     @State()
     private brokers: any[];
@@ -465,7 +465,7 @@ export class MarketplaceListController extends UIController {
 
     public BindRouterParams({ }) {
 
-        RealmBrokerClient.GetBrokers().then((brokers) => {
+        RealmBrokerClient.GetInstalledBrokers().then((brokers) => {
             const items = brokers.map(broker => {
                 return {
                     id: broker.broker_id,
@@ -498,7 +498,7 @@ export class MarketplaceListController extends UIController {
         return ({ AppController_ContextAction_SetController }) => {
             return (
                 Views.RightSidePage({
-                    title: 'Marketplace',
+                    title: 'Installed Brokers',
                     content: (
                         HStack({ alignment: cTopLeading })(
                             this.isLoading() ?
@@ -506,7 +506,7 @@ export class MarketplaceListController extends UIController {
 
                                 VStack({ alignment: cTopLeading })(
                                     HStack({ alignment: cLeading })(
-                                        Text('Marketplace')
+                                        Text('Installed Brokers')
                                             .foregroundColor('#444')
                                             .fontFamily(fontFamily).fontSize('2.4rem').fontWeight('300'),
                                     )
@@ -533,7 +533,7 @@ export class MarketplaceListController extends UIController {
                                                 HStack({ alignment: cTopLeading })(
                                                     ...ForEach(category.items)((item: any) =>
                                                         BrokerAddonCard(item.image, item.name, item.description)
-                                                        .onClick(()=> InstallBrokerDialog.Show(item.id))
+                                                        .onClick(()=> void 0/* InstallBrokerDialog.Show(item.id) */)
                                                     )
                                                 ).width().height().wrap('wrap')
                                             )
