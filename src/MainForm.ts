@@ -5,7 +5,7 @@ export class MainForm extends TForm {
     m_Toolbar: any;
     m_tbiLabel: any;
     public override InitComponents() {
-        this.Width = 1120;
+        this.Width = 1270;
         this.Height = 700;
       //  this.Text = 'Tenant Manager';
 

@@ -7,7 +7,7 @@ import { SplashForm } from './SplashForm';
 import { Services } from './Services/Services';
 
 const manifest = require('./manifest');
-declare var tuval$core;
+declare var tuval$core, WebFont;
 
 function App(manifest: any) {
     return <T extends { new(...args: any[]): {} }>(constructor: T) => {
@@ -24,6 +24,12 @@ export class TenantManager extends TApplication {
     public InitComponents() {
 
         debugger;
+
+        WebFont.load({
+            google: {
+                families: ['Manrope:400,500,600,700', 'sans serif']
+            }
+        });
 
         //fileExprorer.Controls.Add(button);
 
