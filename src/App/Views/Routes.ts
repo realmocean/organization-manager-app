@@ -28,6 +28,7 @@ import { MarketplaceController } from '../../Domains/Marketplace/Controllers/Mar
 import { MarketplaceListController } from '../../Domains/Marketplace/Controllers/MarketplaceListController';
 import { BrokersController } from '../../Domains/Brokers/Controllers/BrokersController';
 import { InstalledBrokerListController } from '../../Domains/Brokers/Controllers/InstalledBrokerListController';
+import { CompanyController } from '../../Domains/company/controllers/CompanyController';
 
 export const Routes = () => {
     const [LoggedIn, setLoggedIn] = bindState(null);
@@ -46,13 +47,26 @@ export const Routes = () => {
         UIRoute(
             UIRoute('/app(tenantmanager)/dashboard', DashboardController),
 
-            // MARK: Emplkoyee routes
             UIRoute(
-                UIRoute('list', UserListController),
-                UIRoute('add', NewUserController),
-                UIRoute('edit/:employee_id', EditEmployeeController),
-                UIRoute('delete/:employee_id', DeleteEmployeeController),
-            )('employee', UsersController),
+                UIRoute(
+                    UIRoute('list', UserListController),
+                    UIRoute('add', NewUserController),
+                    UIRoute('edit/:employee_id', EditEmployeeController),
+                    UIRoute('delete/:employee_id', DeleteEmployeeController),
+                )('employee', UsersController),
+
+                // MARK: Organization Units Routes
+                UIRoute(
+                    UIRoute('list', OrganizationUnitListController),
+                    UIRoute('add', NewOrganizationUnitController),
+                    UIRoute('edit/:department_id', EditDepartmentController),
+                    UIRoute('delete/:department_id', DeleteDepartmentController),
+                )('department', OrganizationUnitsController),
+
+            )('company', CompanyController),
+
+            // MARK: Emplkoyee routes
+
 
             // MARK: Titles Routes
             UIRoute(
@@ -62,13 +76,7 @@ export const Routes = () => {
                 UIRoute('delete/:title_id', DeleteTitleController),
             )('title', TitlesController),
 
-            // MARK: Organization Units Routes
-            UIRoute(
-                UIRoute('list', OrganizationUnitListController),
-                UIRoute('add', NewOrganizationUnitController),
-                UIRoute('edit/:department_id', EditDepartmentController),
-                UIRoute('delete/:department_id', DeleteDepartmentController),
-            )('department', OrganizationUnitsController),
+
             UIRoute(
                 UIRoute('list', PositionListController),
                 UIRoute('add', NewPositionController),
@@ -81,17 +89,17 @@ export const Routes = () => {
                 UIRoute('new', NewIssueController),
             )('issue', IssuesController),
 
-              // Brokers
-              UIRoute(
+            // Brokers
+            UIRoute(
                 UIRoute('installed', InstalledBrokerListController),
-           
+
             )('broker', BrokersController),
 
 
             // Marketplace
             UIRoute(
                 UIRoute('list', MarketplaceListController),
-           
+
             )('marketplace', MarketplaceController),
 
 

@@ -1,5 +1,5 @@
 
-import { VStack, cTopLeading, cLeading, HStack, Text, Spacer, TextField, UITable, TableColumn, Icon, IconLibrary, UIContextMenu, UIAppearance, UIScene, UIController, cTop, State, Spinner, UIRouteLink } from '@tuval/forms';
+import { VStack, cTopLeading, cLeading, HStack, Text, Spacer, TextField, UITable, TableColumn, Icon, IconLibrary, UIContextMenu, UIAppearance, UIScene, UIController, cTop, State, Spinner, UIRouteLink, Color } from '@tuval/forms';
 import { RealmBrokerClient, IGetTitleResponse, IGetOrganizationUnitResponse, useOrgProvider, IDepartment } from '@realmocean/common';
 import { ActionButton } from '../../../Views/ActionButton';
 import { Services } from '../../../Services/Services';
@@ -7,6 +7,7 @@ import { ITableViewColumn, Views } from '../../../Views/Views';
 import { UsersGrid } from '../../Users/Views/UsersGrid';
 import { TitleGrid } from '../../Titles/Views/TitleGrid';
 import { OrganizationUnitGrid } from '../Views/OrganizationUnitGrid';
+import { NewOrganizationUnitController } from './NewOrganizationUnitController';
 
 const fontFamily = '"proxima-nova", "proxima nova", "helvetica neue", "helvetica", "arial", sans-serif'
 
@@ -26,9 +27,9 @@ export class OrganizationUnitListController extends UIController {
     public BindRouterParams({ tenant_id, tenant_name }) {
         //  if (this.tenants == null) {
 
-            const orgService = useOrgProvider();
-            
-            orgService.getDepartments().then(titles => {
+        const orgService = useOrgProvider();
+
+        orgService.getDepartments().then(titles => {
             this.showingOrganizationUnits = this.organizationUnits = titles;
         })
     }
@@ -38,32 +39,33 @@ export class OrganizationUnitListController extends UIController {
 
     public LoadView(): any {
         return (
-            Views.RightSidePage({
-                title: 'Organization Units',
-                content: (
-                    HStack({ alignment: cTopLeading })(
-                        this.isLoading() ?
-                            VStack(Spinner()) :
-                            VStack({ alignment: cTopLeading })(
-                                HStack({ alignment: cLeading })(
-                                    Text('Departments')
-                                        .foregroundColor('#444')
-                                        .fontFamily(fontFamily).fontSize('2.4rem').fontWeight('300'),
-                                ).height().marginBottom('24px'),
-                                HStack({ alignment: cLeading, spacing: 15 })(
-                                    // MARK: Search Box
-                                    HStack(
-                                        TextField().placeholder('Search by Department Name')
-                                            .onTextChange((value) => this.Search_Action(value))
-                                    ).height().border('solid 1px #dfdfdf').padding(10).width(300).cornerRadius(5),
-                                    Spacer(),
-                                    Views.AcceptRouteButton({ label: 'New Organization Unit', link: '/app(tenantmanager)/department/add' })
-                                ).height().marginBottom('24px'),
-                                OrganizationUnitGrid(this.organizationUnits)
+
+            HStack({ alignment: cTopLeading })(
+                this.isLoading() ?
+                    VStack(Spinner()) :
+                    VStack({ alignment: cTopLeading })(
+                        HStack({ alignment: cLeading, spacing: 15 })(
+                            // MARK: Search Box
+                            HStack(
+                                TextField().placeholder('Search by Department Name')
+                                    .onTextChange((value) => this.Search_Action(value))
                             )
+                                .background(Color.white)
+                                .height().border('solid 1px #dfdfdf').padding(10).width(300).cornerRadius(5),
+                            Spacer(),
+                            Views.CreateButton({ label: 'New Organization Unit', action: ()=> NewOrganizationUnitController.Show().then(()=>{
+                                this.organizationUnits = null;
+                                const orgService = useOrgProvider();
+                                orgService.getDepartments().then(deps =>
+                                    this.showingOrganizationUnits = this.organizationUnits = deps
+                                )
+                            }) })
+                        ).height().padding(24),
+                        OrganizationUnitGrid(this.organizationUnits)
                     )
-                )
-            })
+            )
         )
     }
+
+
 }

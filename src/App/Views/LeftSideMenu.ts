@@ -1,4 +1,4 @@
-import { VStack, cTopLeading, Icon, IconLibrary, Text, ForEach, HStack, cLeading, bindState, Color, UIRouteLink, cHorizontal } from '@tuval/forms';
+import { VStack, cTopLeading, Icon, IconLibrary, Text, ForEach, HStack, cLeading, bindState, Color, UIRouteLink, cHorizontal, Theme } from '@tuval/forms';
 import { theme } from '../../Theme';
 
 //const fontFamily = '"proxima-nova", "proxima nova", "helvetica neue", "helvetica", "arial", sans-serif';\
@@ -24,9 +24,9 @@ const menuModel = [
         subItems: [
 
             {
-                name: 'Employees',
-                icon: '\\d235',
-                link: '/app(tenantmanager)/employee/list'
+                name: 'Organization',
+                icon: '\\e0af',
+                link: '/app(tenantmanager)/company/employee/list'
             },
             {
                 name: 'Departments',
@@ -98,14 +98,6 @@ export const LeftSideMenuView = (realmName: string, selectedItem: string) => (
                 .fontWeight('500')
         ).height(40).padding(cHorizontal, '1rem'),
 
-        /*   HStack({ alignment: cTopLeading })(
-              Icon((IconLibrary as any).DonutLarge).size(30).paddingLeft('15px'),
-              Text(realmName).fontWeight('600')
-                  .fontSize('0.8rem').lineHeight('0.8rem')
-                  .kerning('.06rem').fontFamily(fontFamily)
-                  .padding('25px 20px 15px')
-                  .textTransform('uppercase'),
-          ).height(), */
         ...ForEach(menuModel)(menu =>
             VStack({ alignment: cTopLeading })(
 
@@ -134,7 +126,7 @@ export const LeftSideMenuView = (realmName: string, selectedItem: string) => (
                             //.paddingLeft('1rem')
                             //.textTransform('uppercase')
                     ).height(28)
-                    .background({ default: selectedItem === menu.title ? '#617294' : '', hover: '#283d5c' })
+                    .background({ default: selectedItem === menu.title ? 'rgba(255,255,255,.3)' : '', hover: 'rgba(0,0,0,.6)' })
                 ).width('100%')
 
                 ,
@@ -143,17 +135,17 @@ export const LeftSideMenuView = (realmName: string, selectedItem: string) => (
                 ...ForEach((menu as any).subItems)((subItem: any) =>
                     UIRouteLink(subItem?.link ?? '')(
                         HStack({ alignment: cLeading, spacing: 10 })(
-                            //subItem.icon ? Icon(subItem.icon).size(24) : null,
+                        subItem.icon ? Icon(subItem.icon).size(20) : null,
                             Text(subItem.name)
                                 .fontFamily(fontFamily)
-                                .fontSize(13)
-                                .lineHeight('17px')
+                                .fontSize(14)
+                                .lineHeight('24px')
                         )
-                            .paddingLeft('25px')
+                            .padding('25px')
                             .cornerRadius(theme.borderRadius)
                             .height(27)
                             .foregroundColor(theme.surfaceground)
-                            .background({ default: selectedItem === subItem.name ? '#617294' : '', hover: '#283d5c' })
+                            .background({ default: selectedItem === subItem.name ? 'rgba(255,255,255,.3)' : '', hover: 'rgba(0,0,0,.6)'  })
                             .fontWeight('400')
                             // .fontWeight(selectedItem == subItem.name ? '700' : '400')
                             .cursor('pointer')
@@ -166,7 +158,7 @@ export const LeftSideMenuView = (realmName: string, selectedItem: string) => (
                // .paddingBottom('20px')
         )
     ).width(220).minWidth('220px').maxWidth('220px')
-        .background({ default: '#0D232E' })
+        .background({ default: Theme.surfceColor })
         .fontSize(16)
         .foregroundColor(Color.white)
 )

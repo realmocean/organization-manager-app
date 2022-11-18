@@ -1,5 +1,5 @@
 import { is } from '@tuval/core';
-import { Icon, UIRouteLink, Spacer, IconLibrary, IconType, ColorClass, ScrollView, cVertical, UIContextMenu } from '@tuval/forms';
+import { Icon, UIRouteLink, Spacer, IconLibrary, IconType, ColorClass, ScrollView, cVertical, UIContextMenu, bindNavigate, Theme, cTrailing } from '@tuval/forms';
 import {
     cLeading, ForEach, HStack, TableColumn, Text, UIAppearance, UITable, UIView, VStack, cTopLeading, TextField, cHorizontal,
     BindingClass, bindState, UIImage, cTop, UIButton, Color, SecureField,
@@ -54,6 +54,7 @@ export namespace Views {
                                 Text(column.title).display('')
                                     .fontFamily('"Public Sans", sans-serif'),
                             )
+                                .borderBottom('1px solid hsl(240 30% 96%)')
                                 .fontWeight('600')
                                 .padding(16)
                                 .fontSize(14)
@@ -62,17 +63,17 @@ export namespace Views {
                                 .display('table-cell').textAlign('justify').width(column.width ?? '').height(),
                         )
                     )
-                        .cornerRadius(8)
+
                         .display('table-header-group')
-                        .background('rgb(244, 246, 248)')
-                        .shadow('rgb(255 255 255) 8px 0px 0px inset')
+                        .background(Color.white)
+                        .border('solid 1px red')
                         .width().height(),
                     // table body
                     HStack(
-                        ...ForEach(data)(row =>
+                        ...ForEach(data)((row, index) =>
                             HStack(
                                 // cells
-                                ...ForEach(columns)(column =>
+                                ...ForEach(columns)((column) =>
                                     HStack(
                                         HStack({ alignment: cLeading })(
                                             is.function(column.view) ?
@@ -81,77 +82,54 @@ export namespace Views {
                                                 Text(row[column.key]).display('').fontFamily('"Public Sans", sans-serif'),
                                         )
                                     )
+                                        .borderBottom(index != data.length - 1 ? '1px solid hsl(240 30% 96%)' : '')
                                         .verticalAlign('middle')
                                         .lineHeight('1.57')
                                         .fontSize('0.875rem')
                                         .fontWeight('400')
                                         .padding(16)
+
                                         .foregroundColor('rgba(33, 43, 54,0.7)')
                                         .display('table-cell').width(column.width ?? '').height(),
                                 )
-
-
-                            ).display('table-row').width().height()
+                            )
+                                .cursor('pointer')
+                                .background({ default: Color.white, hover: 'hsl(240, 100%, 99%)' })
+                                .display('table-row').width().height()
                         )
                         // row 1
 
                     ).display('table-row-group').width().height()
-                ).display('table').height()
-                /*   UITable(
-                      ...ForEach(columns)(column =>
-                          TableColumn(
-                              Text(column.title)
-                          )(row =>
-                              is.function(column.view) ?
-                                  column.view(row)
-                                  :
-                                  HStack({ alignment: cLeading, spacing: 5 })(
-                                      Text(row[column.key])
-                                  ).padding(8)
-                          )
-                              .padding('5px 0')
-                              .paddingLeft('5px')
-                              .headerWidth(column.width)
-                      )
-                  )
-                      .value(data)
-                      .height()
-                      .shadow('0 0 0 2px #f1f1f1')
-                      .headerAppearance(UIAppearance()
-                          .background('#fafafa')
-                          .cornerRadius(13))
-                          .shadow('rgb(255 255 255) 8px 0px 0px inset')
-                       .rowAppearance(UIAppearance()
-                          .cornerRadius(3)
-                          .borderTop('2px solid #f1f1f1')
-                          .padding('1rem'))  */
-            )
+                ).display('table').height().cornerRadius(20).overflow('hidden').border('1px solid hsl(240 30% 96%)')
+
+
+            ).padding(20)
         )
     )
 
     export const FormView = ({ header, content }: { header: string, content: UIView }) => (
         VStack(
             VStack({ alignment: cTop })(
-                VStack({alignment:cLeading})(
+                VStack({ alignment: cLeading })(
                     // Toggle().checked(this.checked).onToggleChange((value) => this.checked = value),
                     Text(header)
-                    .fontFamily(fontFamily2)
-                    .fontWeight('600')
-                    .maxWidth('325px')
-                    .fontSize('20px')
+                        .fontFamily(fontFamily2)
+                        .fontWeight('600')
+                        .maxWidth('325px')
+                        .fontSize('20px')
                         .marginTop('10px'),
                 )
-                .transition('padding-bottom 0.15s ease-out')
-                .shadow('0 5px 10px 0 rgb(0 0 0 / 2%)')
-                .margin('0 0 20px 0')
-                .padding('32px 24px 32px 46px')
-                .background('#ffffff')
-                .height(),
+                    .transition('padding-bottom 0.15s ease-out')
+                    .shadow('0 5px 10px 0 rgb(0 0 0 / 2%)')
+                    .margin('0 0 20px 0')
+                    .padding('32px 24px 32px 46px')
+                    .background('#ffffff')
+                    .height(),
                 ScrollView({ axes: cVertical, alignment: cTop })(
                     VStack({ alignment: cTop })(
                         content
                     )
-                       // .border('2px solid #f1f1f1')
+                        // .border('2px solid #f1f1f1')
                         .padding('1rem').margin('2rem')
                         .cornerRadius(25)
                         .shadow('0 0 10px -2px rgb(0 0 0 / 20%)')
@@ -205,7 +183,7 @@ export namespace Views {
                 //Text(label).lineHeight('1.45rem').fontSize('1rem'),
                 VStack({ alignment: cLeading, spacing: 3 })(
                     UITextBoxView()
-                        .floatlabel(true)
+                        .floatlabel(false)
                         .width('100%')
                         .placeholder(placeholder)
                         .value(value.get())
@@ -366,11 +344,11 @@ export namespace Views {
                         .placeHolder(placeholder)
                         .width('100%')
                         .value(value)
-                      /*   .noRecordTemplate(data =>
-                            HStack({ alignment: cLeading })(
-                                UIButtonView().text('Ekle').onClick(() => console.log('click'))
-                            )
-                        ) */
+                        /*   .noRecordTemplate(data =>
+                              HStack({ alignment: cLeading })(
+                                  UIButtonView().text('Ekle').onClick(() => console.log('click'))
+                              )
+                          ) */
                         .allowFiltering(true)
                         .change(change),
 
@@ -380,7 +358,49 @@ export namespace Views {
     }
 
 
+    export const CreateButton = ({ label, action }: { label: string, action: Function }) => (
+        HStack(
+            UIButton(
+                Icon('\\e145').size(24).marginRight('3px'),
+                Text(label).whiteSpace('nowrap')
+            )
+                .padding(cHorizontal, 15)
+                .padding(cVertical, 7)
+                .background({ default: 'rgb(219,26, 90)', hover: 'rgb(240,45, 101)' })
+                .foregroundColor(Color.white)
+                .fontSize(14)
+                .fontWeight('400')
+                .border({ default: '1px solid rgb(191,13,81)', hover: '1px solid rgb(191,13,81)' })
+                .transition('all .2s ease-in-out')
+                .cornerRadius(5)
+                .shadow({ focus: '0 0 0 1px #fff, 0 0 2px 2px #0069ff' })
+                .tabIndex(2)
+                .onClick(() => action())
+        ).height().width()
+    )
+
     export const AcceptButton = ({ label, action }: { label: string, action: Function }) => (
+        HStack(
+            UIButton(
+                //Icon('\\e145').size(24).marginRight('3px'),
+                Text(label).whiteSpace('nowrap')
+            )
+                .height(40)
+                .padding(cHorizontal, 15)
+                .padding(cVertical, 7)
+                .background({ default: 'rgb(219,26, 90)', hover: 'rgb(240,45, 101)' })
+                .foregroundColor(Color.white)
+                .fontSize(14)
+                .fontWeight('400')
+                .border({ default: '1px solid rgb(191,13,81)', hover: '1px solid rgb(191,13,81)' })
+                .transition('all .2s ease-in-out')
+                .cornerRadius(5)
+                .shadow({ focus: '0 0 0 1px #fff, 0 0 2px 2px #0069ff' })
+                .tabIndex(2)
+                .onClick(() => action())
+        ).height().width()
+    )
+    export const _AcceptButton = ({ label, action }: { label: string, action: Function }) => (
         HStack(
             UIButton(
                 Text(label)
@@ -502,12 +522,28 @@ export namespace Views {
         ).height().width('33%')
     )
 
-    export const RightSidePage = ({ title, content }: { title: string, content: UIView }) => (
+    export const RightSidePage = ({ title, tabview, content }: { title: string, tabview?: UIView, content: UIView }) => (
         VStack({ alignment: cTopLeading })(
-
+            VStack({ alignment: cLeading })(
+                VStack({ alignment: cLeading })(
+                    HStack(
+                        Text(title)
+                            .foregroundColor('#444')
+                            .fontFamily(fontFamily).fontSize('2.4rem').fontWeight('300'),
+                    ).height().width().paddingTop('24px'),
+                    HStack(
+                        tabview
+                    ).height(65).width()
+                ).height()
+            )
+                .paddingLeft('20px')
+                .height()
+                .background(Theme.applicationBackgroundColor)
+                .shadow('0px 3px 12px var(--application-border-color)'),
             content
-        ).borderTop(`solid 1px ${theme.surfaceborder}`)
-        .background('#F6F6F6')
+        )
+            .borderTop(`solid 1px ${theme.surfaceborder}`)
+            .background(Theme.darkBackgroundColor)
     )
 
     export const AcceptRouteButton = ({ label, link }: { label: string, link: string }) => (
@@ -516,6 +552,93 @@ export namespace Views {
         )
     )
 
+    export const TabView = (tabModel: any[]) => {
+        if (!is.array(tabModel)) {
+            return;
+        }
+
+        const [selectedIndex, setSelectedIndex] = bindState(0)
+        const [prevSelectedIndex, setPrevSelectedIndex] = bindState(0)
+        const [selectedTab, setSelectedTab] = bindState(tabModel[0])
+
+        const bottomBorderColor = '#0069ff';
+        const navigotor = bindNavigate();
+
+        return (
+            VStack({ alignment: cLeading })(
+
+                VStack({ alignment: cTop, spacing: 15 })(
+                    VStack({ spacing: 5 })(
+                        HStack({ spacing: 0 })(
+                            ...ForEach(tabModel)((tab, index) =>
+                                VStack(
+                                    UIButton(
+                                        Text(tab.title)
+                                            .fontSize(14)
+                                            .lineHeight('40px')
+                                            .foregroundColor(selectedTab?.title === tab?.title ? 'rgb(219, 26, 90)' : '')
+                                            // .fontWeight(selectedTab?.title === tab?.title ? '600' : '400')
+                                            .whiteSpace('nowrap')
+                                    ),
+                                    /* HStack(Text('')).background('#EEE').height(2)
+                                        .position('absolute').bottom('-11px') */
+
+                                )
+
+                                    .background({ hover: 'var(--primary-background-hover-color)' })
+                                    .cornerRadius(4)
+                                    //.transform('translate(-50%)')
+                                    .width(120)
+                                    .onClick(() => {
+                                        setSelectedTab(tab); setPrevSelectedIndex(selectedIndex); setSelectedIndex(index === 0 ? 0 : (100 / tabModel.length) * index);
+                                        navigotor(tab.link.to, { state: tab.link.state, replace: true })
+                                    }),
+                            )
+                        ).height().width(),
+                        HStack(
+                            HStack(Text('')).background('rgb(219, 26, 90)').height(2).width(120)
+                                .position('absolute')
+                                //.transform('translate(-50%)')
+                                .initial({ left: prevSelectedIndex + '%' })
+                                .animate({ left: selectedIndex + '%' }),
+
+
+                        ).height()
+                    ).height().width().marginTop('20px')
+
+                ).height().width()
+
+            ).height().width()
+        )
+    }
+
+    export const CompanyTabView = () => (
+        Views.TabView([
+            {
+                title: 'Employees',
+                link: {
+                    to: '/app(tenantmanager)/company/employee/list',
+                    state: ''
+                }
+            },
+            {
+                title: 'Departments',
+                link: {
+                    to: '/app(tenantmanager)/company/department/list',
+                    state: ''
+                }
+            },
+            {
+                title: 'Positions',
+                link: {
+                    to: '',
+                    state: ''
+                }
+            }
+        ])
+    )
+
+ 
 }
 
 

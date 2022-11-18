@@ -4,6 +4,7 @@ import { IEmployee, RealmBrokerClient, useOrgProvider } from '@realmocean/common
 import { ActionButton } from '../../../Views/ActionButton';
 import { Services } from '../../../Services/Services';
 import { ITableViewColumn, Views } from '../../../Views/Views';
+import { AddUserDialog } from '../Dialogs/AddUserDialog';
 
 const fontFamily = '"proxima-nova", "proxima nova", "helvetica neue", "helvetica", "arial", sans-serif'
 
@@ -73,33 +74,33 @@ export class UserListController extends UIController {
     public LoadView(): any {
         return ({ AppController_ContextAction_SetController }) => {
             return (
-                Views.RightSidePage({
-                    title: 'Employees',
-                    content: (
-                        HStack({ alignment: cTopLeading })(
-                            this.isLoading() ?
-                                VStack(Spinner()) :
-                                VStack({ alignment: cTopLeading })(
-                                    HStack({ alignment: cLeading })(
-                                        Text('Employees')
-                                            .foregroundColor('#444')
-                                            .fontFamily(fontFamily).fontSize('2.4rem').fontWeight('300'),
-                                    ).height().marginBottom('24px'),
-                                    HStack({ alignment: cLeading, spacing: 15 })(
-                                        // MARK: Search Box
-                                        HStack(
-                                            TextField().placeholder('Search by Employee Name')
-                                                .onTextChange((value) => this.Search_Action(value))
-                                        ).height().border('solid 1px #dfdfdf').padding(10).width(300).cornerRadius(5),
-                                        Spacer(),
-                                        Views.AcceptRouteButton({ label: 'New Employee', link: '/app(tenantmanager)/employee/add' })
-                                    ).height().marginBottom('24px'),
-                                    UsersGrid(this.users)
+                HStack({ alignment: cTopLeading })(
+                    this.isLoading() ?
+                        VStack(Spinner()) :
+                        VStack({ alignment: cTopLeading })(
+                            HStack({ alignment: cLeading, spacing: 15 })(
+                                // MARK: Search Box
+                                HStack(
+                                    TextField().placeholder('Search by Employee Name')
+                                        .onTextChange((value) => this.Search_Action(value))
                                 )
+                                .background(Color.white)
+                                .height().border('solid 1px #dfdfdf').padding(10).width(300).cornerRadius(5),
+                                Spacer(),
+                                Views.CreateButton({ label: 'New Employee', action: () => AddUserDialog.Show().then(()=> {
+                                    this.users = null;
+                                    const orgService = useOrgProvider();
+                                    orgService.getEmployees().then(employees =>
+                                        this.showingUsers = this.users = employees
+                                    )
+                                }) })
+                            ).height().padding(24),
+                            UsersGrid(this.users)
                         )
-                    )
-                })
+                )
             )
         }
     }
+
+ 
 }

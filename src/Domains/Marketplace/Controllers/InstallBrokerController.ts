@@ -55,7 +55,6 @@ export class InstallBrokerDialog extends Dialog {
             })
         });
     }
-
 }
 
 export class InstallBrokerController extends UIController {
