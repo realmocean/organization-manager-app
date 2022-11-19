@@ -26,4 +26,17 @@ export class RealmBrokerClient {
                 });
         });
     }
+
+    public static async GetBrokerSettingDialog(broker_id: string): Promise<any> {
+        const form = new FormData();
+        form.append('broker_id', broker_id);
+
+
+        return new Promise((resolve, reject) => {
+            HttpClient.Post(ConfigService.GetRealmBrokerStoreUrl1() + 'GetBrokerSettingDialog', form)
+                .then(response => {
+                    resolve(response.data);
+                });
+        });
+    }
 }

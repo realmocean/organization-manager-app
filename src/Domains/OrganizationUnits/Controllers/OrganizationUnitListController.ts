@@ -39,7 +39,6 @@ export class OrganizationUnitListController extends UIController {
 
     public LoadView(): any {
         return (
-
             HStack({ alignment: cTopLeading })(
                 this.isLoading() ?
                     VStack(Spinner()) :

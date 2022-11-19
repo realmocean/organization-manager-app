@@ -7,14 +7,21 @@ export class DialogController extends UIController {
     @State()
     public dialog: Dialog;
 
+    public setHeight(value) {
+        this.dialog.Height = value;
+    }
+
+    public setWidth(value) {
+        this.dialog.Width = value;
+    }
+
     public InitController() {
 
         const self = this;
         const dialog = class extends Dialog {
             public override InitComponents() {
                 this.Text = '';
-                this.Width = 638;
-                this.Height = 644;
+              
 
                 this.Controls.Add(self);
             }

@@ -4,6 +4,7 @@ import { cLeading, Color, cTopLeading, cVertical, ForEach, HStack, ScrollView, S
 
 import { ITableViewColumn, Views } from '../../../Views/Views';
 import { BrokerAddonCard } from '../../Marketplace/Views/BrokerAddonCard';
+import { SettingsDialogController } from './SettingsDialogController';
 
 
 const fontFamily = '"proxima-nova", "proxima nova", "helvetica neue", "helvetica", "arial", sans-serif'
@@ -505,17 +506,6 @@ export class InstalledBrokerListController extends UIController {
                                 VStack(Spinner()) :
 
                                 VStack({ alignment: cTopLeading })(
-                                    HStack({ alignment: cLeading })(
-                                        Text('Installed Brokers')
-                                            .foregroundColor('#444')
-                                            .fontFamily(fontFamily).fontSize('2.4rem').fontWeight('300'),
-                                    )
-                                        .transition('padding-bottom 0.15s ease-out')
-                                        .shadow('0 5px 10px 0 rgb(0 0 0 / 2%)')
-                                        .margin('0 0 20px 0')
-                                        .padding('32px 24px 32px 46px')
-                                        .background('#ffffff')
-                                        .height(),
                                     HStack({ alignment: cLeading, spacing: 15 })(
                                         // MARK: Search Box
                                         HStack(
@@ -527,13 +517,12 @@ export class InstalledBrokerListController extends UIController {
                                     ).height().marginBottom('24px'),
                                     ScrollView({ axes: cVertical, alignment: cTopLeading })(
                                         ...ForEach(this.brokers)(category =>
-
                                             VStack({ alignment: cTopLeading })(
                                                 Text(category.title).height(40).fontSize(20).fontWeight('600').padding('1rem'),
                                                 HStack({ alignment: cTopLeading })(
                                                     ...ForEach(category.items)((item: any) =>
                                                         BrokerAddonCard(item.image, item.name, item.description)
-                                                        .onClick(()=> void 0/* InstallBrokerDialog.Show(item.id) */)
+                                                        .onClick(()=> SettingsDialogController.Show(item))
                                                     )
                                                 ).width().height().wrap('wrap')
                                             )
