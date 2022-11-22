@@ -1,5 +1,5 @@
 import { useOrgUIProvider } from '@realmocean/common';
-import { cLeading, Color, cTopLeading, HStack, IconLibrary, State, UIController, UIScene, VStack, Text, Button } from '@tuval/forms';
+import { cLeading, Color, cTopLeading, HStack, IconLibrary, State, UIController, UIScene, VStack, Text, Button, useForm, TextField, UIFormView } from '@tuval/forms';
 
 import { LeftSideMenuView } from '../../../App/Views/LeftSideMenu';
 import { Views } from '../../../Views/Views';
@@ -52,9 +52,22 @@ export class DashboardController extends UIController {
         this.showingItems = [...this.items.filter((item: any) => item.name.toLowerCase().indexOf(value.toLowerCase()) > -1)];
     }
     public LoadView() {
+
+      /*   const defaultValues = {
+            name: 'bvbcvb',
+            email: '',
+            password: '',
+            date: null,
+            country: null,
+            accept: false
+        }
+        const { control, formState: { errors }, handleSubmit, reset } = useForm({ defaultValues }); */
+
         return (
             UIScene(
-               
+                UIFormView(
+                    TextField()
+                ),
                 /*   HStack(
                       AutoComplete().items(this.showingItems)
                           .searchMethod((e) => this.search(e.query))
