@@ -1,8 +1,8 @@
-import { Dialog, State, UIController } from '@tuval/forms'
+import { Dialog, State, UIFormController } from '@tuval/forms'
 
 
 
-export class DialogController extends UIController {
+export class DialogController extends UIFormController {
 
     @State()
     public dialog: Dialog;
