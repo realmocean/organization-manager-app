@@ -1,5 +1,6 @@
 import { IDepartment, IEmployeeTitle, RealmBrokerClient, useOrgProvider } from "@realmocean/common";
-import { Binding, Button, cTopLeading, HStack, State, Text, UIButton, VStack, $, Spacer, Icon, cLeading, cTrailing } from "@tuval/forms";
+import { UITextBoxView } from "@realmocean/inputs";
+import { Binding, Button, cTopLeading, HStack, State, Text, UIButton, VStack, $, Spacer, Icon, cLeading, cTrailing, RequiredRule } from "@tuval/forms";
 import { DialogController } from "../../../ControllerDialog";
 
 import { Views } from "../../../Views/Views";
@@ -86,7 +87,13 @@ export class AddUserDialog extends DialogController {
                 ).height(50),
 
                 VStack({alignment: cTopLeading, spacing:15})(
-                    Views.InputTextView('Employee ID *', 'Record ID', $(this.employeeId), true, $(this.isEmployeeIDdInvalid), 'ID is required.', this.formPostTried),
+                    UITextBoxView()
+                    .floatlabel(false)
+                    .width('100%')
+                    .placeholder('test')
+                    .formField('employee_name', [new RequiredRule('sdfsdfsd')]),
+                    
+                   // Views.InputTextView('Employee ID *', 'Record ID', $(this.employeeId), true, $(this.isEmployeeIDdInvalid), 'ID is required.', this.formPostTried),
                     Views.InputTextView('Name *', 'First Name', $(this.employeeName), true, $(this.isEmployeeNamedInvalid), 'Name is required.', this.formPostTried),
                     Views.InputTextView('Last Name', 'Last Name', $(this.employeeLastName)),
                     Views.InputDropdownListView('Title', 'Please select employee title', this.titles, this.employeeTitle?.Id, (e) => this.employeeTitle = e.itemData as any),
@@ -95,7 +102,7 @@ export class AddUserDialog extends DialogController {
                 ),
                 HStack({ alignment: cTrailing, spacing: 10 })(
                     Text('Cancel').foregroundColor('rgb(96, 106, 123)').fontSize(14).fontWeight('600').cursor('pointer').onClick(() => this.OnCancel()),
-                    Views.AcceptButton({ label: 'Create', action: () => this.action_create() }),
+                    Views.AcceptButton({ label: 'Create', action: () => this.Submit() }),
                 )
                 .paddingTop('20px')
                     .height(50)
