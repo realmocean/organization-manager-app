@@ -1,12 +1,15 @@
 import { useOrgUIProvider } from '@realmocean/common';
-import { cLeading, Color, cTopLeading, HStack, IconLibrary, State, UIController, UIScene, VStack, Text, Button, useForm, TextField, UIFormView } from '@tuval/forms';
+import {
+    cLeading, Color, cTopLeading, HStack, IconLibrary, State, UIController, UIScene, VStack, Text,
+    bindFormController, UIFormController, Button, useForm, TextField, UIFormView, RequiredRule, MaxLengthRule
+} from '@tuval/forms';
 
 import { LeftSideMenuView } from '../../../App/Views/LeftSideMenu';
 import { Views } from '../../../Views/Views';
 
 const fontFamily = '"proxima-nova", "proxima nova", "helvetica neue", "helvetica", "arial", sans-serif'
 
-export class DashboardController extends UIController {
+export class DashboardController extends UIFormController {
     @State()
     private items: any[];
 
@@ -51,22 +54,41 @@ export class DashboardController extends UIController {
     private search(value: string) {
         this.showingItems = [...this.items.filter((item: any) => item.name.toLowerCase().indexOf(value.toLowerCase()) > -1)];
     }
+
+    protected override OnSubmit(data) {
+        alert(JSON.stringify(data))
+    }
     public LoadView() {
 
-      /*   const defaultValues = {
-            name: 'bvbcvb',
-            email: '',
-            password: '',
-            date: null,
-            country: null,
-            accept: false
-        }
-        const { control, formState: { errors }, handleSubmit, reset } = useForm({ defaultValues }); */
+        /*   const defaultValues = {
+              name: 'bvbcvb',
+              email: '',
+              password: '',
+              date: null,
+              country: null,
+              accept: false
+          }
+          const { control, formState: { errors }, handleSubmit, reset } = useForm({ defaultValues }); */
+        debugger
+        const controller = bindFormController();
+        //console.log(controller);
 
         return (
             UIScene(
-                UIFormView(
-                    TextField()
+                VStack(
+                    TextField().formField('employee_name',
+                        [
+                            new RequiredRule('employee_name must be set'),
+                            new MaxLengthRule(20, 'employee name must be lower than 20')
+                        ]),
+                        TextField().formField('employee_last_name',
+                        [
+                            new RequiredRule('Employe last name required'),
+                            new MaxLengthRule(20, 'employee name must be lower than 20')
+                        ]),
+                    Button(
+                        Text('Save')
+                    ).onClick(() => this.Submit())
                 ),
                 /*   HStack(
                       AutoComplete().items(this.showingItems)
