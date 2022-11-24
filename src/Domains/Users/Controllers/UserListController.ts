@@ -80,12 +80,10 @@ export class UserListController extends UIController {
                         VStack({ alignment: cTopLeading })(
                             HStack({ alignment: cLeading, spacing: 15 })(
                                 // MARK: Search Box
-                                HStack(
+                               
                                     TextField().placeholder('Search by Employee Name')
                                         .onTextChange((value) => this.Search_Action(value))
-                                )
-                                .background(Color.white)
-                                .height().border('solid 1px #dfdfdf').padding(10).width(300).cornerRadius(5),
+                               ,
                                 Spacer(),
                                 Views.CreateButton({ label: 'New Employee', action: () => AddUserDialog.Show().then(()=> {
                                     this.users = null;

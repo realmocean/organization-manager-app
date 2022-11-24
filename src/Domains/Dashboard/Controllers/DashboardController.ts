@@ -71,11 +71,12 @@ export class DashboardController extends UIFormController {
           const { control, formState: { errors }, handleSubmit, reset } = useForm({ defaultValues }); */
         debugger
         const controller = bindFormController();
+        
         //console.log(controller);
 
         return (
             UIScene(
-                VStack(
+               /*  VStack(
                     TextField().formField('employee_name',
                         [
                             new RequiredRule('employee_name must be set'),
@@ -89,7 +90,7 @@ export class DashboardController extends UIFormController {
                     Button(
                         Text('Save')
                     ).onClick(() => this.Submit())
-                ),
+                ), */
                 /*   HStack(
                       AutoComplete().items(this.showingItems)
                           .searchMethod((e) => this.search(e.query))

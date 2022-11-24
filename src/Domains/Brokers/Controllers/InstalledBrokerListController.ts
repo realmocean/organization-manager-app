@@ -4,6 +4,7 @@ import { cLeading, Color, cTopLeading, cVertical, ForEach, HStack, ScrollView, S
 
 import { ITableViewColumn, Views } from '../../../Views/Views';
 import { BrokerAddonCard } from '../../Marketplace/Views/BrokerAddonCard';
+import { ConnectionListController } from './ConnectionListController';
 import { SettingsDialogController } from './SettingsDialogController';
 
 
@@ -522,7 +523,7 @@ export class InstalledBrokerListController extends UIController {
                                                 HStack({ alignment: cTopLeading })(
                                                     ...ForEach(category.items)((item: any) =>
                                                         BrokerAddonCard(item.image, item.name, item.description)
-                                                        .onClick(()=> SettingsDialogController.Show(item))
+                                                        .onClick(()=> ConnectionListController.Show(item))
                                                     )
                                                 ).width().height().wrap('wrap')
                                             )

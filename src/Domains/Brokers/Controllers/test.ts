@@ -1,4 +1,4 @@
-import { VStack, cTopLeading, HStack, DropDown, cLeading, TextField, Color, Text, TextAlignment, RenderingTypes } from "@tuval/forms"
+import { VStack, cTopLeading, HStack, DropDown, cLeading, TextField, Color, Text, TextAlignment, RenderingTypes, RequiredRule } from "@tuval/forms"
 
 function setFormData(name, value) {
 
@@ -64,7 +64,7 @@ const SettingDialog = () => {
 const GoogleQuery = () => {
     return (
         HStack(
-            HStack({alignment: cTopLeading})(
+            HStack({ alignment: cTopLeading })(
                 Text(`- **Project ID** - the ID of the project in which your dataset lives.
 - **Dataset ID** - the ID of the dataset from which you want to pull data. `).render(2)
             ),
@@ -112,7 +112,7 @@ const GoogleQuery = () => {
                     ).background(Color.white).padding(10).cornerRadius(8).border('solid 1px rgb(125,125,125, 0.3)')
                 ).height(),
 
-              
+
 
             ).padding(20)
         )
@@ -180,7 +180,7 @@ const SQLServer = () => {
                     ).background(Color.white).padding(10).cornerRadius(8).border('solid 1px rgb(125,125,125, 0.3)')
                 ).height()
 
-              
+
 
             ).padding(20)
         )
@@ -189,33 +189,70 @@ const SQLServer = () => {
 
 const CSPServer = () => {
     return (
-     
-            VStack({ alignment: cTopLeading, spacing: 10 })(
-                HStack({ alignment: cTopLeading })(
-                    HStack({ alignment: cLeading })(
-                        Text('*Host :').whiteSpace('nowrap')
-                    ).minWidth('150px').maxWidth('150px'),
-                    HStack(
-                        TextField().onTextChange(text => setFormData('data_source_name', text))
-                    ).background(Color.white).padding(10).cornerRadius(8).border('solid 1px rgb(125,125,125, 0.3)')
-                ).height(),
-                HStack({ alignment: cTopLeading })(
-                    HStack({ alignment: cLeading })(
-                        Text('*Token :').whiteSpace('nowrap')
-                    ).minWidth('150px').maxWidth('150px'),
-                    HStack(
-                        TextField().onTextChange(text => setFormData('api_token', text))
-                    ).background(Color.white).padding(10).cornerRadius(8).border('solid 1px rgb(125,125,125, 0.3)')
-                ).height(),
-                HStack({ alignment: cTopLeading })(
-                    HStack({ alignment: cLeading })(
-                        Text('*Language :').whiteSpace('nowrap')
-                    ).minWidth('150px').maxWidth('150px'),
-                    HStack(
-                        TextField().onTextChange(text => setFormData('api_token', text))
-                    ).background(Color.white).padding(10).cornerRadius(8).border('solid 1px rgb(125,125,125, 0.3)')
-                ).height(),
-            )
-        
+
+        VStack({ alignment: cTopLeading, spacing: 10 })(
+            HStack({ alignment: cTopLeading })(
+                HStack({ alignment: cLeading })(
+                    Text('*Host :').whiteSpace('nowrap')
+                ).minWidth('150px').maxWidth('150px'),
+                HStack(
+                    TextField().onTextChange(text => setFormData('data_source_name', text))
+                ).background(Color.white).padding(10).cornerRadius(8).border('solid 1px rgb(125,125,125, 0.3)')
+            ).height(),
+            HStack({ alignment: cTopLeading })(
+                HStack({ alignment: cLeading })(
+                    Text('*Token :').whiteSpace('nowrap')
+                ).minWidth('150px').maxWidth('150px'),
+                HStack(
+                    TextField().onTextChange(text => setFormData('api_token', text))
+                ).background(Color.white).padding(10).cornerRadius(8).border('solid 1px rgb(125,125,125, 0.3)')
+            ).height(),
+            HStack({ alignment: cTopLeading })(
+                HStack({ alignment: cLeading })(
+                    Text('*Language :').whiteSpace('nowrap')
+                ).minWidth('150px').maxWidth('150px'),
+                HStack(
+                    TextField().onTextChange(text => setFormData('api_token', text))
+                ).background(Color.white).padding(10).cornerRadius(8).border('solid 1px rgb(125,125,125, 0.3)')
+            ).height(),
+        )
+
+    )
+}
+
+const Github = () => {
+    return (
+        VStack({ alignment: cTopLeading, spacing: 10 })(
+            Text('See the integration document for GitHub here.'),
+            
+            HStack({ alignment: cTopLeading })(
+                HStack({ alignment: cLeading })(
+                    Text('*Data Source Name :').whiteSpace('nowrap')
+                ).minWidth('150px').maxWidth('150px'),
+
+                DropDown(item =>
+                    Text(item)
+                )(selectedItem =>
+                    Text(selectedItem)
+                )
+
+            ).height(),
+
+            HStack({ alignment: cTopLeading })(
+                HStack({ alignment: cLeading })(
+                    Text('*Data Source Name :').whiteSpace('nowrap')
+                ).minWidth('150px').maxWidth('150px'),
+
+                TextField().formField('data_source_name', [new RequiredRule('Data source must be set.')])
+
+            ).height(),
+            HStack({ alignment: cTopLeading })(
+                HStack({ alignment: cLeading })(
+                    Text('*Server URL :').whiteSpace('nowrap')
+                ).minWidth('150px').maxWidth('150px'),
+                TextField().formField('api_token', [new RequiredRule('API token must be set.')])
+            ).height()
+
+        )
     )
 }

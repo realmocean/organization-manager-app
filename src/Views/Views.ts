@@ -103,7 +103,7 @@ export namespace Views {
                 ).display('table').height().cornerRadius(20).overflow('hidden').border('1px solid hsl(240 30% 96%)')
 
 
-            ).padding(20)
+            ).padding(cHorizontal, 20)
         )
     )
 

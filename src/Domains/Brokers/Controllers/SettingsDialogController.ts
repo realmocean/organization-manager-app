@@ -1,8 +1,9 @@
 
 import { is } from "@tuval/core";
-import { Button, cHorizontal, cLeading, Color, cTop, cTopLeading, cTopTrailing, cTrailing, cVertical, HDivider, HStack, Icon, RenderingTypes, ScrollView, Spacer, State, Text, TextField, UIImage, VStack } from "@tuval/forms";
+import { Button, cHorizontal, cLeading, Color, cTop, cTopLeading, cTopTrailing, cTrailing, cVertical, HDivider, HStack, Icon, RenderingTypes, RequiredRule, ScrollView, Spacer, State, Text, TextField, UIImage, VStack } from "@tuval/forms";
 import { DialogController } from "../../../ControllerDialog";
 import { RealmBrokerClient } from "../../../Services/RealmBrokerClient";
+import { RealmBrokerClient as ROC } from "@realmocean/common";
 
 
 export class SettingsDialogController extends DialogController {
@@ -78,6 +79,8 @@ export class SettingsDialogController extends DialogController {
         const ScrollView = tuval$forms.ScrollView;
         const DropDown = tuval$forms.DropDown;
 
+        const RequiredRule = tuval$forms.RequiredRule;
+
         const [count, setCount] = bindState(0);
 
         function setFormData(name, value){
@@ -104,6 +107,11 @@ export class SettingsDialogController extends DialogController {
         return result;
     }
 
+    protected override OnSubmit(data) {
+        alert(JSON.stringify(data))
+        ROC.CreateBrokerConnection(this.broker_info.id, data.connection_name, JSON.stringify(data));
+
+    }
     public override LoadView() {
         return (
             VStack({ alignment: cTopLeading, spacing: 10 })(
@@ -128,14 +136,14 @@ export class SettingsDialogController extends DialogController {
                             )
                         ).width('50%') : Text(''),
                     VStack({ alignment: cTopLeading, spacing: 30 })(
-                        VStack({ alignment: cTopLeading, spacing: 15 })(
-                            VStack({alignment:cLeading, spacing: 5})(
+                        VStack({ alignment: cTopLeading, spacing: 10 })(
+                            VStack({ alignment: cLeading, spacing: 5 })(
                                 Text('*Connection name').fontSize(14).fontWeight('600').foregroundColor('#2e4354'),
                                 Text('This name is for your convenience only').fontSize(14).foregroundColor('#2e435473')
                             ).height(),
-                            HStack(
-                                TextField()
-                            ).background(Color.white).padding(10).cornerRadius(8).border('solid 1px rgb(125,125,125, 0.3)').height()
+                            TextField()
+                                .formField('connection_name', [new RequiredRule('Please set connection name')])
+
                         ).height(),
                         HDivider().height(1).background('rgb(125,125,125, 0.1)'),
                         this.getDynamicView(),
@@ -158,7 +166,7 @@ export class SettingsDialogController extends DialogController {
                     ).variant('outlined'),
                     Button(
                         Text('Add')
-                    ).variant('outlined')
+                    ).variant('outlined').onClick(() => this.Submit())
                 ).height(),
             ).padding(20)
         )
