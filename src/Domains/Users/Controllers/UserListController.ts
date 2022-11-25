@@ -53,12 +53,15 @@ export class UserListController extends UIController {
     @State()
     private showingUsers: IEmployee[];
 
+
+
     private isLoading(): boolean {
         return this.users == null;
     }
 
 
     public BindRouterParams({ tenant_id, tenant_name }) {
+
         const orgService = useOrgProvider();
         orgService.getEmployees().then(employees =>
             this.showingUsers = this.users = employees
@@ -93,7 +96,7 @@ export class UserListController extends UIController {
                                     )
                                 }) })
                             ).height().padding(24),
-                            UsersGrid(this.users)
+                            UsersGrid(this.users) as any
                         )
                 )
             )

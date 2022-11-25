@@ -12,10 +12,7 @@ export class UsersController extends UIController {
     public LoadView(): any {
         return ({ AppController_ContextAction_SetController }) => {
             return (
-               
-                        UIRouteOutlet().width('100%').height('100%')
-                    
-                
+                UIRouteOutlet().width('100%').height('100%')
             )
         }
     }

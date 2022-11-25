@@ -1,5 +1,5 @@
 import { IEmployee } from '@realmocean/common';
-import { HStack, Icon, Text, UIRouteLink, IconLibrary, VStack, cLeading, Color, UIContextMenu, ForEach } from '@tuval/forms';
+import { HStack, Icon, Text, UIRouteLink, IconLibrary, VStack, cLeading, Color, UIContextMenu, ForEach, bindNavigate, bindController, UIController } from '@tuval/forms';
 
 import { ITableViewColumn, Views } from '../../../Views/Views';
 
@@ -56,6 +56,14 @@ const columns: ITableViewColumn[] = [
     }
 ]
 
-export const UsersGrid = (users: any[]) => (
-    Views.TableView(columns, users)
-)
+export const UsersGrid = (users: any[]) => {
+   // const controller:UIController = bindController();
+    return ({controller}) => (
+     
+            Views.TableView(columns, users, (employee: IEmployee, index) => {
+                console.log(controller)
+                controller.navigotor(`/app(tenantmanager)/company/edit/employee/${employee.Id}/overview`)
+            })
+        
+    )
+}

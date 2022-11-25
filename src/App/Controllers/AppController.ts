@@ -5,7 +5,7 @@ import { Routes } from '../Views/Routes';
 
 const manifest = require('../../manifest');
 
-
+declare var WebFont;
 
 export class AppController extends UIController {
 
@@ -25,7 +25,11 @@ export class AppController extends UIController {
 
 
     protected InitController() {
-
+        WebFont.load({
+            google: {
+                families: ['Poppins:400,500,600,700', 'sans serif']
+            }
+        });
     }
 
 

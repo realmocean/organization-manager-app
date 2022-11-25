@@ -1,5 +1,5 @@
 import { is } from '@tuval/core';
-import { Icon, UIRouteLink, Spacer, IconLibrary, IconType, ColorClass, ScrollView, cVertical, UIContextMenu, bindNavigate, Theme, cTrailing } from '@tuval/forms';
+import { Icon, UIRouteLink, Spacer, IconLibrary, IconType, ColorClass, ScrollView, cVertical, UIContextMenu, bindNavigate, Theme, cTrailing, useNavigate, getRouterParams, HDivider, bindController, Spinner, UIController } from '@tuval/forms';
 import {
     cLeading, ForEach, HStack, TableColumn, Text, UIAppearance, UITable, UIView, VStack, cTopLeading, TextField, cHorizontal,
     BindingClass, bindState, UIImage, cTop, UIButton, Color, SecureField,
@@ -40,7 +40,7 @@ export interface IAction {
 }
 
 export namespace Views {
-    export const TableView = <T>(columns: ITableViewColumn[], data: T[]) => (
+    export const TableView = <T>(columns: ITableViewColumn[], data: T[], rowClick?: Function) => (
         ScrollView({ axes: cVertical })(
             VStack({ alignment: cTop })(
                 HStack(
@@ -57,7 +57,8 @@ export namespace Views {
                                 .borderBottom('1px solid hsl(240 30% 96%)')
                                 .fontWeight('600')
                                 .padding(16)
-                                .fontSize(14)
+                                .fontSize(12)
+                                .textTransform('uppercase')
                                 .foregroundColor('rgb(99, 115, 129)')
                                 .lineHeight('1.5rem')
                                 .display('table-cell').textAlign('justify').width(column.width ?? '').height(),
@@ -85,7 +86,7 @@ export namespace Views {
                                         .borderBottom(index != data.length - 1 ? '1px solid hsl(240 30% 96%)' : '')
                                         .verticalAlign('middle')
                                         .lineHeight('1.57')
-                                        .fontSize('0.875rem')
+                                        .fontSize(14)
                                         .fontWeight('400')
                                         .padding(16)
 
@@ -96,6 +97,13 @@ export namespace Views {
                                 .cursor('pointer')
                                 .background({ default: Color.white, hover: 'hsl(240, 100%, 99%)' })
                                 .display('table-row').width().height()
+                                .onClick(() => {
+
+                                    if (is.function(rowClick)) {
+                                        debugger
+                                        rowClick(row, index);
+                                    }
+                                })
                         )
                         // row 1
 
@@ -391,7 +399,7 @@ export namespace Views {
                 .background({ default: 'rgb(219,26, 90)', hover: 'rgb(240,45, 101)' })
                 .foregroundColor(Color.white)
                 .fontSize(14)
-                .fontWeight('400')
+                .fontWeight('600')
                 .border({ default: '1px solid rgb(191,13,81)', hover: '1px solid rgb(191,13,81)' })
                 .transition('all .2s ease-in-out')
                 .cornerRadius(5)
@@ -522,29 +530,66 @@ export namespace Views {
         ).height().width('33%')
     )
 
-    export const RightSidePage = ({ title, tabview, content }: { title: string, tabview?: UIView, content: UIView }) => (
-        VStack({ alignment: cTopLeading })(
-            VStack({ alignment: cLeading })(
-                VStack({ alignment: cLeading })(
-                    HStack(
-                        Text(title)
-                            .foregroundColor('#444')
-                            .fontFamily(fontFamily).fontSize('2.4rem').fontWeight('300'),
-                    ).height().width().paddingTop('24px'),
-                    HStack(
-                        tabview
-                    ).height(65).width()
-                ).height()
+    export const RightSidePage = ({ showBackIcon, title, copyId, tabview, content }: { title: string, showBackIcon?: boolean, copyId?: { value: string, label: string }, tabview?: UIView, content: UIView }): any => {
+        return ({ controller }: { controller: UIController }) => {
+            if (is.function(controller.IsLoading)) {
+                if (controller.IsLoading()) {
+                    return (
+                        HStack(
+                            Spinner()
+                        )
+                    )
+                }
+            }
+
+            return (
+                VStack({ alignment: cTop })(
+                    VStack({ alignment: cTop })(
+                        VStack({ alignment: cLeading })(
+                            HStack({spacing: 5})(
+                                showBackIcon && Icon('\\e5e0').size(20).onClick(() => controller.navigotor(-1)).cursor('pointer'),
+                                Text(title)
+                                    .foregroundColor('#444')
+                                    .fontFamily(fontFamily).fontSize('2.4rem').fontWeight('300'),
+                                copyId && UIButton(
+                                    Icon('\\e14d').size(14).marginRight('3px'),
+                                    Text(copyId.label)
+                                )
+                                .marginLeft('10px')
+                                .cornerRadius('calc(2rem / 2)')
+                                .border('solid 1px rgb(242, 242, 248)')
+                                .width(92)
+                                .height(32)
+                                .background('rgb(250, 250, 255)')
+                                .action(()=>  navigator.clipboard.writeText(copyId.value))
+                            ).height().width().paddingTop('24px'),
+                            HStack(
+                                tabview
+                            ).height(65).width()
+                        ).height().maxWidth('1160px')
+                    )
+                        .paddingLeft('20px')
+                        .height()
+                        .background(Theme.applicationBackgroundColor)
+                        .shadow('0px 3px 12px var(--application-border-color)'),
+                    ScrollView({ axes: cVertical, alignment: cTop })(
+                        VStack({ alignment: cTopLeading })(
+                            content
+                        ).maxWidth('1160px')
+                    )
+
+
+                )
+
+                    .borderTop(`solid 1px ${theme.surfaceborder}`)
+                    .background(Theme.darkBackgroundColor)
             )
-                .paddingLeft('20px')
-                .height()
-                .background(Theme.applicationBackgroundColor)
-                .shadow('0px 3px 12px var(--application-border-color)'),
-            content
-        )
-            .borderTop(`solid 1px ${theme.surfaceborder}`)
-            .background(Theme.darkBackgroundColor)
-    )
+        }
+
+
+
+
+    }
 
     export const AcceptRouteButton = ({ label, link }: { label: string, link: string }) => (
         UIRouteLink(link)(
@@ -580,9 +625,6 @@ export namespace Views {
                                             // .fontWeight(selectedTab?.title === tab?.title ? '600' : '400')
                                             .whiteSpace('nowrap')
                                     ),
-                                    /* HStack(Text('')).background('#EEE').height(2)
-                                        .position('absolute').bottom('-11px') */
-
                                 )
 
                                     .background({ hover: 'var(--primary-background-hover-color)' })
@@ -612,19 +654,45 @@ export namespace Views {
         )
     }
 
+    export const FormCommanSection = ({ title, content, footer }) => {
+
+        return (
+            VStack({ alignment: cTopLeading })(
+                HStack({ alignment: cTopLeading })(
+                    HStack({ alignment: cTopLeading })(
+                        Text(title).foregroundColor('rgb(55,59,78)').fontFamily('"Poppins", arial, sans-serif').fontSize(18).fontWeight('500')
+                    ).width('40%'),
+                    HStack({ alignment: cTopLeading })(
+                        content
+                    ).width('60%')
+                ).padding(32),
+                HDivider().height(1).background('hsl(240 30% 96%)'),
+                HStack({ alignment: cTrailing })(
+                    footer
+                ).padding(32)
+            )
+                .overflow('hidden')
+                .background(Color.white)
+                .cornerRadius(20)
+                .height()
+                .minHeight('250px')
+                .maxWidth('1160px')
+        )
+    }
+
     export const CompanyTabView = () => (
         Views.TabView([
             {
                 title: 'Employees',
                 link: {
-                    to: '/app(tenantmanager)/company/employee/list',
+                    to: '/app(tenantmanager)/company/list/employee',
                     state: ''
                 }
             },
             {
                 title: 'Departments',
                 link: {
-                    to: '/app(tenantmanager)/company/department/list',
+                    to: '/app(tenantmanager)/company/list/department',
                     state: ''
                 }
             },
@@ -638,7 +706,35 @@ export namespace Views {
         ])
     )
 
- 
+    export const EmployeeEditTabView = () => {
+        const params = getRouterParams();
+        return (
+            Views.TabView([
+                {
+                    title: 'Overview',
+                    link: {
+                        to: '/app(tenantmanager)/company/edit/employee/overview/' + params.employee_id,
+                        state: ''
+                    }
+                },
+                {
+                    title: 'Departments',
+                    link: {
+                        to: '/app(tenantmanager)/company/department/list',
+                        state: ''
+                    }
+                },
+                {
+                    title: 'Positions',
+                    link: {
+                        to: '',
+                        state: ''
+                    }
+                }
+            ])
+        )
+    }
+
 }
 
 

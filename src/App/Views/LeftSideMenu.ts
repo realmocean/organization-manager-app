@@ -19,6 +19,7 @@ const menuModel = [
             }
         ] */
     },
+
     {
         title: 'Company',
         subItems: [
@@ -26,12 +27,12 @@ const menuModel = [
             {
                 name: 'Organization',
                 icon: '\\e0af',
-                link: '/app(tenantmanager)/company/employee/list'
+                link: '/app(tenantmanager)/company/list/employee'
             },
             {
                 name: 'Departments',
                 icon: '\\d200',
-                link: '/app(tenantmanager)/department/list'
+                link: '/app(tenantmanager)/company/department/list'
             },
             {
                 name: 'Positions',

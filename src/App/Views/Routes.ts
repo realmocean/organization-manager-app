@@ -29,6 +29,7 @@ import { MarketplaceListController } from '../../Domains/Marketplace/Controllers
 import { BrokersController } from '../../Domains/Brokers/Controllers/BrokersController';
 import { InstalledBrokerListController } from '../../Domains/Brokers/Controllers/InstalledBrokerListController';
 import { CompanyController } from '../../Domains/company/controllers/CompanyController';
+import { EditUserLayoutController } from '../../Domains/Users/Controllers/EditUserLayoutController';
 
 export const Routes = () => {
     const [LoggedIn, setLoggedIn] = bindState(null);
@@ -48,22 +49,24 @@ export const Routes = () => {
             UIRoute('/app(tenantmanager)/dashboard', DashboardController),
 
             UIRoute(
-                UIRoute(
-                    UIRoute('list', UserListController),
-                    UIRoute('add', NewUserController),
-                    UIRoute('edit/:employee_id', EditEmployeeController),
-                    UIRoute('delete/:employee_id', DeleteEmployeeController),
-                )('employee', UsersController),
+
+                UIRoute('employee', UserListController),
+                UIRoute('department', OrganizationUnitListController),
 
                 // MARK: Organization Units Routes
-                UIRoute(
-                    UIRoute('list', OrganizationUnitListController),
-                    UIRoute('add', NewOrganizationUnitController),
-                    UIRoute('edit/:department_id', EditDepartmentController),
-                    UIRoute('delete/:department_id', DeleteDepartmentController),
-                )('department', OrganizationUnitsController),
 
-            )('company', CompanyController),
+
+            )('company/list', CompanyController),
+
+            UIRoute(
+                UIRoute(
+                    UIRoute('overview', EditEmployeeController),
+                )('employee/:employee_id', EditUserLayoutController),
+                // MARK: Organization Units Routes
+
+
+            )('company/edit', LayoutController),
+
 
             // MARK: Emplkoyee routes
 
