@@ -19,7 +19,6 @@ export class CompanyController extends UIController {
                                 UIRouteOutlet().width('100%').height('100%')
                             )
                         })
-                        
                     )
                 )
             )
