@@ -1,9 +1,15 @@
-import { $, Binding, bindNavigate, cTopLeading, HStack, State, UIController, UIScene, VStack, Text, cTrailing, Icon, Spacer } from '@tuval/forms';
+import { $, Binding, bindNavigate, cTopLeading, HStack, State, UIController, UIScene, VStack, Text, cTrailing, Icon, Spacer, RequiredRule } from '@tuval/forms';
 
-import { RealmBrokerClient } from '@realmocean/common';
+import { RealmBrokerClient, useOrgProvider } from '@realmocean/common';
 import { Views } from '../../../Views/Views';
 import { DialogController } from '../../../ControllerDialog';
+import { UITextBoxView } from '@realmocean/inputs';
 
+interface IFormData {
+    department_record_id: string;
+    department_name: string;
+
+}
 
 export class NewOrganizationUnitController extends DialogController {
 
@@ -22,16 +28,18 @@ export class NewOrganizationUnitController extends DialogController {
     @Binding(true)
     private isOrganizationUnitName: boolean;
 
-    private action_create() {
+
+    public BindRouterParams(obj) {
+        this.setWidth(600);
+        this.setHeight(400);
+    }
+    protected override OnSubmit(data: IFormData) {
      
-        console.log(this.isOrganizationUnitRecordId, ' ', this.isOrganizationUnitName);
-        if (this.isOrganizationUnitRecordId || this.isOrganizationUnitName) {
-            this.formPostTried = true;
-        } else {
-            RealmBrokerClient.CreateOrganizationUnit(this.organizationUnitRecordId, this.organizationUnitName).then(() => {
-                this.OnOKClick()
-            })
-        }
+        const orgProv = useOrgProvider();
+
+        orgProv.createDepartment(data.department_record_id, data.department_name, '').then((id) => {
+            this.OnOKClick();
+        })
     }
 
     private ActionCancel() {
@@ -50,14 +58,26 @@ export class NewOrganizationUnitController extends DialogController {
                 ).height(50),
 
                 VStack({ alignment: cTopLeading, spacing: 15 })(
-                    Views.InputTextView('Department Record ID *', 'Department Record ID *', $(this.organizationUnitRecordId), true, $(this.isOrganizationUnitRecordId), 'ID is required.', this.formPostTried),
-                    Views.InputTextView('Name *', 'Name *', $(this.organizationUnitName), true, $(this.isOrganizationUnitName), 'Name is required.', this.formPostTried),
+                    UITextBoxView()
+                    .floatlabel(false)
+                    .width('100%')
+                    .placeholder('*Record ID')
+                    .formField('department_record_id', [new RequiredRule('Record ID required.')]),
 
+                    UITextBoxView()
+                    .floatlabel(false)
+                    .width('100%')
+                    .placeholder('*Name')
+                    .formField('department_name', [new RequiredRule('Name required.')]),
+                    
+                 /*    Views.InputTextView('Department Record ID *', 'Department Record ID *', $(this.organizationUnitRecordId), true, $(this.isOrganizationUnitRecordId), 'ID is required.', this.formPostTried),
+                    Views.InputTextView('Name *', 'Name *', $(this.organizationUnitName), true, $(this.isOrganizationUnitName), 'Name is required.', this.formPostTried),
+ */
 
                 ),
                 HStack({ alignment: cTrailing, spacing: 10 })(
                     Text('Cancel').foregroundColor('rgb(96, 106, 123)').fontSize(14).fontWeight('600').cursor('pointer').onClick(() => this.OnCancel()),
-                    Views.AcceptButton({ label: 'Create', action: () => this.action_create() }),
+                    Views.AcceptButton({ label: 'Create', action: () => this.Submit() }),
                 )
                     .paddingTop('20px')
                     .height(50)

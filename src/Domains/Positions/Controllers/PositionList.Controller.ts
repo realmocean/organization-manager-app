@@ -11,6 +11,8 @@ import {
 } from '@realmocean/common';
 import { Views } from '../../../Views/Views';
 import { PositionGrid } from '../Views/PositionGrid';
+import { AddUserDialog } from '../../Users/Dialogs/AddUserDialog';
+import { AddPositionDialog } from '../Dialogs/AddPositionDialog';
 
 
 const fontFamily = '"proxima-nova", "proxima nova", "helvetica neue", "helvetica", "arial", sans-serif'
@@ -48,39 +50,37 @@ export class PositionListController extends UIController {
 
     private action_SelectPosition() {
         const orgUIProv = useOrgUIProvider();
-        orgUIProv.selectDepartment(true).then( result => {
+        orgUIProv.selectDepartment(true).then(result => {
             alert(JSON.stringify(result))
         });
     }
 
     public LoadView(): any {
         return (
-            Views.RightSidePage({
-                title: 'Positions',
-                content: (
-                    HStack({ alignment: cTopLeading })(
-                        this.isLoading() ?
-                            VStack(Spinner()) :
-                            VStack({ alignment: cTopLeading })(
-                                HStack({ alignment: cLeading })(
-                                    Text('Positions')
-                                        .foregroundColor('#444')
-                                        .fontFamily(fontFamily).fontSize('2.4rem').fontWeight('300'),
-                                ).height().marginBottom('24px'),
-                                HStack({ alignment: cLeading, spacing: 15 })(
-                                    // MARK: Search Box
-                                    HStack(
-                                        TextField().placeholder('Search by Position Name')
-                                            .onTextChange((value) => this.Search_Action(value))
-                                    ).height().border('solid 1px #dfdfdf').padding(10).width(300).cornerRadius(5),
-                                    Spacer(),
-                                    Views.AcceptRouteButton({ label: 'New Position', link: '/app(tenantmanager)/position/add' })
-                                ).height().marginBottom('24px'),
-                                PositionGrid(this.positions)
-                            )
+            HStack({ alignment: cTopLeading })(
+                this.isLoading() ?
+                    VStack(Spinner()) :
+                    VStack({ alignment: cTopLeading })(
+                        HStack({ alignment: cLeading, spacing: 15 })(
+                            // MARK: Search Box
+
+                            TextField().placeholder('Search by Position Name')
+                                .onTextChange((value) => this.Search_Action(value))
+                            ,
+                            Spacer(),
+                            Views.CreateButton({
+                                label: 'New Position', action: () => AddPositionDialog.Show().then(() => {
+                                    this.positions = null;
+                                    const orgService = useOrgProvider();
+                                    orgService.getPositions(0, 200).then(positions =>
+                                        this.showingPositions = this.positions = positions
+                                    )
+                                })
+                            })
+                        ).height().padding(24),
+                        PositionGrid(this.positions)
                     )
-                )
-            })
+            )
         )
     }
 }

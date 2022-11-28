@@ -30,6 +30,7 @@ import { BrokersController } from '../../Domains/Brokers/Controllers/BrokersCont
 import { InstalledBrokerListController } from '../../Domains/Brokers/Controllers/InstalledBrokerListController';
 import { CompanyController } from '../../Domains/company/controllers/CompanyController';
 import { EditUserLayoutController } from '../../Domains/Users/Controllers/EditUserLayoutController';
+import { EditDepartmentLayoutController } from '../../Domains/OrganizationUnits/Controllers/EditDepartmentLayoutController';
 
 export const Routes = () => {
     const [LoggedIn, setLoggedIn] = bindState(null);
@@ -52,6 +53,8 @@ export const Routes = () => {
 
                 UIRoute('employee', UserListController),
                 UIRoute('department', OrganizationUnitListController),
+                UIRoute('position', PositionListController),
+                UIRoute('title', TitleListController),
 
                 // MARK: Organization Units Routes
 
@@ -62,6 +65,10 @@ export const Routes = () => {
                 UIRoute(
                     UIRoute('overview', EditEmployeeController),
                 )('employee/:employee_id', EditUserLayoutController),
+
+                UIRoute(
+                    UIRoute('overview', EditDepartmentController),
+                )('department/:department_id', EditDepartmentLayoutController),
                 // MARK: Organization Units Routes
 
 

@@ -6,6 +6,7 @@ import { Services } from '../../../Services/Services';
 import { ITableViewColumn, Views } from '../../../Views/Views';
 import { UsersGrid } from '../../Users/Views/UsersGrid';
 import { TitleGrid } from '../Views/TitleGrid';
+import { AddUserDialog } from '../../Users/Dialogs/AddUserDialog';
 
 const fontFamily = '"proxima-nova", "proxima nova", "helvetica neue", "helvetica", "arial", sans-serif'
 
@@ -25,7 +26,7 @@ export class TitleListController extends UIController {
     public BindRouterParams({ tenant_id, tenant_name }) {
         const orgService = useOrgProvider();
         //  if (this.tenants == null) {
-            orgService.getTitles().then(titles => {
+        orgService.getTitles().then(titles => {
             this.showingTitles = this.titles = titles;
         })
     }
@@ -34,33 +35,32 @@ export class TitleListController extends UIController {
     }
 
     public LoadView(): any {
-            return (
-                Views.RightSidePage({
-                    title: 'Titles',
-                    content: (
-                        HStack({ alignment: cTopLeading })(
-                            this.isLoading() ?
-                                VStack(Spinner()) :
-                                VStack({ alignment: cTopLeading })(
-                                    HStack({ alignment: cLeading })(
-                                        Text('Titles')
-                                            .foregroundColor('#444')
-                                            .fontFamily(fontFamily).fontSize('2.4rem').fontWeight('300'),
-                                    ).height().marginBottom('24px'),
-                                    HStack({ alignment: cLeading, spacing: 15 })(
-                                        // MARK: Search Box
-                                        HStack(
-                                            TextField().placeholder('Search by Title Name')
-                                                .onTextChange((value) => this.Search_Action(value))
-                                        ).height().border('solid 1px #dfdfdf').padding(10).width(300).cornerRadius(5),
-                                        Spacer(),
-                                        Views.AcceptRouteButton({ label: 'New Title', link: '/app(tenantmanager)/title/add' })
-                                    ).height().marginBottom('24px'),
-                                    TitleGrid(this.titles)
-                                )
-                        )
+        return (
+
+            HStack({ alignment: cTopLeading })(
+                this.isLoading() ?
+                    VStack(Spinner()) :
+                    VStack({ alignment: cTopLeading })(
+                        HStack({ alignment: cLeading, spacing: 15 })(
+                            // MARK: Search Box
+
+                            TextField().placeholder('Search by Title Name')
+                                .onTextChange((value) => this.Search_Action(value))
+                            ,
+                            Spacer(),
+                            Views.CreateButton({
+                                label: 'New Title', action: () => AddUserDialog.Show().then(() => {
+                                    this.users = null;
+                                    const orgService = useOrgProvider();
+                                    orgService.getEmployees().then(employees =>
+                                        this.showingUsers = this.users = employees
+                                    )
+                                })
+                            })
+                        ).height().padding(24),
+                        TitleGrid(this.titles) as any
                     )
-                })
             )
+        )
     }
 }

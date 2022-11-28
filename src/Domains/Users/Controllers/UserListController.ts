@@ -83,18 +83,20 @@ export class UserListController extends UIController {
                         VStack({ alignment: cTopLeading })(
                             HStack({ alignment: cLeading, spacing: 15 })(
                                 // MARK: Search Box
-                               
-                                    TextField().placeholder('Search by Employee Name')
-                                        .onTextChange((value) => this.Search_Action(value))
-                               ,
+
+                                TextField().placeholder('Search by Employee Name')
+                                    .onTextChange((value) => this.Search_Action(value))
+                                ,
                                 Spacer(),
-                                Views.CreateButton({ label: 'New Employee', action: () => AddUserDialog.Show().then(()=> {
-                                    this.users = null;
-                                    const orgService = useOrgProvider();
-                                    orgService.getEmployees().then(employees =>
-                                        this.showingUsers = this.users = employees
-                                    )
-                                }) })
+                                Views.CreateButton({
+                                    label: 'New Employee', action: () => AddUserDialog.Show().then(() => {
+                                        this.users = null;
+                                        const orgService = useOrgProvider();
+                                        orgService.getEmployees().then(employees =>
+                                            this.showingUsers = this.users = employees
+                                        )
+                                    })
+                                })
                             ).height().padding(24),
                             UsersGrid(this.users) as any
                         )
@@ -103,5 +105,5 @@ export class UserListController extends UIController {
         }
     }
 
- 
+
 }

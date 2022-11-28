@@ -25,11 +25,7 @@ export class TenantManager extends TApplication {
 
         debugger;
 
-        WebFont.load({
-            google: {
-                families: ['Manrope:400,500,600,700', 'sans serif']
-            }
-        });
+       
 
         //fileExprorer.Controls.Add(button);
 

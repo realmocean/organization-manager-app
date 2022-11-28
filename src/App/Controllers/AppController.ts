@@ -25,11 +25,25 @@ export class AppController extends UIController {
 
 
     protected InitController() {
+
         WebFont.load({
             google: {
                 families: ['Poppins:400,500,600,700', 'sans serif']
             }
         });
+
+        WebFont.load({
+            google: {
+                families: ['Manrope:400,500,600,700', 'sans serif']
+            }
+        });
+
+        WebFont.load({
+            google: {
+                families: ['Inter:400,500,600,700', 'sans serif']
+            }
+        });
+
     }
 
 

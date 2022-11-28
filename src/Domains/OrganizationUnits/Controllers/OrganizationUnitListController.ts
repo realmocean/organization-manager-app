@@ -45,24 +45,23 @@ export class OrganizationUnitListController extends UIController {
                     VStack({ alignment: cTopLeading })(
                         HStack({ alignment: cLeading, spacing: 15 })(
                             // MARK: Search Box
-                            HStack(
-                                TextField().placeholder('Search by Department Name')
-                                    .onTextChange((value) => this.Search_Action(value))
-                            )
-                                .background(Color.white)
-                                .height().border('solid 1px #dfdfdf').padding(10).width(300).cornerRadius(5),
+
+                            TextField().placeholder('Search by Department Name')
+                                .onTextChange((value) => this.Search_Action(value))
+                            ,
                             Spacer(),
-                            Views.CreateButton({ label: 'New Organization Unit', action: ()=> NewOrganizationUnitController.Show().then(()=>{
+                            Views.CreateButton({ label: 'New Department', action: ()=> NewOrganizationUnitController.Show().then(()=>{
                                 this.organizationUnits = null;
                                 const orgService = useOrgProvider();
                                 orgService.getDepartments().then(deps =>
                                     this.showingOrganizationUnits = this.organizationUnits = deps
                                 )
-                            }) })
+                            })})
                         ).height().padding(24),
-                        OrganizationUnitGrid(this.organizationUnits)
+                        OrganizationUnitGrid(this.organizationUnits) as any
                     )
             )
+
         )
     }
 

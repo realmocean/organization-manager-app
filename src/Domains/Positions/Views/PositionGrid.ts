@@ -1,20 +1,26 @@
 import { IEmployeeTitle, IGetTitleResponse, IPosition } from '@realmocean/common';
-import { cLeading, Color, HStack } from '@tuval/forms';
+import { cLeading, Color, HStack, Icon, VStack, Text } from '@tuval/forms';
 
 import { ITableViewColumn, Views } from '../../../Views/Views';
 
 
 const columns: ITableViewColumn[] = [
     {
-        title: 'Code',
-        key: "RecordId",
-        width:'33%'
+        title: 'Position',
+        width: '60%',
+        view: (row: IPosition) => (
+            HStack({ spacing: 15 })(
+                Icon('\\d22d').size(35),
+                VStack({ alignment: cLeading })(
+                    Text(`${row.Name}`)
+                        .fontWeight('600')
+                        .fontFamily('"Public Sans", sans-serif'),
+                   
+                )
+            )
+        )
     },
-    {
-        title: 'Name',
-        key: "Name",
-        width:'66%'
-    },
+
     {
         title: 'Action',
         view: (position: IPosition) => (

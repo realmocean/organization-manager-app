@@ -1,35 +1,35 @@
-import { IEmployee, useOrgProvider } from '@realmocean/common';
+import { IDepartment, IEmployee, useOrgProvider } from '@realmocean/common';
 import { cTopLeading, HStack, State, UIController, UIRouteOutlet, UIScene } from '@tuval/forms';
 
 import { LeftSideMenuView } from '../../../App/Views/LeftSideMenu';
 import { Views } from '../../../Views/Views';
 
 
-export class EditUserLayoutController extends UIController {
+export class EditDepartmentLayoutController extends UIController {
 
     @State()
-    private employeeId: string;
+    private departmentId: string;
 
     @State()
-    private employee_info: IEmployee;
+    private department_info: IDepartment;
 
     public IsLoading() {
-        return this.employee_info == null;
+        return this.department_info == null;
     }
 
-    protected override BindRouterParams({ employee_id, employee_info }) {
+    protected override BindRouterParams({ department_id, department_info }) {
 
-        this.employeeId = employee_id;
+        this.departmentId = department_id;
      
 
-        if (employee_info == null) {
+        if (department_info == null) {
             const orgService = useOrgProvider();
 
-            orgService.getEmployeeById(employee_id).then(employee => {
-                this.employee_info = employee;
+            orgService.getDepartmentById(department_id).then(department => {
+                this.department_info = department;
             })
         } else {
-            this.employee_info = employee_info;
+            this.department_info = department_info;
         }
 
     }
@@ -40,9 +40,9 @@ export class EditUserLayoutController extends UIController {
                 HStack({ alignment: cTopLeading })(
                     LeftSideMenuView('', 'Organization'),
                     Views.RightSidePage({
-                        title: this.employee_info?.Name + ' ' + this.employee_info?.LastName,
+                        title: this.department_info?.Name ,
                         showBackIcon: true,
-                        copyId: { label: 'User ID', value: this.employeeId },
+                        copyId: { label: 'Department ID', value: this.departmentId },
                         tabview: Views.EmployeeEditTabView(),
                         content: (
                             UIRouteOutlet().width('100%').height('100%')

@@ -57,13 +57,13 @@ const columns: ITableViewColumn[] = [
 ]
 
 export const UsersGrid = (users: any[]) => {
-   // const controller:UIController = bindController();
-    return ({controller}) => (
-     
-            Views.TableView(columns, users, (employee: IEmployee, index) => {
-                console.log(controller)
-                controller.navigotor(`/app(tenantmanager)/company/edit/employee/${employee.Id}/overview`)
-            })
-        
+    // const controller:UIController = bindController();
+    return ({ controller }) => (
+
+        Views.TableView(columns, users, (employee: IEmployee, index) => {
+            console.log(controller)
+            controller.navigotor(`/app(tenantmanager)/company/edit/employee/${employee.Id}/overview`, { state: { employee_info: employee } })
+        })
+
     )
 }

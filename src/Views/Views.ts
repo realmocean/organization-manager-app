@@ -1,5 +1,5 @@
 import { is } from '@tuval/core';
-import { Icon, UIRouteLink, Spacer, IconLibrary, IconType, ColorClass, ScrollView, cVertical, UIContextMenu, bindNavigate, Theme, cTrailing, useNavigate, getRouterParams, HDivider, bindController, Spinner, UIController } from '@tuval/forms';
+import { Icon, UIRouteLink, Spacer, IconLibrary, IconType, ColorClass, ScrollView, cVertical, UIContextMenu, bindNavigate, Theme, cTrailing, useNavigate, getRouterParams, HDivider, bindController, Spinner, UIController, VDivider, TextAlignment } from '@tuval/forms';
 import {
     cLeading, ForEach, HStack, TableColumn, Text, UIAppearance, UITable, UIView, VStack, cTopLeading, TextField, cHorizontal,
     BindingClass, bindState, UIImage, cTop, UIButton, Color, SecureField,
@@ -11,7 +11,7 @@ import { UIButtonView } from '@realmocean/buttons';
 import { theme } from '../Theme';
 
 
-const fontFamily = '"proxima-nova", "proxima nova", "helvetica neue", "helvetica", "arial", sans-serif'
+const fontFamily = '"Poppins", arial, sans-serif'
 const fontFamily2 = "'Roboto', 'Chinese Quote', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'"
 
 const error_pic = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTExLjI2NDYgMy40MTM2NkMxMS43MjEyIDMuMTU2ODEgMTIuMjc4OCAzLjE1NjgxIDEyLjczNTQgMy40MTM2NkwxOS4yMzU0IDcuMDY5OTFDMTkuNzA3NyA3LjMzNTU4IDIwIDcuODM1MzYgMjAgOC4zNzcyN1YxNS42MjI3QzIwIDE2LjE2NDYgMTkuNzA3NyAxNi42NjQ0IDE5LjIzNTQgMTYuOTMwMUwxMi43MzU0IDIwLjU4NjNDMTIuMjc4OCAyMC44NDMyIDExLjcyMTIgMjAuODQzMiAxMS4yNjQ2IDIwLjU4NjNMNC43NjQ2MSAxNi45MzAxQzQuMjkyMjkgMTYuNjY0NCA0IDE2LjE2NDYgNCAxNS42MjI3VjguMzc3MjdDNCA3LjgzNTM2IDQuMjkyMjkgNy4zMzU1OSA0Ljc2NDYxIDcuMDY5OTFMMTEuMjY0NiAzLjQxMzY2WiIgZmlsbD0iI0ZGM0EyRSIvPgo8cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTExIDcuNEMxMSA3LjE3OTA5IDExLjE3OTEgNyAxMS40IDdIMTIuNkMxMi44MjA5IDcgMTMgNy4xNzkwOSAxMyA3LjRWMTIuNkMxMyAxMi44MjA5IDEyLjgyMDkgMTMgMTIuNiAxM0gxMS40QzExLjE3OTEgMTMgMTEgMTIuODIwOSAxMSAxMi42VjcuNFoiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNMTEgMTZDMTEgMTUuNDQ3NyAxMS40NDc3IDE1IDEyIDE1QzEyLjU1MjMgMTUgMTMgMTUuNDQ3NyAxMyAxNkMxMyAxNi41NTIzIDEyLjU1MjMgMTcgMTIgMTdDMTEuNDQ3NyAxNyAxMSAxNi41NTIzIDExIDE2WiIgZmlsbD0id2hpdGUiLz4KPC9zdmc+';
@@ -387,6 +387,28 @@ export namespace Views {
         ).height().width()
     )
 
+    export const DeleteButton = ({ label, action }: { label: string, action: Function }) => (
+        HStack(
+            UIButton(
+                //Icon('\\e145').size(24).marginRight('3px'),
+                Text(label).whiteSpace('nowrap')
+            )
+                .height(40)
+                .padding(cHorizontal, 15)
+                .padding(cVertical, 7)
+                .background({ default: 'rgb(250,250, 255)', hover: 'rgb(242,242, 248)' })
+                .foregroundColor('rgb(96, 106, 123)')
+                .fontSize(14)
+                .fontWeight('600')
+                .border({ default: '1px solid rgb(233,234,241)', hover: '1px solid rgb(233,234,241)' })
+                .transition('all .2s ease-in-out')
+                .cornerRadius(5)
+                .shadow({ focus: '0 0 0 1px #fff, 0 0 2px 2px #0069ff' })
+                .tabIndex(2)
+                .onClick(() => action())
+        ).height().width()
+    )
+
     export const AcceptButton = ({ label, action }: { label: string, action: Function }) => (
         HStack(
             UIButton(
@@ -546,22 +568,23 @@ export namespace Views {
                 VStack({ alignment: cTop })(
                     VStack({ alignment: cTop })(
                         VStack({ alignment: cLeading })(
-                            HStack({spacing: 5})(
+                            HStack({ spacing: 5 })(
                                 showBackIcon && Icon('\\e5e0').size(20).onClick(() => controller.navigotor(-1)).cursor('pointer'),
                                 Text(title)
                                     .foregroundColor('#444')
-                                    .fontFamily(fontFamily).fontSize('2.4rem').fontWeight('300'),
+                                    .fontFamily(fontFamily).fontSize(28).fontWeight('600'),
                                 copyId && UIButton(
                                     Icon('\\e14d').size(14).marginRight('3px'),
                                     Text(copyId.label)
                                 )
-                                .marginLeft('10px')
-                                .cornerRadius('calc(2rem / 2)')
-                                .border('solid 1px rgb(242, 242, 248)')
-                                .width(92)
-                                .height(32)
-                                .background('rgb(250, 250, 255)')
-                                .action(()=>  navigator.clipboard.writeText(copyId.value))
+                                    .marginLeft('10px')
+                                    .cornerRadius('calc(2rem / 2)')
+                                    .border('solid 1px rgb(242, 242, 248)')
+                                    .padding(cHorizontal, 10)
+                                   
+                                    .height(32)
+                                    .background('rgb(250, 250, 255)')
+                                    .action(() => navigator.clipboard.writeText(copyId.value))
                             ).height().width().paddingTop('24px'),
                             HStack(
                                 tabview
@@ -680,6 +703,40 @@ export namespace Views {
         )
     }
 
+    export const FormDangerSection = ({ title, subTitle, content, footer }) => {
+
+        return (
+            HStack(
+                VDivider().width(2).background('rgb(255, 66, 56)').marginLeft('20px').height('90%'),
+                VStack({ alignment: cTopLeading })(
+                    HStack({ alignment: cTopLeading })(
+                        HStack({ alignment: cTopLeading })(
+                            VStack({ alignment: cTopLeading, spacing: 10 })(
+                                Text(title).foregroundColor('rgb(255, 66, 56)').fontFamily('"Poppins", arial, sans-serif').fontSize(18).fontWeight('500'),
+                                Text(subTitle).foregroundColor('rgb(96, 106, 123)').fontFamily('"Inter", arial, sans-serif').fontSize(14).fontWeight('400')
+                                .multilineTextAlignment(TextAlignment.leading)
+                            )
+                        ).width('40%'),
+                        HStack({ alignment: cTopLeading })(
+                            content
+                        ).width('60%')
+                    ).padding(32),
+                    HDivider().height(1).background('hsl(240 30% 96%)'),
+                    HStack({ alignment: cTrailing })(
+                        footer
+                    ).padding(32)
+                )
+            )
+                .overflow('hidden')
+                .background(Color.white)
+                .cornerRadius(20)
+                .height()
+                .minHeight('250px')
+                .maxWidth('1160px')
+
+        )
+    }
+
     export const CompanyTabView = () => (
         Views.TabView([
             {
@@ -699,12 +756,20 @@ export namespace Views {
             {
                 title: 'Positions',
                 link: {
-                    to: '',
+                    to: '/app(tenantmanager)/company/list/position',
+                    state: ''
+                }
+            },
+            {
+                title: 'Titles',
+                link: {
+                    to: '/app(tenantmanager)/company/list/title',
                     state: ''
                 }
             }
         ])
     )
+
 
     export const EmployeeEditTabView = () => {
         const params = getRouterParams();
@@ -714,20 +779,6 @@ export namespace Views {
                     title: 'Overview',
                     link: {
                         to: '/app(tenantmanager)/company/edit/employee/overview/' + params.employee_id,
-                        state: ''
-                    }
-                },
-                {
-                    title: 'Departments',
-                    link: {
-                        to: '/app(tenantmanager)/company/department/list',
-                        state: ''
-                    }
-                },
-                {
-                    title: 'Positions',
-                    link: {
-                        to: '',
                         state: ''
                     }
                 }

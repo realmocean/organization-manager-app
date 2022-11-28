@@ -7,6 +7,7 @@ import { Views } from '../../../Views/Views';
 export class CompanyController extends UIController {
 
     public LoadView(): any {
+        
             return (
                 UIScene(
                     HStack({ alignment: cTopLeading })(
