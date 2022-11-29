@@ -29,7 +29,7 @@ const menuModel = [
                 icon: '\\e0af',
                 link: '/app(tenantmanager)/company/list/employee'
             },
-            {
+          /*   {
                 name: 'Departments',
                 icon: '\\d200',
                 link: '/app(tenantmanager)/company/department/list'
@@ -43,7 +43,7 @@ const menuModel = [
                 name: 'Titles',
                 icon: '\\d1f0',
                 link: '/app(tenantmanager)/title/list'
-            }
+            } */
         ]
     },
 
@@ -104,8 +104,9 @@ export const LeftSideMenuView = (realmName: string, selectedItem: string) => (
 
                 menu.link == null ?
                 HStack({ alignment: cLeading, spacing: 3 })(
-                    Icon('\\e5cf').size(20) .foregroundColor( menu.subItems == null  ? 'transparent' : 'white'),
+                  //  Icon('\\e5cf').size(20) .foregroundColor( menu.subItems == null  ? 'transparent' : 'white'),
                     Text(menu.title)
+                    .paddingLeft('15px')
                         .fontWeight('500')
                         .fontSize('14px').lineHeight('18px')
                         .foregroundColor(Color.white)
@@ -154,6 +155,7 @@ export const LeftSideMenuView = (realmName: string, selectedItem: string) => (
 
                 )
             ).height()
+            .marginTop('20px')
             .borderTop('1px solid #203650')
                // .borderBottom('1px solid #8393AE')
                // .paddingBottom('20px')

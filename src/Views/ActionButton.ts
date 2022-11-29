@@ -1,8 +1,8 @@
-import { Color, UIButton, Text } from '@tuval/forms';
+import { Color, UIButton, Text, Button } from '@tuval/forms';
 
 
 export const ActionButton = (text: string) => (
-    UIButton(
+    Button(
         Text(text).whiteSpace('nowrap')
     )
         .cursor('pointer')

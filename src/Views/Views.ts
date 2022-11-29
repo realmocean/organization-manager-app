@@ -1,9 +1,9 @@
 import { is } from '@tuval/core';
-import { Icon, UIRouteLink, Spacer, IconLibrary, IconType, ColorClass, ScrollView, cVertical, UIContextMenu, bindNavigate, Theme, cTrailing, useNavigate, getRouterParams, HDivider, bindController, Spinner, UIController, VDivider, TextAlignment } from '@tuval/forms';
+import { Icon, UIRouteLink, Spacer, IconLibrary, IconType, ColorClass, ScrollView, cVertical, UIContextMenu, bindNavigate, Theme, cTrailing, useNavigate, getRouterParams, HDivider, bindController, Spinner, UIController, VDivider, TextAlignment, Button } from '@tuval/forms';
 import {
     cLeading, ForEach, HStack, TableColumn, Text, UIAppearance, UITable, UIView, VStack, cTopLeading, TextField, cHorizontal,
     BindingClass, bindState, UIImage, cTop, UIButton, Color, SecureField,
-    Toggle
+    Toggle, binLocation
 } from '@tuval/forms';
 import { UIDropdownListView, ChangeEventArgs } from '@realmocean/dropdowns';
 import { UITextBoxView } from '@realmocean/inputs';
@@ -410,25 +410,27 @@ export namespace Views {
     )
 
     export const AcceptButton = ({ label, action }: { label: string, action: Function }) => (
-        HStack(
-            UIButton(
-                //Icon('\\e145').size(24).marginRight('3px'),
-                Text(label).whiteSpace('nowrap')
-            )
-                .height(40)
-                .padding(cHorizontal, 15)
-                .padding(cVertical, 7)
-                .background({ default: 'rgb(219,26, 90)', hover: 'rgb(240,45, 101)' })
-                .foregroundColor(Color.white)
-                .fontSize(14)
-                .fontWeight('600')
-                .border({ default: '1px solid rgb(191,13,81)', hover: '1px solid rgb(191,13,81)' })
-                .transition('all .2s ease-in-out')
-                .cornerRadius(5)
-                .shadow({ focus: '0 0 0 1px #fff, 0 0 2px 2px #0069ff' })
-                .tabIndex(2)
-                .onClick(() => action())
-        ).height().width()
+
+        Button(
+            //Icon('\\e145').size(24).marginRight('3px'),
+            Text(label).whiteSpace('nowrap')
+        )
+            .cursor('pointer')
+            .width()
+            .height(40)
+            .padding(cHorizontal, 15)
+            .padding(cVertical, 7)
+            .background({ default: 'rgb(219,26, 90)', hover: 'rgb(240,45, 101)' })
+            .foregroundColor(Color.white)
+            .fontSize(14)
+            .fontWeight('600')
+            .border({ default: '1px solid rgb(191,13,81)', hover: '1px solid rgb(191,13,81)' })
+            .transition('all .2s ease-in-out')
+            .cornerRadius(5)
+            .shadow({ focus: '0 0 0 1px #fff, 0 0 2px 2px #0069ff' })
+            .tabIndex(2)
+            .onClick(() => action())
+
     )
     export const _AcceptButton = ({ label, action }: { label: string, action: Function }) => (
         HStack(
@@ -581,7 +583,7 @@ export namespace Views {
                                     .cornerRadius('calc(2rem / 2)')
                                     .border('solid 1px rgb(242, 242, 248)')
                                     .padding(cHorizontal, 10)
-                                   
+
                                     .height(32)
                                     .background('rgb(250, 250, 255)')
                                     .action(() => navigator.clipboard.writeText(copyId.value))
@@ -621,13 +623,22 @@ export namespace Views {
     )
 
     export const TabView = (tabModel: any[]) => {
+        const location = binLocation();
+        const paths: string[] = location.pathname.split('/')
+       
+        
+        const id = paths[paths.length -1];
+
+        const selIndex = Math.max(0,tabModel.findIndex(item => item.id === id))
+
         if (!is.array(tabModel)) {
             return;
         }
 
-        const [selectedIndex, setSelectedIndex] = bindState(0)
+        const [selectedIndex, setSelectedIndex] = bindState(selIndex === 0 ? 0 : (100 / tabModel.length) * selIndex)
+    
         const [prevSelectedIndex, setPrevSelectedIndex] = bindState(0)
-        const [selectedTab, setSelectedTab] = bindState(tabModel[0])
+        const [selectedTab, setSelectedTab] = bindState(tabModel[selIndex])
 
         const bottomBorderColor = '#0069ff';
         const navigotor = bindNavigate();
@@ -714,7 +725,7 @@ export namespace Views {
                             VStack({ alignment: cTopLeading, spacing: 10 })(
                                 Text(title).foregroundColor('rgb(255, 66, 56)').fontFamily('"Poppins", arial, sans-serif').fontSize(18).fontWeight('500'),
                                 Text(subTitle).foregroundColor('rgb(96, 106, 123)').fontFamily('"Inter", arial, sans-serif').fontSize(14).fontWeight('400')
-                                .multilineTextAlignment(TextAlignment.leading)
+                                    .multilineTextAlignment(TextAlignment.leading)
                             )
                         ).width('40%'),
                         HStack({ alignment: cTopLeading })(
@@ -740,6 +751,7 @@ export namespace Views {
     export const CompanyTabView = () => (
         Views.TabView([
             {
+                id: 'employee',
                 title: 'Employees',
                 link: {
                     to: '/app(tenantmanager)/company/list/employee',
@@ -747,6 +759,7 @@ export namespace Views {
                 }
             },
             {
+                id: 'department',
                 title: 'Departments',
                 link: {
                     to: '/app(tenantmanager)/company/list/department',

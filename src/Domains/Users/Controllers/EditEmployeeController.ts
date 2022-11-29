@@ -87,29 +87,10 @@ export class EditEmployeeController extends UIFormController {
     private employeeDepartment: string;
 
 
-    private action_update() {
-
-        /*   if (this.isEmployeeIDdInvalid || this.isEmployeeNamedInvalid) {
-              this.formPostTried = true;
-          } else { */
-        const orgService = useOrgProvider();
-        orgService.updateEmployee({
-            Id: this.employeeId,
-            RecordId: this.employeeRecordId,
-            Name: this.employeeName,
-            LastName: this.employeeLastName,
-            TitleId: this.employeeTitle,
-            DepartmentId: this.employeeDepartment
-        }).then(() => {
-            this.navigotor('/app(tenantmanager)/employee/list', { replace: true });
-        })
-        //}
-    }
-
     protected override BindRouterParams({ employee_id }) {
 
         this.employeeId = employee_id;
-        // console.log(useApplication());
+       
         this.BeginUpdate();
 
 
@@ -154,7 +135,6 @@ export class EditEmployeeController extends UIFormController {
             this.navigotor('/app(tenantmanager)/company/list/employee', { replace: true });
         })
 
-        alert(JSON.stringify(data))
     }
 
     private ActionCancel() {
