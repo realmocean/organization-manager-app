@@ -40,7 +40,6 @@ export class NewPositionController extends UIController {
     private ActionPost() {
         debugger;
         const orgProv = useOrgProvider();
-        console.log(this.isPositionRecordIdInvalid, ' ', this.isPositionNamedInvalid);
         if (this.isPositionRecordIdInvalid || this.isPositionNamedInvalid) {
             this.formPostTried = true;
         } else {

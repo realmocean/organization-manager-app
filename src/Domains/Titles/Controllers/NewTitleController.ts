@@ -45,8 +45,7 @@ export class NewTitleController extends UIController {
     private isTitleNamedInvalid: boolean;
 
     private ActionPost() {
-        debugger;
-        console.log(this.isTitleRecordIdInvalid, ' ', this.isTitleNamedInvalid);
+       
         if (this.isTitleRecordIdInvalid || this.isTitleNamedInvalid) {
             this.formPostTried = true;
         } else {

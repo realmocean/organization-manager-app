@@ -1,5 +1,5 @@
 import { UsersGrid } from '../Views/UsersGrid';
-import { VStack, cTopLeading, cLeading, HStack, Text, Spacer, TextField, UITable, TableColumn, Icon, IconLibrary, UIContextMenu, UIAppearance, UIScene, UIController, cTop, State, Spinner, UIRouteLink, Color } from '@tuval/forms';
+import { VStack, cTopLeading, cLeading, HStack, Text, Spacer, TextField, UITable, TableColumn, Icon, IconLibrary, UIContextMenu, UIAppearance, UIScene, UIController, cTop, State, Spinner, UIRouteLink, Color, bindController } from '@tuval/forms';
 import { IEmployee, RealmBrokerClient, useOrgProvider } from '@realmocean/common';
 import { ActionButton } from '../../../Views/ActionButton';
 import { Services } from '../../../Services/Services';
@@ -75,6 +75,8 @@ export class UserListController extends UIController {
     }
 
     public LoadView(): any {
+        const controller:UIController = bindController();
+       // alert(controller)
         return ({ AppController_ContextAction_SetController }) => {
             return (
                 HStack({ alignment: cTopLeading })(

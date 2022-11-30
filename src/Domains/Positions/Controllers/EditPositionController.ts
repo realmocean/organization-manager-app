@@ -35,7 +35,6 @@ export class EditPositionController extends UIController {
     private ActionPost() {
         const orgProv = useOrgProvider();
 
-        console.log(this.isPositionRecordIdInvalid, ' ', this.isPositionNamedInvalid);
         if (this.isPositionRecordIdInvalid || this.isPositionNamedInvalid) {
             this.formPostTried = true;
         } else {

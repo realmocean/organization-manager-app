@@ -184,8 +184,6 @@ export namespace Views {
             checkValidate(true);
         }
 
-        console.log('TextBox updating')
-        console.log(value.get())
         return (
             VStack({ alignment: cLeading, spacing: 5 })(
                 //Text(label).lineHeight('1.45rem').fontSize('1rem'),
@@ -195,7 +193,7 @@ export namespace Views {
                         .width('100%')
                         .placeholder(placeholder)
                         .value(value.get())
-                        .focusOut(() => { console.log('lost focus'); setVisited(true); checkValidate(true); })
+                        .focusOut(() => { setVisited(true); checkValidate(true); })
                         .change(text => { value.set(text); checkValidate() }),
                     /*   TextField()
                          .placeholder(placeholder)
@@ -263,7 +261,7 @@ export namespace Views {
                         .height(40).minHeight('40px').fontSize('1rem')
                         .padding(cHorizontal, 10).tabIndex(0)
                         .value(value.get())
-                        .onLostFocus(() => { console.log('lost focus'); setVisited(true); checkValidate(true); })
+                        .onLostFocus(() => { setVisited(true); checkValidate(true); })
                         .onTextChange(text => { value.set(text); checkValidate() }),
                     invalid ?
                         HStack({ alignment: cLeading, spacing: 3 })(
@@ -319,7 +317,7 @@ export namespace Views {
                         .height(40).minHeight('40px').fontSize('1rem')
                         .padding(cHorizontal, 10).tabIndex(0)
                         .value(value.get())
-                        .onLostFocus(() => { console.log('lost focus'); setVisited(true); checkValidate(true); })
+                        .onLostFocus(() => {  setVisited(true); checkValidate(true); })
                         .onTextChange(text => { value.set(text); checkValidate() }),
                     invalid ?
                         HStack({ alignment: cLeading, spacing: 3 })(

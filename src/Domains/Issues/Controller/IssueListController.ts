@@ -145,7 +145,7 @@ export class IssueListController extends UIController {
 
 
         RealmBrokerClient.GetIssues('realmocean', 'organization-manager-app').then((result: object[]) => {
-            console.log(result)
+       
             this.showingIssues = this.issues = result;
         })
         //  }
