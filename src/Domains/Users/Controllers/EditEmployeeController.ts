@@ -27,14 +27,18 @@ import {
     useQueryClient,
     useQuery,
     ForEach,
-    jsonServerDataProvider,
+    WebApiDataProvider,
     useGetList,
     useDataProvider,
     _useDataProvider,
     DataContext,
     viewFunc,
     useController,
-    bindController
+    bindController,
+    _DataContext,
+    useGetOne,
+    RecordContext,
+    useRecordContext
 } from '@tuval/forms';
 
 import { RealmBrokerClient, useOrgProvider, IEmployeeTitle, IDepartment, useOrgUIProvider, IEmployee } from '@realmocean/common';
@@ -45,6 +49,7 @@ import { Views } from '../../../Views/Views';
 import { UIDropdownListView } from '@realmocean/dropdowns';
 import { UITextBoxView } from '@realmocean/inputs';
 import { HttpClient } from '@tuval/core';
+import { PostRecordContext, UserRecordContext } from '../../../Views/Contexts';
 
 const fontFamily = '"proxima-nova", "proxima nova", "helvetica neue", "helvetica", "arial", sans-serif'
 const img = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEoAAABKCAYAAAAc0MJxAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAZdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuMTZEaa/1AAABCUlEQVR4Xu3aMUoDQQCG0VzCY3gOm1zEThAsrT2GR/ImQtpAVjaCRVjxWxxxCa94A9P9fN3A7O4e9gSfx/008T2hIqEioSKhIqEioSKhIqEioSKhIqGiYaFuX07T6+F9k+ZtS5vXECoSKhIqEioSKhIqEioSKhoW6ub5ND29HTZp3ra0eY1hoa6dUJFQkVCRUJFQkVCRUJFQ0bBQnjCRUJFQkVCRUJFQkVCRUJFQkVCcCRUJFQkVCRUJFQkVCRUJFQ0L5ZNG5AkTCRUJFQkVCRUJFQkVCRUJVT0ez4O2aN62uHmFcaEuXY777/sv/V2oKyNUJFQkVCRUJFQkVCRUJFQkVPQVip/sdx+ddLpvQckwsAAAAABJRU5ErkJggg=='
@@ -69,11 +74,53 @@ interface IFormData {
 }
 
 const a = () => {
-    debugger;
+
     const queryClient = _useDataProvider();
     console.log('queryClient')
     console.log(queryClient)
-    return Text('sdsad')
+    /*  const { data, total, isLoading, error } = useGetList(
+         'posts',
+         {
+             pagination: { page: 1, perPage: 100 },
+             sort: { field: 'published_at', order: 'DESC' }
+         }
+     ); */
+
+    //if (isLoading) { return Text('fdsdfsdfsdf').fontSize(20) }
+    // console.log(data)
+
+    const { data, isLoading, error } = useGetOne('posts', { id: 3 });
+    if (isLoading) { return Text('fdsdfsdfsdf').fontSize(20) }
+
+    return (
+        UserRecordContext(1, (user) =>
+            VStack(
+                Text(JSON.stringify(user)),
+                PostRecordContext(1, (post) =>
+                    VStack(
+                        UITextBoxView()
+                            .floatlabel(false)
+                            .width('100%')
+                            .placeholder('*Name')
+                            .formField('title', [new RequiredRule('Name required.')]),
+                        Text(JSON.stringify(post)),
+
+                    )
+                )
+            )
+        )
+    )
+
+
+
+    /* return (
+        VStack(
+            ...ForEach(data)( (item: any) =>
+                Text(item.title)
+            )
+        )
+        
+    ) */
 }
 export class EditEmployeeController extends UIFormController {
 
@@ -174,9 +221,9 @@ export class EditEmployeeController extends UIFormController {
     public LoadView(): any {
 
 
-       /*  return () => (
-            Text('')
-        ) */
+        /*  return () => (
+             Text('')
+         ) */
 
         /*   const dataProvider = useDataProvider();
          console.log(dataProvider)
@@ -199,12 +246,12 @@ export class EditEmployeeController extends UIFormController {
         //const queryClient = useQueryClient();
         //alert(queryClient)
 
-        return ( 
-            DataContext(() => (
+        return (
+            DataContext(() =>
                 UIScene(this.titles == null ? Spinner() :
                     VStack({ alignment: cTop, spacing: 24 })(
-                        a()
-                        ,
+                        a(),
+
                         Views.FormCommanSection({
                             title: 'Update Record ID',
                             content: (
@@ -307,8 +354,6 @@ export class EditEmployeeController extends UIFormController {
                             )
                         }),
 
-
-
                         //Views.InputTextView('Employee ID *', 'Enter Employee Record ID', $(this.employeeRecordId), true, $(this.isEmployeeIDdInvalid), 'ID is required.', this.formPostTried),
                         //Views.InputTextView('Name *', 'Enter Employee First Name', $(this.employeeName), true, $(this.isEmployeeNamedInvalid), 'Name is required.', this.formPostTried),
                         //Views.InputTextView('Last Name', 'Enter Employee Last Name', $(this.employeeLastName)),
@@ -321,8 +366,8 @@ export class EditEmployeeController extends UIFormController {
 
                     ).padding(10).paddingTop('50px').foregroundColor('#676767')
                 )
-            )
-            ).dataProvider(jsonServerDataProvider('https://jsonplaceholder.typicode.com'))
+
+            ).dataProvider(WebApiDataProvider('https://jsonplaceholder.typicode.com'))
         )
 
         //const { status, data, error, isFetching } = usePosts();
