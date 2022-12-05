@@ -246,11 +246,12 @@ export class EditEmployeeController extends UIFormController {
         //const queryClient = useQueryClient();
         //alert(queryClient)
 
+        
         return (
             DataContext(() =>
                 UIScene(this.titles == null ? Spinner() :
                     VStack({ alignment: cTop, spacing: 24 })(
-                        a(),
+                      //  a(),
 
                         Views.FormCommanSection({
                             title: 'Update Record ID',
