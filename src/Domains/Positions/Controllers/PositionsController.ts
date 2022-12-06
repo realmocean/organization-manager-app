@@ -10,7 +10,7 @@ export class PositionsController extends UIController {
             UIScene(
                 HStack({ alignment: cTopLeading })(
                     LeftSideMenuView('', 'Positions'),
-                    UIRouteOutlet().width('100%').height('100%')
+                    UIRouteOutlet().width('100%').height('100%').minWidth("")
                 )
             )
         )
