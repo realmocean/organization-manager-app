@@ -11,7 +11,7 @@ export class TitlesController extends UIController {
                 UIScene(
                     HStack({ alignment: cTopLeading })(
                         LeftSideMenuView('', 'Titles'),
-                        UIRouteOutlet().width('100%').height('100%')
+                        UIRouteOutlet().width('100%').height('100%').minWidth("")
                     )
                 )
             )
