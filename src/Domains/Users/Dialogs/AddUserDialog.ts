@@ -3,6 +3,7 @@ import { UIDropdownListView } from "@realmocean/dropdowns";
 import { UITextBoxView } from "@realmocean/inputs";
 import { Binding, Button, cTopLeading, HStack, State, Text, UIButton, VStack, $, Spacer, Icon, cLeading, cTrailing, RequiredRule } from "@tuval/forms";
 import { DialogController } from "../../../ControllerDialog";
+import { UIDatePickerView } from '@realmocean/calendars';
 
 import { Views } from "../../../Views/Views";
 
@@ -39,11 +40,13 @@ export class AddUserDialog extends DialogController {
     }
 
     protected override OnSubmit(formData: IFormData) {
+      
         //alert(JSON.stringify(formData))
         RealmBrokerClient.CreateEmployee(formData.employee_record_id, formData.employee_name,
             formData.employee_last_name, formData.employee_title?.Id ?? '', formData.employee_department?.Id ?? '').then(() => {
                 this.OnOKClick()
             })
+
     }
     private action_create() {
         /*  const orgUI = useOrgUIProvider();
@@ -71,6 +74,10 @@ export class AddUserDialog extends DialogController {
                 ).height(50),
 
                 VStack({ alignment: cTopLeading, spacing: 15 })(
+                    /* UIDatePickerView()
+                        .floatlabel(false)
+                        .width('100%')
+                        .formField('employee_date', [new RequiredRule('Record ID required.')]), */
                     UITextBoxView()
                         .floatlabel(false)
                         .width('100%')
