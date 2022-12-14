@@ -1,13 +1,63 @@
 import { useOrgUIProvider } from '@realmocean/common';
 import {
     cLeading, Color, cTopLeading, HStack, IconLibrary, State, UIController, UIScene, VStack, Text,
-    bindFormController, UIFormController, Button, useForm, TextField, UIFormView, RequiredRule, MaxLengthRule
+    bindFormController, UIFormController, Button, useForm, TextField, UIFormView, RequiredRule, MaxLengthRule, DataContext,
+     WebApiDataProvider, getView, UIRecordContext, Template, UIView
 } from '@tuval/forms';
+import { UIGridView } from '@realmocean/grids';
+
 
 import { LeftSideMenuView } from '../../../App/Views/LeftSideMenu';
 import { Views } from '../../../Views/Views';
 
 const fontFamily = '"proxima-nova", "proxima nova", "helvetica neue", "helvetica", "arial", sans-serif'
+
+
+/* function Templator(_view: UIView | Function) {
+    const vNodes: any[] = [];
+    const view = getView(null, _view);
+    if (view != null) {
+        vNodes.push(view.Render());
+    }
+    return vNodes;
+}
+ */
+function myGridTemplator(props): any {
+    return (
+        Template(
+            HStack(
+                //Text('body is ' + props.body.substring(0, 10)),
+                DataContext(() =>
+                    UIRecordContext((post) =>
+                        Text('user Id = ' + post?.title + ' id = ' + props.id)
+                    ).resource('posts').filter({ id: props.id })
+                ).dataProvider(WebApiDataProvider('https://jsonplaceholder.typicode.com'))
+            )
+        )
+    )
+    /* DataContext(()=>
+        UIRecordContext((post)=>
+            Text(post.title)
+        ).resource('posts').filter({id: '1'})
+    ).dataProvider(WebApiDataProvider('https://jsonplaceholder.typicode.com/')) */
+
+
+
+    /*    const vNodes: any[] = [];
+      const view = getView(null, _view);
+      if (view != null) {
+          vNodes.push(view.Render());
+      }
+      return vNodes;  */
+
+
+}
+
+const multipleSelectionColumns =
+    [
+        { field: 'title', headerText: 'title', width: 30 },
+        { field: 'body', headerText: 'body', width: 130, template: myGridTemplator }
+    ]
 
 export class DashboardController extends UIFormController {
     @State()
@@ -71,26 +121,26 @@ export class DashboardController extends UIFormController {
           const { control, formState: { errors }, handleSubmit, reset } = useForm({ defaultValues }); */
         debugger
         const controller = bindFormController();
-        
+
         //console.log(controller);
 
         return (
             UIScene(
-               /*  VStack(
-                    TextField().formField('employee_name',
-                        [
-                            new RequiredRule('employee_name must be set'),
-                            new MaxLengthRule(20, 'employee name must be lower than 20')
-                        ]),
-                        TextField().formField('employee_last_name',
-                        [
-                            new RequiredRule('Employe last name required'),
-                            new MaxLengthRule(20, 'employee name must be lower than 20')
-                        ]),
-                    Button(
-                        Text('Save')
-                    ).onClick(() => this.Submit())
-                ), */
+                /*  VStack(
+                     TextField().formField('employee_name',
+                         [
+                             new RequiredRule('employee_name must be set'),
+                             new MaxLengthRule(20, 'employee name must be lower than 20')
+                         ]),
+                         TextField().formField('employee_last_name',
+                         [
+                             new RequiredRule('Employe last name required'),
+                             new MaxLengthRule(20, 'employee name must be lower than 20')
+                         ]),
+                     Button(
+                         Text('Save')
+                     ).onClick(() => this.Submit())
+                 ), */
                 /*   HStack(
                       AutoComplete().items(this.showingItems)
                           .searchMethod((e) => this.search(e.query))
@@ -106,6 +156,25 @@ export class DashboardController extends UIFormController {
                         title: 'Dashboard',
                         content: (
                             VStack({ alignment: cTopLeading, spacing: 20 })(
+                                UIGridView()
+                                    .height('100%')
+                                    .columns(multipleSelectionColumns as any)
+                                    .datasource([
+                                        {
+                                            "userId": 1,
+                                            "id": 1,
+                                            "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
+                                            "body": "quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto"
+                                        },
+                                        {
+                                            "userId": 1,
+                                            "id": 2,
+                                            "title": "qui est esse",
+                                            "body": "est rerum tempore vitae\nsequi sint nihil reprehenderit dolor beatae ea dolores neque\nfugiat blanditiis voluptate porro vel nihil molestiae ut reiciendis\nqui aperiam non debitis possimus qui neque nisi nulla"
+                                        },
+                                    ])
+                                ,
+
                                 HStack({ alignment: cTopLeading, spacing: 10 })(
                                     /*  DashboardItem(IconLibrary.Visibility, 'Logins', '1300', 'AVG'),
                                      DashboardItem(IconLibrary.Visibility, 'App Downloads', '1300', 'AVG') */
