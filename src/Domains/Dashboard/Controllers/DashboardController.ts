@@ -22,16 +22,15 @@ const fontFamily = '"proxima-nova", "proxima nova", "helvetica neue", "helvetica
     return vNodes;
 }
  */
-function myGridTemplator(props): any {
+function productStateTemplate(props): any {
     return (
         Template(
             HStack(
-                //Text('body is ' + props.body.substring(0, 10)),
                 DataContext(() =>
-                    UIRecordContext((post) =>
-                        Text('user Id = ' + post?.title + ' id = ' + props.id)
-                    ).resource('posts').filter({ id: props.id })
-                ).dataProvider(WebApiDataProvider('https://jsonplaceholder.typicode.com'))
+                    UIRecordContext((state) =>
+                        Text('product_state_name = ' + state?.state_name)
+                    ).resource('states').filter({ id: props.product_state })
+                ).dataProvider(WebApiDataProvider('api'))
             )
         )
     )
@@ -53,10 +52,10 @@ function myGridTemplator(props): any {
 
 }
 
-const multipleSelectionColumns =
+const columns =
     [
-        { field: 'title', headerText: 'title', width: 30 },
-        { field: 'body', headerText: 'body', width: 130, template: myGridTemplator }
+        { field: 'id', headerText: 'Id', width: 30 },
+        { field: 'product_state', headerText: 'State', width: 130, template: productStateTemplate }
     ]
 
 export class DashboardController extends UIFormController {
@@ -158,7 +157,7 @@ export class DashboardController extends UIFormController {
                             VStack({ alignment: cTopLeading, spacing: 20 })(
                                 UIGridView()
                                     .height('100%')
-                                    .columns(multipleSelectionColumns as any)
+                                    .columns(columns as any)
                                     .datasource([
                                         {
                                             "userId": 1,
