@@ -1,7 +1,8 @@
 
 import { IEmployee, useOrgProvider } from '@realmocean/common';
-import { cLeading, Color, cTopLeading, cVertical, ForEach, HStack, ScrollView, Spacer, Spinner, State, Text, TextField, UIController, VStack } from '@tuval/forms';
+import { cLeading, Color, cTopLeading, cVertical, ForEach, HStack, ScrollView, Spacer, Spinner, State, Text, TextField, UIController, UIRecordsContext, VStack } from '@tuval/forms';
 import { RealmBrokerClient } from '../../../Services/RealmBrokerClient';
+import { RealmoceanDataContext } from '../../../Views/RealmoceanDataContext';
 import { ITableViewColumn, Views } from '../../../Views/Views';
 import { BrokerAddonCard } from '../Views/BrokerAddonCard';
 import { InstallBrokerDialog } from './InstallBrokerController';
@@ -529,7 +530,7 @@ export class MarketplaceListController extends UIController {
 
     public BindRouterParams({ }) {
 
-        RealmBrokerClient.GetBrokers().then((brokers) => {
+      /*   RealmBrokerClient.GetBrokers().then((brokers) => {
             const items = brokers.map(broker => {
                 return {
                     id: broker.broker_id,
@@ -549,25 +550,22 @@ export class MarketplaceListController extends UIController {
         const orgService = useOrgProvider();
         orgService.getEmployees().then(employees =>
             this.showingUsers = this.users = employees
-        )
-        /*   RealmBrokerClient.GetEmployees().then(employees => {
-            this.showingUsers = this.users = employees;
-        }) */
+        ) */
+     
     }
     private Search_Action(value: string): void {
         //this.showingTenants = this.tenants.filter((tenant) => tenant.tenant_name.toLowerCase().indexOf(value.toLowerCase()) > -1);
     }
 
     public LoadView(): any {
-        return ({ AppController_ContextAction_SetController }) => {
-            return (
+
+
+        return (
+            RealmoceanDataContext(() =>
                 Views.RightSidePage({
                     title: 'Marketplace',
                     content: (
                         HStack({ alignment: cTopLeading })(
-                            this.isLoading() ?
-                                VStack(Spinner()) :
-
                                 VStack({ alignment: cTopLeading })(
                                     HStack({ alignment: cLeading })(
                                         Text('Marketplace')
@@ -610,24 +608,32 @@ export class MarketplaceListController extends UIController {
 
                                             ).height().padding('10px')
                                         ).width(300),
-                                        ScrollView({ axes: cVertical, alignment: cTopLeading })(
-                                            ...ForEach(this.brokers)(category =>
+                                        UIRecordsContext((data, total, isLoading) =>
+                                        isLoading ? Spinner() : 
+                                            ScrollView({ axes: cVertical, alignment: cTopLeading })(
+                                                ...ForEach([
+                                                    {
+                                                        title: 'All Categories',
+                                                        items: [...data]
+                                                    }
+                                                ])(category =>
 
-                                                VStack({ alignment: cTopLeading })(
-                                                    Text(category.title).height(40).fontSize(20).fontWeight('600').padding('1rem'),
-                                                    HStack({ alignment: cTopLeading, spacing: 24 })(
-                                                        ...ForEach(category.items)((item: any) =>
-                                                            BrokerAddonCard(item.image, item.name, item.description)
-                                                                .onClick(() => InstallBrokerDialog.Show(item.id))
-                                                        )
-                                                    ).width().height().wrap('wrap')
+                                                    VStack({ alignment: cTopLeading })(
+                                                        Text(category.title).height(40).fontSize(20).fontWeight('600').padding('1rem'),
+                                                        HStack({ alignment: cTopLeading, spacing: 24 })(
+                                                            ...ForEach(category.items)((item: any) =>
+                                                                BrokerAddonCard(item.icon_link, item.broker_display_name, item.broker_short_description)
+                                                                    .onClick(() => InstallBrokerDialog.Show(item.id))
+                                                            )
+                                                        ).width().height().wrap('wrap')
+                                                    )
+                                                        .paddingLeft('20px')
+                                                        .padding(10)
+                                                        .height().background('#F6F6F6')
+
                                                 )
-                                                .paddingLeft('20px')
-                                                    .padding(10)
-                                                    .height().background('#F6F6F6')
-
                                             )
-                                        )
+                                        ).resource('broker')
                                     )
 
                                 )
@@ -636,6 +642,8 @@ export class MarketplaceListController extends UIController {
                     )
                 })
             )
-        }
+
+        )
+
     }
 }

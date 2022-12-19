@@ -155,7 +155,7 @@ export class DashboardController extends UIFormController {
                         title: 'Dashboard',
                         content: (
                             VStack({ alignment: cTopLeading, spacing: 20 })(
-                                UIGridView()
+                               /*  UIGridView()
                                     .height('100%')
                                     .columns(columns as any)
                                     .datasource([
@@ -172,7 +172,7 @@ export class DashboardController extends UIFormController {
                                             "body": "est rerum tempore vitae\nsequi sint nihil reprehenderit dolor beatae ea dolores neque\nfugiat blanditiis voluptate porro vel nihil molestiae ut reiciendis\nqui aperiam non debitis possimus qui neque nisi nulla"
                                         },
                                     ])
-                                ,
+                                , */
 
                                 HStack({ alignment: cTopLeading, spacing: 10 })(
                                     /*  DashboardItem(IconLibrary.Visibility, 'Logins', '1300', 'AVG'),
