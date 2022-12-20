@@ -27,8 +27,8 @@ function productStateTemplate(props): any {
         Template(
             HStack(
                 DataContext(() =>
-                    UIRecordContext((state) =>
-                        Text('product_state_name = ' + state?.state_name)
+                    UIRecordContext(({data}) =>
+                        Text('product_state_name = ' + data?.state_name)
                     ).resource('states').filter({ id: props.product_state })
                 ).dataProvider(WebApiDataProvider('api'))
             )

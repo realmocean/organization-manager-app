@@ -1,6 +1,7 @@
 
 import { IEmployee, RealmBrokerClient, useOrgProvider } from '@realmocean/common';
-import { cLeading, Color, cTopLeading, cVertical, ForEach, HStack, ScrollView, Spacer, Spinner, State, Text, TextField, UIController, VStack } from '@tuval/forms';
+import { cLeading, Color, cTopLeading, cVertical, ForEach, HStack, ScrollView, Spacer, Spinner, State, Text, TextField, UIController, UIRecordsContext, VStack } from '@tuval/forms';
+import { RealmDataContext } from '../../../Views/DataContexts';
 
 import { ITableViewColumn, Views } from '../../../Views/Views';
 import { BrokerAddonCard } from '../../Marketplace/Views/BrokerAddonCard';
@@ -467,45 +468,19 @@ export class InstalledBrokerListController extends UIController {
 
     public BindRouterParams({ }) {
 
-        RealmBrokerClient.GetInstalledBrokers().then((brokers) => {
-            const items = brokers.map(broker => {
-                return {
-                    id: broker.broker_id,
-                    name: broker.broker_display_name,
-                    description: broker.broker_short_description,
-                    image: broker.icon_link,
-                }
-
-            })
-            this.brokers = [
-                {
-                    title: 'Test',
-                    items: [...items]
-                }
-            ]
-        })
-        const orgService = useOrgProvider();
-        orgService.getEmployees().then(employees =>
-            this.showingUsers = this.users = employees
-        )
-        /*   RealmBrokerClient.GetEmployees().then(employees => {
-            this.showingUsers = this.users = employees;
-        }) */
     }
     private Search_Action(value: string): void {
         //this.showingTenants = this.tenants.filter((tenant) => tenant.tenant_name.toLowerCase().indexOf(value.toLowerCase()) > -1);
     }
 
     public LoadView(): any {
-        return ({ AppController_ContextAction_SetController }) => {
-            return (
+        return (
+            RealmDataContext(() =>
                 Views.RightSidePage({
                     title: 'Installed Brokers',
+                    maxWidth: 'auto',
                     content: (
                         HStack({ alignment: cTopLeading })(
-                            this.isLoading() ?
-                                VStack(Spinner()) :
-
                                 VStack({ alignment: cTopLeading })(
                                     HStack({ alignment: cLeading, spacing: 15 })(
                                         // MARK: Search Box
@@ -516,22 +491,30 @@ export class InstalledBrokerListController extends UIController {
                                         Spacer()
 
                                     ).height().marginBottom('24px'),
-                                    ScrollView({ axes: cVertical, alignment: cTopLeading })(
-                                        ...ForEach(this.brokers)(category =>
-                                            VStack({ alignment: cTopLeading })(
-                                                Text(category.title).height(40).fontSize(20).fontWeight('600').padding('1rem'),
-                                                HStack({ alignment: cTopLeading })(
-                                                    ...ForEach(category.items)((item: any) =>
-                                                        BrokerAddonCard(item.image, item.name, item.description)
-                                                        .onClick(()=> ConnectionListController.Show(item))
-                                                    )
-                                                ).width().height().wrap('wrap')
-                                            )
-                                                .padding(20)
-                                                .height().background('#F6F6F6')
+                                    UIRecordsContext(({ data, isLoading }) =>
+                                    isLoading ? Spinner() :
+                                        ScrollView({ axes: cVertical, alignment: cTopLeading })(
+                                            ...ForEach([
+                                                {
+                                                    title: 'Test',
+                                                    items: [...data]
+                                                }
+                                            ])(category =>
+                                                VStack({ alignment: cTopLeading })(
+                                                    Text(category.title).height(40).fontSize(20).fontWeight('600').padding('1rem'),
+                                                    HStack({ alignment: cTopLeading })(
+                                                        ...ForEach(category.items)((item: any) =>
+                                                            BrokerAddonCard(item.icon_link, item.broker_display_name, item.broker_short_description)
+                                                                .onClick(() => ConnectionListController.Show(item))
+                                                        )
+                                                    ).width().height().wrap('wrap')
+                                                )
+                                                    .padding(20)
+                                                    .height().background('#F6F6F6')
 
+                                            )
                                         )
-                                    )
+                                    ).resource('installedbroker')
 
                                 )
 
@@ -539,6 +522,8 @@ export class InstalledBrokerListController extends UIController {
                     )
                 })
             )
-        }
+        )
+        
+
     }
 }

@@ -317,7 +317,7 @@ export namespace Views {
                         .height(40).minHeight('40px').fontSize('1rem')
                         .padding(cHorizontal, 10).tabIndex(0)
                         .value(value.get())
-                        .onLostFocus(() => {  setVisited(true); checkValidate(true); })
+                        .onLostFocus(() => { setVisited(true); checkValidate(true); })
                         .onTextChange(text => { value.set(text); checkValidate() }),
                     invalid ?
                         HStack({ alignment: cLeading, spacing: 3 })(
@@ -552,7 +552,7 @@ export namespace Views {
         ).height().width('33%')
     )
 
-    export const RightSidePage = ({ showBackIcon, title, copyId, tabview, content }: { title: string, showBackIcon?: boolean, copyId?: { value: string, label: string }, tabview?: UIView, content: UIView }): any => {
+    export const RightSidePage = ({ showBackIcon, title, copyId, tabview, content, maxWidth = '1160px' }: { title: string, showBackIcon?: boolean, copyId?: { value: string, label: string }, tabview?: UIView, content: UIView, maxWidth?: string }): any => {
         return ({ controller }: { controller: UIController }) => {
             if (is.function(controller.IsLoading)) {
                 if (controller.IsLoading()) {
@@ -589,7 +589,7 @@ export namespace Views {
                             HStack(
                                 tabview
                             ).height(65).width()
-                        ).height().maxWidth('1160px')
+                        ).height().maxWidth(maxWidth)
                     )
                         .paddingLeft('20px')
                         .height()
@@ -598,7 +598,7 @@ export namespace Views {
                     ScrollView({ axes: cVertical, alignment: cTop })(
                         VStack({ alignment: cTopLeading })(
                             content
-                        ).maxWidth('1160px')
+                        ).maxWidth(maxWidth)
                     )
 
 
@@ -623,18 +623,18 @@ export namespace Views {
     export const TabView = (tabModel: any[]) => {
         const location = binLocation();
         const paths: string[] = location.pathname.split('/')
-       
-        
-        const id = paths[paths.length -1];
 
-        const selIndex = Math.max(0,tabModel.findIndex(item => item.id === id))
+
+        const id = paths[paths.length - 1];
+
+        const selIndex = Math.max(0, tabModel.findIndex(item => item.id === id))
 
         if (!is.array(tabModel)) {
             return;
         }
 
         const [selectedIndex, setSelectedIndex] = bindState(selIndex === 0 ? 0 : (100 / tabModel.length) * selIndex)
-    
+
         const [prevSelectedIndex, setPrevSelectedIndex] = bindState(0)
         const [selectedTab, setSelectedTab] = bindState(tabModel[selIndex])
 

@@ -2,7 +2,7 @@
 import { IEmployee, useOrgProvider } from '@realmocean/common';
 import { cLeading, Color, cTopLeading, cVertical, ForEach, HStack, ScrollView, Spacer, Spinner, State, Text, TextField, UIController, UIRecordsContext, VStack } from '@tuval/forms';
 import { RealmBrokerClient } from '../../../Services/RealmBrokerClient';
-import { RealmoceanDataContext } from '../../../Views/RealmoceanDataContext';
+import { RealmoceanDataContext } from '../../../Views/DataContexts';
 import { ITableViewColumn, Views } from '../../../Views/Views';
 import { BrokerAddonCard } from '../Views/BrokerAddonCard';
 import { InstallBrokerDialog } from './InstallBrokerController';
@@ -530,28 +530,28 @@ export class MarketplaceListController extends UIController {
 
     public BindRouterParams({ }) {
 
-      /*   RealmBrokerClient.GetBrokers().then((brokers) => {
-            const items = brokers.map(broker => {
-                return {
-                    id: broker.broker_id,
-                    name: broker.broker_display_name,
-                    description: broker.broker_short_description,
-                    image: broker.icon_link,
-                }
+        /*   RealmBrokerClient.GetBrokers().then((brokers) => {
+              const items = brokers.map(broker => {
+                  return {
+                      id: broker.broker_id,
+                      name: broker.broker_display_name,
+                      description: broker.broker_short_description,
+                      image: broker.icon_link,
+                  }
+  
+              })
+              this.brokers = [
+                  {
+                      title: 'All Categories',
+                      items: [...items]
+                  }
+              ]
+          })
+          const orgService = useOrgProvider();
+          orgService.getEmployees().then(employees =>
+              this.showingUsers = this.users = employees
+          ) */
 
-            })
-            this.brokers = [
-                {
-                    title: 'All Categories',
-                    items: [...items]
-                }
-            ]
-        })
-        const orgService = useOrgProvider();
-        orgService.getEmployees().then(employees =>
-            this.showingUsers = this.users = employees
-        ) */
-     
     }
     private Search_Action(value: string): void {
         //this.showingTenants = this.tenants.filter((tenant) => tenant.tenant_name.toLowerCase().indexOf(value.toLowerCase()) > -1);
@@ -564,52 +564,41 @@ export class MarketplaceListController extends UIController {
             RealmoceanDataContext(() =>
                 Views.RightSidePage({
                     title: 'Marketplace',
+                    maxWidth: 'auto',
                     content: (
                         HStack({ alignment: cTopLeading })(
-                                VStack({ alignment: cTopLeading })(
-                                    HStack({ alignment: cLeading })(
-                                        Text('Marketplace')
-                                            .foregroundColor('#444')
-                                            .fontFamily(fontFamily).fontSize('2.4rem').fontWeight('300'),
-                                    )
-                                        .transition('padding-bottom 0.15s ease-out')
-                                        .shadow('0 5px 10px 0 rgb(0 0 0 / 2%)')
-                                        .margin('0 0 20px 0')
-                                        .padding('32px 24px 32px 46px')
-                                        .background('#ffffff')
-                                        .height(),
-                                    HStack({ alignment: cLeading, spacing: 15 })(
-                                        // MARK: Search Box
-                                        HStack(
-                                            TextField().placeholder('Search by Broker Name')
-                                                .onTextChange((value) => this.Search_Action(value))
-                                        ).height().border('solid 1px #dfdfdf').padding(10).width(300).cornerRadius(5),
-                                        Spacer()
+                            VStack({ alignment: cTopLeading })(
+                                HStack({ alignment: cLeading, spacing: 15 })(
+                                    // MARK: Search Box
+                                    HStack(
+                                        TextField().placeholder('Search by Broker Name')
+                                            .onTextChange((value) => this.Search_Action(value))
+                                    ).padding(10).height()
 
-                                    ).height().marginBottom('24px'),
-                                    HStack({ alignment: cTopLeading })(
-                                        ScrollView({ axes: cVertical, alignment: cTopLeading })(
-                                            VStack({ alignment: cTopLeading })(
-                                                ...ForEach(broker_cats)(cat =>
-                                                    VStack({ alignment: cTopLeading })(
-                                                        Text(cat.title).foregroundColor('#323338').fontSize(18).fontWeight('500').marginLeft('10px').marginBottom('12px').marginTop('20px'),
-                                                        ...ForEach(cat.subItems)(subItem =>
-                                                            HStack({ alignment: cLeading })(
-                                                                Text(subItem.title).foregroundColor('#323338').fontSize(16).fontWeight('400').lineHeight(32)
-                                                                    .fontFamily(" Manrope,Roboto,Rubik,Noto Kufi Arabic,Noto Sans JP,sans-serif"),
-                                                            )
-                                                                .height(40)
-                                                                .cursor('pointer')
-                                                                .background({ hover: '#e6e9ef' }).height().cornerRadius(5).padding(5).paddingLeft('10px')
+                                ).height().marginBottom('24px'),
+                                HStack({ alignment: cTopLeading })(
+                                    ScrollView({ axes: cVertical, alignment: cTopLeading })(
+                                        VStack({ alignment: cTopLeading })(
+                                            ...ForEach(broker_cats)(cat =>
+                                                VStack({ alignment: cTopLeading })(
+                                                    Text(cat.title).foregroundColor('#323338').fontSize(18).fontWeight('500').marginLeft('10px').marginBottom('12px').marginTop('20px'),
+                                                    ...ForEach(cat.subItems)(subItem =>
+                                                        HStack({ alignment: cLeading })(
+                                                            Text(subItem.title).foregroundColor('#323338').fontSize(16).fontWeight('400').lineHeight(32)
+                                                                .fontFamily(" Manrope,Roboto,Rubik,Noto Kufi Arabic,Noto Sans JP,sans-serif"),
                                                         )
-                                                    ),
+                                                            .height(40)
+                                                            .cursor('pointer')
+                                                            .background({ hover: '#e6e9ef' }).height().cornerRadius(5).padding(5).paddingLeft('10px')
+                                                    )
+                                                ),
 
-                                                )
+                                            )
 
-                                            ).height().padding('10px')
-                                        ).width(300),
-                                        UIRecordsContext((data, total, isLoading) =>
-                                        isLoading ? Spinner() : 
+                                        ).height().padding('10px')
+                                    ).width(300),
+                                    UIRecordsContext(({ data, total, isLoading }) =>
+                                        isLoading ? Spinner() :
                                             ScrollView({ axes: cVertical, alignment: cTopLeading })(
                                                 ...ForEach([
                                                     {
@@ -633,10 +622,10 @@ export class MarketplaceListController extends UIController {
 
                                                 )
                                             )
-                                        ).resource('broker')
-                                    )
-
+                                    ).resource('broker')
                                 )
+
+                            )
 
                         )
                     )

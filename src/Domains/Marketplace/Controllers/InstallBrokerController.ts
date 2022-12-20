@@ -1,7 +1,8 @@
 import { UIButtonView } from "@realmocean/buttons";
-import { Dialog, Spinner, State, UIController, UIScene, Text, HStack, cTrailing, VStack, UIImage, cLeading, cTopLeading, RenderingTypes, ScrollView, cVertical, Spacer, Icon, IconLibrary, cTop, TextField } from "@tuval/forms";
+import { Dialog, Spinner, State, UIController, UIScene, Text, HStack, cTrailing, VStack, UIImage, cLeading, cTopLeading, RenderingTypes, ScrollView, cVertical, Spacer, Icon, IconLibrary, cTop, TextField, UIRecordContext } from "@tuval/forms";
 import { RealmBrokerClient } from "../../../Services/RealmBrokerClient";
 import { RealmBrokerClient as RBR } from "@realmocean/common";
+import { RealmoceanDataContext } from "../../../Views/DataContexts";
 
 
 const text = `**Category** Test
@@ -61,8 +62,10 @@ export class InstallBrokerController extends UIController {
 
     private dialog: InstallBrokerDialog;
 
+
+
     @State()
-    private broker: any;
+    private broker_id: string;
 
     @State()
     private formData: any;
@@ -73,15 +76,16 @@ export class InstallBrokerController extends UIController {
     }
 
     protected override BindRouterParams({ dialog, broker_id }) {
-        debugger;
+
         this.dialog = dialog;
+        this.broker_id = broker_id;
 
         //RBR.GetInstalledBrokers().then((brokers)=> alert(JSON.stringify(brokers)))
 
-        RealmBrokerClient.GetBrokerById(broker_id).then(broker => {
-            // alert(JSON.stringify(broker))
-            this.broker = broker;
-        });
+        /*   RealmBrokerClient.GetBrokerById(broker_id).then(broker => {
+             
+              this.broker = broker;
+          }); */
 
     }
 
@@ -95,8 +99,8 @@ export class InstallBrokerController extends UIController {
     }
 
     private action_Install() {
-       RBR.InstallBroker(this.broker.broker_id)
-       //alert(JSON.stringify(this.formData))
+        RBR.InstallBroker(this.broker_id)
+        //alert(JSON.stringify(this.formData))
     }
 
 
@@ -151,13 +155,13 @@ export class InstallBrokerController extends UIController {
         )
 
         `;
-          
+
         let result = null;
         var formData = this.formData;
         try {
-            
+
             result = eval('(function() { try {' + expression + '}catch(ex){console.log(ex)}}())');
-           
+
         }
         catch (ex) { console.log(ex) }
         return result;
@@ -165,43 +169,50 @@ export class InstallBrokerController extends UIController {
 
     public override LoadView() {
         return (
-            UIScene(
-                this.broker == null ? Spinner() :
-                    VStack({ alignment: cTopLeading })(
-                        //this.getDynamicView(),
-                        HStack({ alignment: cLeading })(
-                            UIImage(this.broker.icon_link).width(50).maxHeight(50).marginRight('20px'),
-                            VStack({ alignment: cLeading })(
-                                Text(this.broker.broker_display_name + ' Broker').fontSize(20).fontWeight('600').lineHeight('30px'),
-                                Text('by ' + this.broker.broker_vendor).foregroundColor('#898989').fontSize(12).fontWeight('500').lineHeight('18px'),
-                                Text(this.broker.broker_short_description).foregroundColor('#898989').fontSize(14).fontWeight('500').lineHeight('21px'),
-                            ),
-                            Spacer(),
-                            HStack({ alignment: cTop })(
-                                Icon('\\e5cd').size(25).cursor('pointer').onClick(() => this.dialog.OnCancel())
-                            ).width()
-                        ).height().borderBottom('2px solid #f6f6f6').paddingBottom('20px'),
-                        HStack({ alignment: cTopLeading })(
-                            ScrollView({ axes: cVertical, alignment: cTopLeading })(
-                                VStack({ alignment: cTopLeading })(
-                                    Text(this.broker.broker_full_description).render(RenderingTypes.Markdown)
-                                )
-                            ).width(700).paddingTop('10px'),
-                            VStack({spacing: 20})(
-                                VStack({ alignment: cLeading })(
-                                    Text(text).render(RenderingTypes.Markdown),
-                                   
-                                ).padding(),
-                                UIButtonView().text('Install').action(() => this.action_Install()).width(250),
-                                //UIButtonView().text('Close').action(() => this.dialog.OnCancel())
-                            ).width(300)
+            RealmoceanDataContext(() =>
+                UIScene(
+                    UIRecordContext(({data, isLoading}) =>
+                        (this.broker_id && isLoading) ? Spinner() :
+                            VStack({ alignment: cTopLeading })(
+                                //this.getDynamicView(),
+                                HStack({ alignment: cLeading })(
+                                    UIImage(data.icon_link).width(50).maxHeight(50).marginRight('20px'),
+                                    VStack({ alignment: cLeading })(
+                                        Text(data.broker_display_name + ' Broker').fontSize(20).fontWeight('600').lineHeight('30px'),
+                                        Text('by ' + data.broker_vendor).foregroundColor('#898989').fontSize(12).fontWeight('500').lineHeight('18px'),
+                                        Text(data.broker_short_description).foregroundColor('#898989').fontSize(14).fontWeight('500').lineHeight('21px'),
+                                    ),
+                                    Spacer(),
+                                    HStack({ alignment: cTop })(
+                                        Icon('\\e5cd').size(25).cursor('pointer').onClick(() => this.dialog.OnCancel())
+                                    ).width()
+                                ).height().borderBottom('2px solid #f6f6f6').paddingBottom('20px'),
+                                HStack({ alignment: cTopLeading })(
+                                    ScrollView({ axes: cVertical, alignment: cTopLeading })(
+                                        VStack({ alignment: cTopLeading })(
+                                            Text(data.broker_full_description).render(RenderingTypes.Markdown)
+                                        )
+                                    ).width(700).paddingTop('10px'),
+                                    VStack({ spacing: 20 })(
+                                        VStack({ alignment: cLeading })(
+                                            Text(text).render(RenderingTypes.Markdown),
 
-                        ).height(500),
+                                        ).padding(),
+                                        UIButtonView().text('Install').action(() => this.action_Install()).width(250),
+                                        //UIButtonView().text('Close').action(() => this.dialog.OnCancel())
+                                    ).width(300)
+
+                                ).height(500),
 
 
-                    ).padding(10)
+                            ).padding(10)
+                    ).resource('broker').filter({ id: this.broker_id })
 
-            ).padding(24)
+
+
+                ).padding(24)
+            )
+
         )
     }
 }

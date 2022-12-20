@@ -1,9 +1,10 @@
 
 import { is } from "@tuval/core";
-import { Button, cHorizontal, cLeading, Color, cTop, cTopLeading, cTopTrailing, cTrailing, cVertical, HDivider, HStack, Icon, RenderingTypes, RequiredRule, ScrollView, Spacer, State, Text, TextField, UIImage, VStack } from "@tuval/forms";
+import { Button, cHorizontal, cLeading, Color, cTop, cTopLeading, cTopTrailing, cTrailing, cVertical, HDivider, HStack, Icon, RenderingTypes, RequiredRule, ScrollView, Spacer, Spinner, State, Text, TextField, UIImage, UIRecordContext, VStack } from "@tuval/forms";
 import { DialogController } from "../../../ControllerDialog";
 import { RealmBrokerClient } from "../../../Services/RealmBrokerClient";
 import { RealmBrokerClient as ROC } from "@realmocean/common";
+import { RealmoceanDataContext } from "../../../Views/DataContexts";
 
 
 export class SettingsDialogController extends DialogController {
@@ -23,9 +24,12 @@ export class SettingsDialogController extends DialogController {
 
     protected async BindRouterParamsAsync({ broker_info }): Promise<void> {
         return new Promise<void>((resolve, reject) => {
-
+            alert(broker_info)
             this.broker_info = broker_info;
-            RealmBrokerClient.GetBrokerSettingDialog(broker_info.id).then(dialog => {
+            this.setHeight(700);
+         
+            resolve();
+          /*   RealmBrokerClient.GetBrokerSettingDialog(broker_info.id).then(dialog => {
                 if (is.nullOrEmpty(dialog.description)) {
                     this.setWidth(600)
                 } else {
@@ -35,13 +39,13 @@ export class SettingsDialogController extends DialogController {
                 this.settingDialogDescription = dialog.description
                 this.settingDialogCode = dialog.dialog_code
                 resolve()
-            })
+            }) */
         });
 
 
     }
 
-    private getDynamicView() {
+    private getDynamicView(settingDialogCode) {
         if (this.formData == null) {
             this.formData = {};
         }
@@ -92,7 +96,7 @@ export class SettingsDialogController extends DialogController {
           
         }
       
-        ${this.settingDialogCode}
+        ${settingDialogCode}
 
         `;
 
@@ -114,73 +118,78 @@ export class SettingsDialogController extends DialogController {
     }
     public override LoadView() {
         return (
-            VStack({ alignment: cTopLeading, spacing: 10 })(
-                HStack({ alignment: cLeading, spacing: 10 })(
-                    HStack(
-                        UIImage(this.broker_info.image).width(48).maxHeight(48).cornerRadius(8)
-                    ).width(48).height(58).overflow('hidden'),
-                    Text(`Manage Broker:`).fontSize(20).fontWeight('500'),
-                    Text(`${this.broker_info.name}`).fontSize(20).fontWeight('400'),
-                    Spacer(),
-                    HStack({ alignment: cTop })(
-                        Icon('\\e5cd').size(20).cursor('pointer').onClick(() => this.OnCancel())
-                    ).width()
-                ).height(50),
-                HStack({ alignment: cTopLeading })(
-                    !is.nullOrEmpty(this.settingDialogDescription) ?
-                        HStack({ alignment: cTopLeading })(
-                            ScrollView({ axes: cVertical, alignment: cTopLeading })(
-                                VStack({ alignment: cTopLeading })(
-                                    Text(this.settingDialogDescription).render(RenderingTypes.Markdown)
-                                ).borderRight('solid 1px rgb(125,125,125, 0.3)').padding(20)
-                            )
-                        ).width('50%') : Text(''),
-                    VStack({ alignment: cTopLeading, spacing: 30 })(
-                        VStack({ alignment: cTopLeading, spacing: 10 })(
-                            VStack({ alignment: cLeading, spacing: 5 })(
-                                Text('*Connection name').fontSize(14).fontWeight('600').foregroundColor('#2e4354'),
-                                Text('This name is for your convenience only').fontSize(14).foregroundColor('#2e435473')
+            this.broker_info == null ? Spinner() :
+            RealmoceanDataContext(() =>
+                UIRecordContext((data: any) =>
+                VStack({ alignment: cTopLeading, spacing: 10 })(
+                    HStack({ alignment: cLeading, spacing: 10 })(
+                        HStack(
+                            UIImage(this.broker_info.image).width(48).maxHeight(48).cornerRadius(8)
+                        ).width(48).height(58).overflow('hidden'),
+                        Text(`Manage Broker:`).fontSize(20).fontWeight('500'),
+                        Text(`${this.broker_info.name}`).fontSize(20).fontWeight('400'),
+                        Spacer(),
+                        HStack({ alignment: cTop })(
+                            Icon('\\e5cd').size(20).cursor('pointer').onClick(() => this.OnCancel())
+                        ).width()
+                    ).height(50),
+                    HStack({ alignment: cTopLeading })(
+                        !is.nullOrEmpty(this.settingDialogDescription) ?
+                            HStack({ alignment: cTopLeading })(
+                                ScrollView({ axes: cVertical, alignment: cTopLeading })(
+                                    VStack({ alignment: cTopLeading })(
+                                        Text(this.settingDialogDescription).render(RenderingTypes.Markdown)
+                                    ).borderRight('solid 1px rgb(125,125,125, 0.3)').padding(20)
+                                )
+                            ).width('50%') : Text(''),
+                        VStack({ alignment: cTopLeading, spacing: 30 })(
+                            VStack({ alignment: cTopLeading, spacing: 10 })(
+                                VStack({ alignment: cLeading, spacing: 5 })(
+                                    Text('*Connection name').fontSize(14).fontWeight('600').foregroundColor('#2e4354'),
+                                    Text('This name is for your convenience only').fontSize(14).foregroundColor('#2e435473')
+                                ).height(),
+                                TextField()
+                                    .formField('connection_name', [new RequiredRule('Please set connection name')])
+    
                             ).height(),
-                            TextField()
-                                .formField('connection_name', [new RequiredRule('Please set connection name')])
-
-                        ).height(),
-                        HDivider().height(1).background('rgb(125,125,125, 0.1)'),
-                        this.getDynamicView(),
-                        HStack({ alignment: cTopTrailing })(
-                            Button(
-                                Text('Test Connection')
-                            ).width(158).variant('outlined')
+                            HDivider().height(1).background('rgb(125,125,125, 0.1)'),
+                            this.getDynamicView(data?.dialog_code),
+                            HStack({ alignment: cTopTrailing })(
+                                Button(
+                                    Text('Test Connection')
+                                ).width(158).variant('outlined')
+                            )
                         )
+                            .padding(cHorizontal, 20)
+                            .width(!is.nullOrEmpty(this.settingDialogDescription) ? '50%' : '100%')
                     )
-                        .padding(cHorizontal, 20)
-                        .width(!is.nullOrEmpty(this.settingDialogDescription) ? '50%' : '100%')
-                )
-                ,
-                HStack({ alignment: cTrailing, spacing: 10 })(
-                    Button(
-                        Text('Reset')
-                    ).variant('outlined'),
-                    Button(
-                        Text('Cancel')
-                    ).variant('outlined'),
-                    Button(
-                        Text('Add')
-                    ).variant('outlined').onClick(() => this.Submit())
-                ).height(),
-            ).padding(20)
+                    ,
+                    HStack({ alignment: cTrailing, spacing: 10 })(
+                        Button(
+                            Text('Reset')
+                        ).variant('outlined'),
+                        Button(
+                            Text('Cancel')
+                        ).variant('outlined'),
+                        Button(
+                            Text('Add')
+                        ).variant('outlined').onClick(() => this.Submit())
+                    ).height(),
+                ).padding(20)
+            ).resource('brokersettingdialog').filter({ id: this.broker_info.id })
+            )
         )
     }
 
     public static Show(broker_info: any): Promise<void> {
         return new Promise<void>((resolve, reject) => {
-
+            
             const dialog = new SettingsDialogController();
-            dialog.BindRouterParamsAsync({ broker_info }).then(() => {
+             dialog.BindRouterParamsAsync({ broker_info }).then(() => {
                 dialog.ShowDialogAsync().then(() => {
                     resolve();
                 })
-            })
+            }) 
         });
     }
 }
