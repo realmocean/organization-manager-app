@@ -24,12 +24,11 @@ export class SettingsDialogController extends DialogController {
 
     protected async BindRouterParamsAsync({ broker_info }): Promise<void> {
         return new Promise<void>((resolve, reject) => {
-            alert(broker_info)
+         
             this.broker_info = broker_info;
             this.setHeight(700);
          
-            resolve();
-          /*   RealmBrokerClient.GetBrokerSettingDialog(broker_info.id).then(dialog => {
+             RealmBrokerClient.GetBrokerSettingDialog(broker_info.id).then(dialog => {
                 if (is.nullOrEmpty(dialog.description)) {
                     this.setWidth(600)
                 } else {
@@ -39,13 +38,14 @@ export class SettingsDialogController extends DialogController {
                 this.settingDialogDescription = dialog.description
                 this.settingDialogCode = dialog.dialog_code
                 resolve()
-            }) */
+            }) 
         });
 
 
     }
 
     private getDynamicView(settingDialogCode) {
+      
         if (this.formData == null) {
             this.formData = {};
         }
@@ -120,14 +120,15 @@ export class SettingsDialogController extends DialogController {
         return (
             this.broker_info == null ? Spinner() :
             RealmoceanDataContext(() =>
-                UIRecordContext((data: any) =>
+                UIRecordContext(({data, isLoading}) =>
+                isLoading ? Spinner() :
                 VStack({ alignment: cTopLeading, spacing: 10 })(
                     HStack({ alignment: cLeading, spacing: 10 })(
                         HStack(
-                            UIImage(this.broker_info.image).width(48).maxHeight(48).cornerRadius(8)
+                            UIImage(this.broker_info.icon_link).width(48).maxHeight(48).cornerRadius(8)
                         ).width(48).height(58).overflow('hidden'),
                         Text(`Manage Broker:`).fontSize(20).fontWeight('500'),
-                        Text(`${this.broker_info.name}`).fontSize(20).fontWeight('400'),
+                        Text(`${this.broker_info.display_name}`).fontSize(20).fontWeight('400'),
                         Spacer(),
                         HStack({ alignment: cTop })(
                             Icon('\\e5cd').size(20).cursor('pointer').onClick(() => this.OnCancel())

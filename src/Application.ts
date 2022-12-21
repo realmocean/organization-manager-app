@@ -36,6 +36,7 @@ export class TenantManager extends TApplication {
         setTimeout(() => this.Start(), 100);
 
         const session_id = Services.StateService.GetSessionId();
+      
         RealmBrokerClient.GetSessionInfo().then(sessionInfo => {
             if (sessionInfo.is_tenant_admin) {
                 const fileExprorer = new MainForm();

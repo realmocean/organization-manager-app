@@ -77,7 +77,7 @@ const GoogleQuery = () => {
                         Text(item)
                     )(selectedItem =>
                         Text(selectedItem)
-                    )
+                    ).fields({text:'title', value:'id'})
                 ).height(40).cornerRadius(8).border('solid 1px rgb(125,125,125, 0.3)'),
                 HStack({ alignment: cTopLeading })(
                     HStack({ alignment: cLeading })(
@@ -234,7 +234,7 @@ const Github = () => {
                     Text(item)
                 )(selectedItem =>
                     Text(selectedItem)
-                )
+                ).fields({text:'title', value: 'id'})
 
             ).height(),
 
