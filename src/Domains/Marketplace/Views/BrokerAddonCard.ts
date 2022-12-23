@@ -13,7 +13,7 @@ export const BrokerAddonCard = (image: string, name: string, description: string
             Text(description).fontSize(12).marginTop('5px').width(200).height(200).textOverflow('ellipsis').overflow('hidden')
                 .marginBottom('0.5em').height(35).multilineTextAlignment(TextAlignment.leading)
         ),
-        Text('Free').fontSize(14).fontWeight('400').lineHeight(21),
+        Text('25$ / Year').fontSize(14).fontWeight('400').lineHeight(21),
     )
         .border({ default: '1px solid #e6e6e6', hover: '1px solid  #ffffff' })
         .shadow({ hover: '0 8px 16px 0 #00000024' })
