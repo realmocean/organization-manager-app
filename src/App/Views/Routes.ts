@@ -31,6 +31,14 @@ import { InstalledBrokerListController } from '../../Domains/Brokers/Controllers
 import { CompanyController } from '../../Domains/company/controllers/CompanyController';
 import { EditUserLayoutController } from '../../Domains/Users/Controllers/EditUserLayoutController';
 import { EditDepartmentLayoutController } from '../../Domains/OrganizationUnits/Controllers/EditDepartmentLayoutController';
+import { SecurityLayoutController } from '../../Domains/Security/SecurityLayoutController';
+import { AccountLayout } from '../../Domains/Security/Account/Controllers/AccountLayout';
+import { AccountListController } from '../../Domains/Security/Account/Controllers/AccountListController';
+import { AccountViewController } from '../../Domains/Security/Account/Controllers/AccountViewController';
+import { AccountView_DetailsController } from '../../Domains/Security/Account/Controllers/AccountView_DetailsController';
+import { AccountView_ProfileController } from '../../Domains/Security/Account/Controllers/AccountView_ProfileController';
+import { AccountView_AttributesController } from '../../Domains/Security/Account/Controllers/AccountView_AttributesController';
+import { AccountView_AppsController } from '../../Domains/Security/Account/Controllers/AccountView_AppsController';
 
 export const Routes = () => {
     const [LoggedIn, setLoggedIn] = bindState(null);
@@ -93,6 +101,22 @@ export const Routes = () => {
                 UIRoute('edit/:position_id', EditPositionController),
                 UIRoute('delete/:position_id', DeletePositionController),
             )('position', PositionsController),
+
+
+            UIRoute(
+                UIRoute(
+                    UIRoute('list', AccountListController),
+                    UIRoute(
+                        UIRoute('details', AccountView_DetailsController),
+                        UIRoute('profile', AccountView_ProfileController),
+                        UIRoute('attributes', AccountView_AttributesController),
+                        UIRoute('apps', AccountView_AppsController),
+                    )('view/:account_id', AccountViewController),
+                )('account', AccountLayout),
+            )('security', SecurityLayoutController),
+
+
+
 
             UIRoute(
                 UIRoute('list', IssueListController),

@@ -1,7 +1,8 @@
 import { IEmployee, useOrgProvider } from '@realmocean/common';
-import { cTopLeading, HStack, State, UIController, UIRouteOutlet, UIScene } from '@tuval/forms';
+import { cTopLeading, HStack, Spinner, State, UIController, UIRecordContext, UIRouteOutlet, UIScene } from '@tuval/forms';
 
 import { LeftSideMenuView } from '../../../App/Views/LeftSideMenu';
+import { RealmDataContext } from '../../../Views/DataContexts';
 import { Views } from '../../../Views/Views';
 
 
@@ -10,19 +11,13 @@ export class EditUserLayoutController extends UIController {
     @State()
     private employeeId: string;
 
-    @State()
-    private employee_info: IEmployee;
-
-    public IsLoading() {
-        return this.employee_info == null;
-    }
 
     protected override BindRouterParams({ employee_id, employee_info }) {
-
+        
         this.employeeId = employee_id;
-     
 
-        if (employee_info == null) {
+
+        /* if (employee_info == null) {
             const orgService = useOrgProvider();
 
             orgService.getEmployeeById(employee_id).then(employee => {
@@ -30,27 +25,35 @@ export class EditUserLayoutController extends UIController {
             })
         } else {
             this.employee_info = employee_info;
-        }
+        } */
 
     }
 
     public LoadView(): any {
         return (
-            UIScene(
-                HStack({ alignment: cTopLeading })(
-                    LeftSideMenuView('', 'Organization'),
-                    Views.RightSidePage({
-                        title: this.employee_info?.Name + ' ' + this.employee_info?.LastName,
-                        showBackIcon: true,
-                        copyId: { label: 'User ID', value: this.employeeId },
-                        tabview: Views.EmployeeEditTabView(),
-                        content: (
-                            UIRouteOutlet().width('100%').height('100%')
-                        )
-                    })
+            this.employeeId == null ? Spinner() :
+            RealmDataContext(() =>
+                UIRecordContext(({ data, isLoading }) =>
+                    isLoading ? Spinner() :
+                        UIScene(
+                            HStack({ alignment: cTopLeading })(
+                                LeftSideMenuView('', 'Organization'),
+                                Views.RightSidePage({
+                                    title: data.employee_name + ' ' + data.employee_last_name,
+                                    showBackIcon: true,
+                                    copyId: { label: 'User ID', value: data.id },
+                                    tabview: Views.EmployeeEditTabView(),
+                                    content: (
+                                        UIRouteOutlet().width('100%').height('100%')
+                                    )
+                                })
 
-                )
+                            )
+                        )
+                ).resource('employee').filter({id:this.employeeId})
+
             )
+
         )
     }
 }

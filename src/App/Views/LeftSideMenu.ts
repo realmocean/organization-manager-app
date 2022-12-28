@@ -58,7 +58,7 @@ const menuModel = [
             {
                 name: 'Accounts',
                 icon: '\\d235',
-                link: '/app(tenantmanager)/broker/installed'
+                link: '/app(tenantmanager)/security/account/list'
             },
             {
                 name: 'Teams',

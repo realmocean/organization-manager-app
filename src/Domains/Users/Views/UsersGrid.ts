@@ -19,14 +19,14 @@ const columns: ITableViewColumn[] = [
     {
         title: 'Employee',
         width: '60%',
-        view: (row: IEmployee) => (
+        view: (row: any) => (
             HStack({ spacing: 15 })(
                 Icon('\\ea67').size(35),
                 VStack({ alignment: cLeading })(
-                    Text(`${row.Name} ${row.LastName}`)
+                    Text(`${row.employee_name} ${row.employee_last_name}`)
                         .fontWeight('600')
                         .fontFamily('"Public Sans", sans-serif'),
-                    Text(row.TitleName)
+                    Text(row.title_name)
                         .foregroundColor('rgb(99, 115, 129)')
                         .fontWeight('400')
                         .fontFamily('"Public Sans", sans-serif')
@@ -42,7 +42,7 @@ const columns: ITableViewColumn[] = [
     },
     {
         title: '',
-        view: (employee: IEmployee) => (
+        view: (employee: any) => (
             HStack({ alignment: cLeading })(
                 Views.ActionContextMenu([
                     {
@@ -50,7 +50,7 @@ const columns: ITableViewColumn[] = [
                         icon: '\\d202',
                         tooltip: 'Edit',
                         iconColor: '#505A64',
-                        link: `/app(tenantmanager)/employee/edit/${employee.Id}`,
+                        link: `/app(tenantmanager)/employee/edit/${employee.id}`,
                         linkState: { position: employee }
                     },
                     {
@@ -58,7 +58,7 @@ const columns: ITableViewColumn[] = [
                         icon: '\\d390',
                         tooltip: 'Delete',
                         iconColor: Color.red400,
-                        link: `/app(tenantmanager)/employee/delete/${employee.Id}`,
+                        link: `/app(tenantmanager)/employee/delete/${employee.id}`,
                         linkState: { position: employee }
                     }
                 ])
@@ -72,9 +72,9 @@ export const UsersGrid = (users: any[]) => {
     
     return ({ controller }) => (
 
-        Views.TableView(columns, users, (employee: IEmployee, index) => {
+        Views.TableView(columns, users, (employee: any, index) => {
            
-            controller.navigotor(`/app(tenantmanager)/company/edit/employee/${employee.Id}/overview`, { state: { employee_info: employee } })
+            controller.navigotor(`/app(tenantmanager)/company/edit/employee/${employee.id}/overview`, { state: { employee_info: employee } })
         })
 
     )
