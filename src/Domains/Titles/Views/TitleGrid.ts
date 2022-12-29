@@ -8,12 +8,12 @@ import { IEmployeeTitle, IGetTitleResponse } from '@realmocean/common';
 const columns: ITableViewColumn[] = [
     {
         title: 'Code',
-        key: "RecordId",
+        key: "title_record_id",
         width:'33%'
     },
     {
         title: 'Name',
-        key: "Name",
+        key: "title_name",
         width:'66%'
     },
     {

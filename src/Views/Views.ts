@@ -1,11 +1,11 @@
-import { is } from '@tuval/core';
-import { Icon, UIRouteLink, Spacer, IconLibrary, IconType, ColorClass, ScrollView, cVertical, UIContextMenu, bindNavigate, Theme, cTrailing, useNavigate, getRouterParams, HDivider, bindController, Spinner, UIController, VDivider, TextAlignment, Button } from '@tuval/forms';
+import { is, Optional } from '@tuval/core';
+import { Icon, UIRouteLink, Spacer, IconLibrary, IconType, ColorClass, ScrollView, cVertical, UIContextMenu, bindNavigate, Theme, cTrailing, useNavigate, getRouterParams, HDivider, bindController, Spinner, UIController, VDivider, TextAlignment, Button, RequiredRule, ValidateRule } from '@tuval/forms';
 import {
     cLeading, ForEach, HStack, TableColumn, Text, UIAppearance, UITable, UIView, VStack, cTopLeading, TextField, cHorizontal,
     BindingClass, bindState, UIImage, cTop, UIButton, Color, SecureField,
     Toggle, binLocation
 } from '@tuval/forms';
-import { UIDropdownListView, ChangeEventArgs } from '@realmocean/dropdowns';
+import { UIDropdownListView, ChangeEventArgs, FieldSettingsModel } from '@realmocean/dropdowns';
 import { UITextBoxView } from '@realmocean/inputs';
 import { UIButtonView } from '@realmocean/buttons';
 import { theme } from '../Theme';
@@ -35,11 +35,45 @@ export interface IAction {
     icon: string;
     iconColor?: ColorClass | string,
     tooltip: string;
-    link: string;
+    link?: string;
+    action?: Function;
     linkState: any;
 }
 
+export interface IDropDownParams {
+    label: string;
+    dataSource: any[];
+    fields: FieldSettingsModel;
+    placeholder: string;
+    formFieldOptions: {
+        fieldName: string;
+        rules: ValidateRule[]
+    }
+}
+
 export namespace Views {
+
+    export const DropDown = (params: Optional<IDropDownParams>) => (
+        VStack({ alignment: cLeading })(
+            Text(params.label)
+                .fontSize(14)
+                .lineHeight(30).fontWeight('500'),
+            UIDropdownListView()
+                .floatlabel(false)
+                .dataSource(params.dataSource)
+                .fields(params.fields)
+                .placeHolder(params.placeholder)
+                .width('100%')
+                .formField(params.formFieldOptions?.fieldName, params.formFieldOptions?.rules)
+                /*   .noRecordTemplate(data =>
+                      HStack({ alignment: cLeading })(
+                          UIButtonView().text('Ekle').onClick(() => console.log('click'))
+                      )
+                  ) */
+                .allowFiltering(true)
+        ).height()
+    )
+
     export const TableView = <T>(columns: ITableViewColumn[], data: T[], rowClick?: Function) => (
         ScrollView({ axes: cVertical })(
             VStack({ alignment: cTop })(
@@ -407,12 +441,13 @@ export namespace Views {
         ).height().width()
     )
 
-    export const AcceptButton = ({ label, action }: { label: string, action: Function }) => (
+    export const AcceptButton = ({ label, loading, action }: { label: string, loading?: boolean, action: Function }) => (
 
         Button(
             //Icon('\\e145').size(24).marginRight('3px'),
             Text(label).whiteSpace('nowrap')
         )
+            .loading(loading)
             .cursor('pointer')
             .width()
             .height(40)
@@ -487,16 +522,21 @@ export namespace Views {
         return (
             UIContextMenu(
                 ...ForEach(actions)(item =>
+                    item.link != null  ?
                     UIRouteLink(item.link, item.linkState)(
                         HStack({ alignment: cLeading, spacing: 10 })(
                             Icon(item.icon).size(20).foregroundColor(item.iconColor as any),
 
                             Text(item.title).foregroundColor(item.iconColor as any)
 
-                        ).padding(10)
+                        )
                     )
+                    :
+                    HStack({ alignment: cLeading, spacing: 10 })(
+                        Icon(item.icon).size(20).foregroundColor(item.iconColor as any),
+                        Text(item.title).foregroundColor(item.iconColor as any)
+                    ).padding(10).onClick(() => item.action())
                 )
-
             )(
 
                 HStack(

@@ -5,6 +5,7 @@ import { ITableViewColumn, Views } from '../../../Views/Views';
 import { QueryCache, useQuery, useQueryClient } from "@realmocean/data";
 
 import { HttpClient } from '@tuval/core';
+import { DeleteUserDialog } from '../Dialogs/DeleteEmployeeDialog';
 
 const usePosts = () =>
   useQuery("posts", async () => {
@@ -58,7 +59,8 @@ const columns: ITableViewColumn[] = [
                         icon: '\\d390',
                         tooltip: 'Delete',
                         iconColor: Color.red400,
-                        link: `/app(tenantmanager)/employee/delete/${employee.id}`,
+                        //link: `/app(tenantmanager)/employee/delete/${employee.id}`,
+                        action : () => DeleteUserDialog.Show(employee.id),
                         linkState: { position: employee }
                     }
                 ])
@@ -74,7 +76,7 @@ export const UsersGrid = (users: any[]) => {
 
         Views.TableView(columns, users, (employee: any, index) => {
            
-            controller.navigotor(`/app(tenantmanager)/company/edit/employee/${employee.id}/overview`, { state: { employee_info: employee } })
+           // controller.navigotor(`/app(tenantmanager)/company/edit/employee/${employee.id}/overview`, { state: { employee_info: employee } })
         })
 
     )

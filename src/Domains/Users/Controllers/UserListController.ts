@@ -28,10 +28,11 @@ export class UserListController extends UIController {
 
     public BindRouterParams({ tenant_id, tenant_name }) {
 
-        const orgService = useOrgProvider();
+       /*  const orgService = useOrgProvider();
         orgService.getEmployees().then(employees =>
             this.showingUsers = this.users = employees
-        )
+        ) */
+
         /*   RealmBrokerClient.GetEmployees().then(employees => {
             this.showingUsers = this.users = employees;
         }) */
@@ -66,7 +67,7 @@ export class UserListController extends UIController {
                         UIRecordsContext(({ data, isLoading }) =>
                             isLoading ? Spinner() :
                                 UsersGrid(data) as any
-                        ).resource('employee')
+                        ).resource('employees')
 
                     )
                 )
