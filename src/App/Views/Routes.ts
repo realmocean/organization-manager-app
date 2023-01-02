@@ -71,7 +71,7 @@ export const Routes = () => {
 
             UIRoute(
                 UIRoute(
-                    UIRoute('overview', EditEmployeeController),
+                    UIRoute('edit', EditEmployeeController),
                 )('employee/:employee_id', EditUserLayoutController),
 
                 UIRoute(
@@ -80,7 +80,7 @@ export const Routes = () => {
                 // MARK: Organization Units Routes
 
 
-            )('company/edit', LayoutController),
+            )('company', LayoutController),
 
 
             // MARK: Emplkoyee routes

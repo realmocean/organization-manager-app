@@ -50,7 +50,7 @@ export class EditUserLayoutController extends UIController {
 
                             )
                         )
-                ).resource('employee').filter({id:this.employeeId})
+                ).resource('employees').filter({id:this.employeeId})
 
             )
 

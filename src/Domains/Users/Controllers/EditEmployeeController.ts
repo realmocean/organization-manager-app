@@ -39,10 +39,11 @@ import {
     useGetOne,
     RecordContext,
     useRecordContext,
-    UIRecordContext
+    UIRecordContext,
+    UIRecordsContext
 } from '@tuval/forms';
 
-import { RealmBrokerClient, useOrgProvider, IEmployeeTitle, IDepartment, useOrgUIProvider, IEmployee } from '@realmocean/common';
+import { RealmBrokerClient, useOrgProvider, IEmployeeTitle, IDepartment, useOrgUIProvider, IEmployee, useSessionService } from '@realmocean/common';
 import { Color, UIImage, NavigateFunction, bindNavigate, Binding } from '@tuval/forms';
 import { ActionButton } from '../../../Views/ActionButton';
 import { Services } from '../../../Services/Services';
@@ -126,49 +127,22 @@ const a = () => {
 }
 export class EditEmployeeController extends UIFormController {
 
-    @State()
-    private employee: IEmployee;
+
 
     @Binding()
     private employeeId: string;
 
-    @Binding(true)
-    private isEmployeeIDdInvalid: boolean;
-
-    @Binding()
-    private employeeRecordId: string;
-
-    @Binding()
-    private employeeName: string;
-
-    @Binding(true)
-    private isEmployeeNamedInvalid: boolean;
-
-    @Binding()
-    private employeeLastName: string;
-
-    private email: string;
-
-    @State()
-    private items: any[];
-
-    @State()
-    private titles: IEmployeeTitle[];
 
     @State()
     private departments: IDepartment[];
 
-    @State()
-    private employeeTitle: string;
 
-    @State()
-    private employeeDepartment: string;
 
 
     protected override BindRouterParams({ employee_id }) {
 
 
-
+        this.employeeId = employee_id;
 
         //   this.BeginUpdate();
 
@@ -187,15 +161,15 @@ export class EditEmployeeController extends UIFormController {
           }) */
 
 
-        Promise.all([
-            orgService.getTitles(),
-            orgService.getDepartments(),
-        ]).then((results) => {
-            const [titles, departments] = results;
-            this.titles = titles;
-            this.departments = departments;
-            this.employeeId = employee_id;
-        })
+        /*   Promise.all([
+              orgService.getTitles(),
+              orgService.getDepartments(),
+          ]).then((results) => {
+              const [titles, departments] = results;
+              this.titles = titles;
+              this.departments = departments;
+              this.employeeId = employee_id;
+          }) */
 
 
     }
@@ -251,11 +225,11 @@ export class EditEmployeeController extends UIFormController {
 
 
         return (
-            this.employeeId == null ? Spinner() :
+            this.employeeId == null ? Text('employee id waiting') :
                 RealmDataContext(() =>
                     UIRecordContext(({ data, isLoading }) =>
-                        isLoading ? Spinner() :
-                            UIScene(this.titles == null ? Spinner() :
+                        isLoading ? Text('data waiting') :
+                            UIScene(
                                 VStack({ alignment: cTop, spacing: 24 })(
                                     //  a(),
 
@@ -266,7 +240,7 @@ export class EditEmployeeController extends UIFormController {
                                                 UITextBoxView()
                                                     .floatlabel(false)
                                                     .width('100%')
-                                                    .placeholder('*Record ID')
+                                                    //.placeholder('*Record ID')
                                                     .formField('employee_record_id', [new RequiredRule('Record ID required.')]),
                                             )
                                         ),
@@ -310,14 +284,17 @@ export class EditEmployeeController extends UIFormController {
                                     Views.FormCommanSection({
                                         title: 'Update Title',
                                         content: (
-                                            UIDropdownListView()
-                                                .floatlabel(true)
-                                                .dataSource(this.titles)
-                                                .fields({ text: 'Name', value: 'Id' })
-                                                .placeHolder('Please select employee title')
-                                                .width('100%')
-                                                .formField('title_id', [new RequiredRule('Employee Last Name required.')])
-                                                .allowFiltering(true)
+                                            UIRecordsContext(({ data, isLoading }) =>
+                                                UIDropdownListView()
+                                                    .floatlabel(true)
+                                                    .dataSource(data)
+                                                    .fields({ text: 'title_name', value: 'id' })
+                                                    .placeHolder('Please select employee title')
+                                                    .width('100%')
+                                                    .formField('title_id', [new RequiredRule('Employee Last Name required.')])
+                                                    .allowFiltering(true)
+                                            ).resource('titles').filter({ 'tenant_id': useSessionService().TenantId })
+
 
                                         ),
                                         footer: (
@@ -328,14 +305,16 @@ export class EditEmployeeController extends UIFormController {
                                     Views.FormCommanSection({
                                         title: 'Update Departman',
                                         content: (
-                                            UIDropdownListView()
-                                                .floatlabel(true)
-                                                .dataSource(this.departments)
-                                                .fields({ text: 'Name', value: 'Id' })
-                                                .placeHolder('Department')
-                                                .width('100%')
-                                                .formField('department_id', [new RequiredRule('Please select employee department')])
-                                                .allowFiltering(true)
+                                            UIRecordsContext(({ data, isLoading }) =>
+                                                UIDropdownListView()
+                                                    .floatlabel(true)
+                                                    .dataSource(data)
+                                                    .fields({ text: 'org_unit_name', value: 'id' })
+                                                    .placeHolder('Department')
+                                                    .width('100%')
+                                                    .formField('department_id', [new RequiredRule('Please select employee department')])
+                                                    .allowFiltering(true)
+                                            ).resource('departments').filter({ 'tenant_id': useSessionService().TenantId })
 
                                         ),
                                         footer: (
@@ -373,7 +352,7 @@ export class EditEmployeeController extends UIFormController {
 
                                 ).padding(10).paddingTop('50px').foregroundColor('#676767')
                             )
-                    ).resource('employee').filter({ id: this.employeeId })
+                    ).resource('employees').filter({ id: this.employeeId })
                 )
         )
 

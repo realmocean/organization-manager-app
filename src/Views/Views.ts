@@ -530,7 +530,7 @@ export namespace Views {
                             Text(item.title).foregroundColor(item.iconColor as any)
 
                         )
-                    )
+                    ).padding(10).width('100%').height('100%')
                     :
                     HStack({ alignment: cLeading, spacing: 10 })(
                         Icon(item.icon).size(20).foregroundColor(item.iconColor as any),

@@ -24,7 +24,7 @@ export class DeleteUserDialog extends DialogController {
 
     public BindRouterParams({ id }) {
         this.setWidth(600);
-        this.setHeight(300);
+        this.setHeight(200);
         this.id = id;
 
 
@@ -47,7 +47,7 @@ export class DeleteUserDialog extends DialogController {
                         HStack({ alignment: cTrailing, spacing: 10 })(
                             Text('Cancel').foregroundColor('rgb(96, 106, 123)').fontSize(14).fontWeight('600').cursor('pointer').onClick(() => this.OnCancel()),
                             Views.AcceptButton({
-                                label: 'Create', loading: isLoading, action: () => {
+                                label: 'Delete', loading: isLoading, action: () => {
                                     this.SetValue('tenant_id', useSessionService().TenantId);
                                     deleteFunc()
                                 }
@@ -64,6 +64,8 @@ export class DeleteUserDialog extends DialogController {
                     .resource('employees').filter({
                         'id': this.id
                     })
+                    .onSuccess(() => this.OnCancel())
+
                 /*   .onSuccess(()=> {
                       this.InvalidateQueries();
                       this.OnOKClick();

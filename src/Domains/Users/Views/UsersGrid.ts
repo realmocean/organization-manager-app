@@ -51,7 +51,7 @@ const columns: ITableViewColumn[] = [
                         icon: '\\d202',
                         tooltip: 'Edit',
                         iconColor: '#505A64',
-                        link: `/app(tenantmanager)/employee/edit/${employee.id}`,
+                        link: `/app(tenantmanager)/company/employee/${employee.id}/edit`,
                         linkState: { position: employee }
                     },
                     {

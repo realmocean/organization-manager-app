@@ -8,11 +8,11 @@ const columns: ITableViewColumn[] = [
     {
         title: 'Position',
         width: '60%',
-        view: (row: IPosition) => (
+        view: (row: any) => (
             HStack({ spacing: 15 })(
                 Icon('\\d22d').size(35),
                 VStack({ alignment: cLeading })(
-                    Text(`${row.Name}`)
+                    Text(`${row.position_name}`)
                         .fontWeight('600')
                         .fontFamily('"Public Sans", sans-serif'),
                    
@@ -23,7 +23,7 @@ const columns: ITableViewColumn[] = [
 
     {
         title: 'Action',
-        view: (position: IPosition) => (
+        view: (position: any) => (
             HStack({ alignment: cLeading })(
                 Views.ActionContextMenu([
                     {
@@ -31,7 +31,7 @@ const columns: ITableViewColumn[] = [
                         icon: '\\d202',
                         tooltip: 'Edit',
                         iconColor: '#505A64',
-                        link: `/app(tenantmanager)/position/edit/${position.Id}`,
+                        link: `/app(tenantmanager)/position/edit/${position.id}`,
                         linkState: { position: position }
                     },
                     {
@@ -39,7 +39,7 @@ const columns: ITableViewColumn[] = [
                         icon: '\\d390',
                         tooltip: 'Delete Title',
                         iconColor: Color.red400,
-                        link: `/app(tenantmanager)/position/delete/${position.Id}`,
+                        link: `/app(tenantmanager)/position/delete/${position.id}`,
                         linkState: { position: position }
                     }
                 ])

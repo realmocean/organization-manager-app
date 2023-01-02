@@ -1,6 +1,6 @@
 import { UsersGrid } from '../Views/UsersGrid';
 import { VStack, cTopLeading, cLeading, HStack, Text, Spacer, TextField, UITable, TableColumn, Icon, IconLibrary, UIContextMenu, UIAppearance, UIScene, UIController, cTop, State, Spinner, UIRouteLink, Color, bindController, UIRecordsContext } from '@tuval/forms';
-import { IEmployee, RealmBrokerClient, useOrgProvider } from '@realmocean/common';
+import { IEmployee, RealmBrokerClient, useOrgProvider, useSessionService } from '@realmocean/common';
 import { ActionButton } from '../../../Views/ActionButton';
 import { Services } from '../../../Services/Services';
 import { ITableViewColumn, Views } from '../../../Views/Views';
@@ -28,10 +28,10 @@ export class UserListController extends UIController {
 
     public BindRouterParams({ tenant_id, tenant_name }) {
 
-       /*  const orgService = useOrgProvider();
-        orgService.getEmployees().then(employees =>
-            this.showingUsers = this.users = employees
-        ) */
+        /*  const orgService = useOrgProvider();
+         orgService.getEmployees().then(employees =>
+             this.showingUsers = this.users = employees
+         ) */
 
         /*   RealmBrokerClient.GetEmployees().then(employees => {
             this.showingUsers = this.users = employees;
@@ -67,7 +67,9 @@ export class UserListController extends UIController {
                         UIRecordsContext(({ data, isLoading }) =>
                             isLoading ? Spinner() :
                                 UsersGrid(data) as any
-                        ).resource('employees')
+                        )
+                            .resource('employees')
+                            .filter({ 'tenant_id': useSessionService().TenantId })
 
                     )
                 )
