@@ -8,6 +8,7 @@ import { UsersGrid } from '../../Users/Views/UsersGrid';
 import { TitleGrid } from '../Views/TitleGrid';
 import { AddUserDialog } from '../../Users/Dialogs/AddUserDialog';
 import { RealmDataContext } from '../../../Views/DataContexts';
+import { AddTitleDialog } from '../Dialogs/AddTitleDialog';
 
 const fontFamily = '"proxima-nova", "proxima nova", "helvetica neue", "helvetica", "arial", sans-serif'
 
@@ -42,12 +43,12 @@ export class TitleListController extends UIController {
                                 ,
                                 Spacer(),
                                 Views.CreateButton({
-                                    label: 'New Title', action: () => AddUserDialog.Show().then(() => {
-                                        this.users = null;
+                                    label: 'New Title', action: () => AddTitleDialog.Show().then(() => {
+                                        /* this.users = null;
                                         const orgService = useOrgProvider();
                                         orgService.getEmployees().then(employees =>
                                             this.showingUsers = this.users = employees
-                                        )
+                                        ) */
                                     })
                                 })
                             ).height().padding(24),

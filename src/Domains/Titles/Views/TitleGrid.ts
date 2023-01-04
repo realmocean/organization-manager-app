@@ -3,6 +3,7 @@ import { VStack, cTopLeading, cLeading, HStack, Text, Spacer, TextField, UITable
 import { moment } from '@tuval/core';
 import { Views } from '../../../Views/Views';
 import { IEmployeeTitle, IGetTitleResponse } from '@realmocean/common';
+import { DeleteTitleDialog } from '../Dialogs/DeleteTitleDialog';
 
 
 const columns: ITableViewColumn[] = [
@@ -18,7 +19,7 @@ const columns: ITableViewColumn[] = [
     },
     {
         title: 'Action',
-        view: (title: IEmployeeTitle) => (
+        view: (employee: any) => (
             HStack({ alignment: cLeading })(
                 Views.ActionContextMenu([
                     {
@@ -26,16 +27,17 @@ const columns: ITableViewColumn[] = [
                         icon: '\\d202',
                         tooltip: 'Edit',
                         iconColor: '#505A64',
-                        link: `/app(tenantmanager)/title/edit/${title.Id}`,
-                        linkState: { title: title }
+                        link: `/app(tenantmanager)/company/titles/${employee.id}/edit`,
+                        linkState: { position: employee }
                     },
                     {
                         title: 'Delete',
                         icon: '\\d390',
-                        tooltip: 'Delete Title',
+                        tooltip: 'Delete',
                         iconColor: Color.red400,
-                        link: `/app(tenantmanager)/title/delete/${title.Id}`,
-                        linkState: { title: title }
+                        //link: `/app(tenantmanager)/employee/delete/${employee.id}`,
+                        action: () => DeleteTitleDialog.Show(employee.id),
+                        linkState: { position: employee }
                     }
                 ])
             )

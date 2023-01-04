@@ -6,16 +6,16 @@ import { RealmDataContext } from '../../../Views/DataContexts';
 import { Views } from '../../../Views/Views';
 
 
-export class EditDepartmentLayoutController extends UIController {
+export class EditPositionLayoutController extends UIController {
 
     @State()
-    private departmentId: string;
+    private positionId: string;
 
 
 
-    protected override BindRouterParams({ department_id, department_info }) {
+    protected override BindRouterParams({ position_id }) {
 
-        this.departmentId = department_id;
+        this.positionId = position_id;
 
 
         /*   if (department_info == null) {
@@ -33,16 +33,16 @@ export class EditDepartmentLayoutController extends UIController {
     public LoadView(): any {
         return (
 
-            this.departmentId == null ? Spinner() :
+            this.positionId == null ? Spinner() :
                 RealmDataContext(() =>
                     UIRecordContext(({ data }) =>
                         UIScene(
                             HStack({ alignment: cTopLeading })(
-                                LeftSideMenuView('', 'Organization'),
+                                LeftSideMenuView('', 'Position'),
                                 Views.RightSidePage({
-                                    title: data?.org_unit_name,
+                                    title: data?.position_name,
                                     showBackIcon: true,
-                                    copyId: { label: 'Department ID', value: data?.id },
+                                    copyId: { label: 'Position ID', value: data?.id },
                                     tabview: Views.EmployeeEditTabView(),
                                     content: (
                                         UIRouteOutlet().width('100%').height('100%')
@@ -52,8 +52,8 @@ export class EditDepartmentLayoutController extends UIController {
                             )
                         )
                     )
-                        .resource('departments')
-                        .filter({ id: this.departmentId })
+                        .resource('positions')
+                        .filter({ id: this.positionId })
                 )
 
         )

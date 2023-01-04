@@ -40,7 +40,9 @@ import {
     RecordContext,
     useRecordContext,
     UIRecordContext,
-    UIRecordsContext
+    UIRecordsContext,
+    UIUpdateContext,
+    useToastService
 } from '@tuval/forms';
 
 import { RealmBrokerClient, useOrgProvider, IEmployeeTitle, IDepartment, useOrgUIProvider, IEmployee, useSessionService } from '@realmocean/common';
@@ -227,132 +229,127 @@ export class EditEmployeeController extends UIFormController {
         return (
             this.employeeId == null ? Text('employee id waiting') :
                 RealmDataContext(() =>
-                    UIRecordContext(({ data, isLoading }) =>
-                        isLoading ? Text('data waiting') :
-                            UIScene(
-                                VStack({ alignment: cTop, spacing: 24 })(
-                                    //  a(),
+                    UIUpdateContext((update) =>
+                        UIScene(
+                            VStack({ alignment: cTop, spacing: 24 })(
+                                //  a(),
 
-                                    Views.FormCommanSection({
-                                        title: 'Update Record ID',
-                                        content: (
-                                            HStack(
-                                                UITextBoxView()
-                                                    .floatlabel(false)
-                                                    .width('100%')
-                                                    //.placeholder('*Record ID')
-                                                    .formField('employee_record_id', [new RequiredRule('Record ID required.')]),
-                                            )
-                                        ),
-                                        footer: (
-                                            Views.AcceptButton({ label: 'Update', action: () => this.Submit() })
+                                Views.FormCommanSection({
+                                    title: 'Update Record ID',
+                                    content: (
+                                        HStack(
+                                            UITextBoxView()
+                                                .floatlabel(false)
+                                                .width('100%')
+                                                //.placeholder('*Record ID')
+                                                .formField('employee_record_id', [new RequiredRule('Record ID required.')]),
                                         )
-                                    }),
+                                    ),
+                                    footer: (
+                                        Views.AcceptButton({ label: 'Update', action: () => update() })
+                                    )
+                                }),
 
-                                    Views.FormCommanSection({
-                                        title: 'Update Name',
-                                        content: (
-                                            HStack(
-                                                UITextBoxView()
-                                                    .floatlabel(false)
-                                                    .width('100%')
-                                                    .placeholder('*Name')
-                                                    .formField('employee_name', [new RequiredRule('Name required.')]),
-                                            )
-                                        ),
-                                        footer: (
-                                            Views.AcceptButton({ label: 'Update', action: () => this.Submit() })
+                                Views.FormCommanSection({
+                                    title: 'Update Name',
+                                    content: (
+                                        HStack(
+                                            UITextBoxView()
+                                                .floatlabel(false)
+                                                .width('100%')
+                                                .placeholder('*Name')
+                                                .formField('employee_name', [new RequiredRule('Name required.')]),
                                         )
-                                    }),
+                                    ),
+                                    footer: (
+                                        Views.AcceptButton({ label: 'Update', action: () => update() })
+                                    )
+                                }),
 
-                                    Views.FormCommanSection({
-                                        title: 'Update Last Name',
-                                        content: (
-                                            HStack(
-                                                UITextBoxView()
-                                                    .floatlabel(false)
-                                                    .width('100%')
-                                                    .placeholder('*Last Name')
-                                                    .formField('employee_last_name', [new RequiredRule('Last Name required.')]),
-                                            )
-                                        ),
-                                        footer: (
-                                            Views.AcceptButton({ label: 'Update', action: () => this.Submit() })
+                                Views.FormCommanSection({
+                                    title: 'Update Last Name',
+                                    content: (
+                                        HStack(
+                                            UITextBoxView()
+                                                .floatlabel(false)
+                                                .width('100%')
+                                                .placeholder('*Last Name')
+                                                .formField('employee_last_name', [new RequiredRule('Last Name required.')]),
                                         )
-                                    }),
+                                    ),
+                                    footer: (
+                                        Views.AcceptButton({ label: 'Update', action: () => update() })
+                                    )
+                                }),
 
-                                    Views.FormCommanSection({
-                                        title: 'Update Title',
-                                        content: (
-                                            UIRecordsContext(({ data, isLoading }) =>
-                                                UIDropdownListView()
-                                                    .floatlabel(true)
-                                                    .dataSource(data)
-                                                    .fields({ text: 'title_name', value: 'id' })
-                                                    .placeHolder('Please select employee title')
-                                                    .width('100%')
-                                                    .formField('title_id', [new RequiredRule('Employee Last Name required.')])
-                                                    .allowFiltering(true)
-                                            ).resource('titles').filter({ 'tenant_id': useSessionService().TenantId })
+                                Views.FormCommanSection({
+                                    title: 'Update Title',
+                                    content: (
+                                        UIRecordsContext(({ data, isLoading }) =>
+                                            UIDropdownListView()
+                                                .floatlabel(true)
+                                                .dataSource(data)
+                                                .fields({ text: 'title_name', value: 'id' })
+                                                .placeHolder('Please select employee title')
+                                                .width('100%')
+                                                .formField('title_id', [new RequiredRule('Employee Last Name required.')])
+                                                .allowFiltering(true)
+                                        ).resource('titles').filter({ 'tenant_id': useSessionService().TenantId })
 
 
-                                        ),
-                                        footer: (
-                                            Views.AcceptButton({ label: 'Update', action: () => this.Submit() })
-                                        )
-                                    }),
+                                    ),
+                                    footer: (
+                                        Views.AcceptButton({ label: 'Update', action: () => update() })
+                                    )
+                                }),
 
-                                    Views.FormCommanSection({
-                                        title: 'Update Departman',
-                                        content: (
-                                            UIRecordsContext(({ data, isLoading }) =>
-                                                UIDropdownListView()
-                                                    .floatlabel(true)
-                                                    .dataSource(data)
-                                                    .fields({ text: 'org_unit_name', value: 'id' })
-                                                    .placeHolder('Department')
-                                                    .width('100%')
-                                                    .formField('department_id', [new RequiredRule('Please select employee department')])
-                                                    .allowFiltering(true)
-                                            ).resource('departments').filter({ 'tenant_id': useSessionService().TenantId })
+                                Views.FormCommanSection({
+                                    title: 'Update Departman',
+                                    content: (
+                                        UIRecordsContext(({ data, isLoading }) =>
+                                            UIDropdownListView()
+                                                .floatlabel(true)
+                                                .dataSource(data)
+                                                .fields({ text: 'org_unit_name', value: 'id' })
+                                                .placeHolder('Department')
+                                                .width('100%')
+                                                .formField('department_id', [new RequiredRule('Please select employee department')])
+                                                .allowFiltering(true)
+                                        ).resource('departments').filter({ 'tenant_id': useSessionService().TenantId })
 
-                                        ),
-                                        footer: (
-                                            Views.AcceptButton({ label: 'Update', action: () => this.Submit() })
-                                        )
-                                    }),
+                                    ),
+                                    footer: (
+                                        Views.AcceptButton({ label: 'Update', action: () => update() })
+                                    )
+                                }),
 
-                                    Views.FormDangerSection({
-                                        title: 'Danger Zone',
-                                        subTitle: 'The employee will be permanently deleted, including all data associated with this employee. This action is irreversible.',
-                                        content: (
-                                            HStack(
-                                                HStack({ alignment: cLeading, spacing: 10 })(
-                                                    Icon('\\ea67').size(35).foregroundColor('hsl(218 12% 43%)'),
-                                                    Text(`${this.employee?.Name} ${this.employee?.LastName}`).fontSize(14).foregroundColor('rgb(96, 106, 123)').fontWeight('600').fontFamily('"Inter", arial, sans-serif')
+                                Views.FormDangerSection({
+                                    title: 'Danger Zone',
+                                    subTitle: 'The employee will be permanently deleted, including all data associated with this employee. This action is irreversible.',
+                                    content: (
+                                        HStack(
+                                            HStack({ alignment: cLeading, spacing: 10 })(
+                                                Icon('\\ea67').size(35).foregroundColor('hsl(218 12% 43%)'),
+                                                Text(`${this.employee?.Name} ${this.employee?.LastName}`).fontSize(14).foregroundColor('rgb(96, 106, 123)').fontWeight('600').fontFamily('"Inter", arial, sans-serif')
 
-                                                ).padding(24).background('hsl(240 100% 99%)').border('solid 1px hsl(240 30% 96%)')
-                                            ).padding(10)
+                                            ).padding(24).background('hsl(240 100% 99%)').border('solid 1px hsl(240 30% 96%)')
+                                        ).padding(10)
 
-                                        ),
-                                        footer: (
-                                            Views.DeleteButton({ label: 'Delete', action: () => this.Submit() })
-                                        )
-                                    }),
+                                    ),
+                                    footer: (
+                                        Views.DeleteButton({ label: 'Delete', action: () => update() })
+                                    )
+                                })
+                            ).padding(10).paddingTop('50px').foregroundColor('#676767')
+                        )
 
-                                    //Views.InputTextView('Employee ID *', 'Enter Employee Record ID', $(this.employeeRecordId), true, $(this.isEmployeeIDdInvalid), 'ID is required.', this.formPostTried),
-                                    //Views.InputTextView('Name *', 'Enter Employee First Name', $(this.employeeName), true, $(this.isEmployeeNamedInvalid), 'Name is required.', this.formPostTried),
-                                    //Views.InputTextView('Last Name', 'Enter Employee Last Name', $(this.employeeLastName)),
-                                    // Views.InputDropdownListView('Title', 'Please select employee title', this.titles, this.employeeTitle, (e: any) => this.employeeTitle = e.itemData.Id as any),
-                                    //Views.InputDropdownListView('Department', 'Please select employee department', this.departments, this.employeeDepartment, (e: any) => this.employeeDepartment = e.itemData.Id as any),
-
-                                    //Views.InputDropdownListView('Department', 'Please select employee department', [], this.employeeDepartment?.Id, (e) => void 0),
-
-                                    //Views.AcceptButton({ label: 'Update Employee', action: () => this.action_update() }),
-
-                                ).padding(10).paddingTop('50px').foregroundColor('#676767')
-                            )
-                    ).resource('employees').filter({ id: this.employeeId })
+                    )
+                        .resource('employees')
+                        .filter({ id: this.employeeId })
+                        .onSuccess(() =>
+                            useToastService().Success('Updated')
+                            //this.navigotor('/app(tenantmanager)/company/list/employee')
+                        )
                 )
         )
 

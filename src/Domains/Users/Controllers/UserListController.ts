@@ -1,5 +1,5 @@
 import { UsersGrid } from '../Views/UsersGrid';
-import { VStack, cTopLeading, cLeading, HStack, Text, Spacer, TextField, UITable, TableColumn, Icon, IconLibrary, UIContextMenu, UIAppearance, UIScene, UIController, cTop, State, Spinner, UIRouteLink, Color, bindController, UIRecordsContext } from '@tuval/forms';
+import { VStack, cTopLeading, cLeading, HStack, Text, Spacer, TextField, UITable, TableColumn, Icon, IconLibrary, UIContextMenu, UIAppearance, UIScene, UIController, cTop, State, Spinner, UIRouteLink, Color, bindController, UIRecordsContext, Button, UISidebar } from '@tuval/forms';
 import { IEmployee, RealmBrokerClient, useOrgProvider, useSessionService } from '@realmocean/common';
 import { ActionButton } from '../../../Views/ActionButton';
 import { Services } from '../../../Services/Services';
@@ -17,7 +17,7 @@ export class UserListController extends UIController {
     private users: IEmployee[];
 
     @State()
-    private showingUsers: IEmployee[];
+    private searchText: string;
 
 
 
@@ -46,21 +46,22 @@ export class UserListController extends UIController {
         return (
             RealmDataContext(() =>
                 HStack({ alignment: cTopLeading })(
+                   
                     VStack({ alignment: cTopLeading })(
                         HStack({ alignment: cLeading, spacing: 15 })(
                             // MARK: Search Box
 
                             TextField().placeholder('Search by Employee Name')
-                                .onTextChange((value) => this.Search_Action(value))
+                                .onTextChange((value) => this.searchText = value)
                             ,
                             Spacer(),
                             Views.CreateButton({
                                 label: 'New Employee', action: () => AddUserDialog.Show().then(() => {
-                                    this.users = null;
+                                    /* this.users = null;
                                     const orgService = useOrgProvider();
                                     orgService.getEmployees().then(employees =>
                                         this.showingUsers = this.users = employees
-                                    )
+                                    ) */
                                 })
                             })
                         ).height().padding(24),
@@ -69,7 +70,12 @@ export class UserListController extends UIController {
                                 UsersGrid(data) as any
                         )
                             .resource('employees')
-                            .filter({ 'tenant_id': useSessionService().TenantId })
+                            .filter({
+                                'tenant_id': useSessionService().TenantId,
+                                ...(this.searchText != null && this.searchText.length > 2 && {
+                                    'employee_name': this.searchText
+                                })
+                            })
 
                     )
                 )

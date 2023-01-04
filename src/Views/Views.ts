@@ -1,5 +1,5 @@
 import { is, Optional } from '@tuval/core';
-import { Icon, UIRouteLink, Spacer, IconLibrary, IconType, ColorClass, ScrollView, cVertical, UIContextMenu, bindNavigate, Theme, cTrailing, useNavigate, getRouterParams, HDivider, bindController, Spinner, UIController, VDivider, TextAlignment, Button, RequiredRule, ValidateRule } from '@tuval/forms';
+import { Icon, UIRouteLink, Spacer, IconLibrary, IconType, ColorClass, ScrollView, cVertical, UIContextMenu, bindNavigate, Theme, cTrailing, useNavigate, getRouterParams, HDivider, bindController, Spinner, UIController, VDivider, TextAlignment, Button, RequiredRule, ValidateRule, UISkeleton } from '@tuval/forms';
 import {
     cLeading, ForEach, HStack, TableColumn, Text, UIAppearance, UITable, UIView, VStack, cTopLeading, TextField, cHorizontal,
     BindingClass, bindState, UIImage, cTop, UIButton, Color, SecureField,
@@ -72,6 +72,78 @@ export namespace Views {
                   ) */
                 .allowFiltering(true)
         ).height()
+    )
+
+    export const EmptyTableView = <T>(columns: ITableViewColumn[], data: T[], rowClick?: Function) => (
+        ScrollView({ axes: cVertical })(
+            VStack({ alignment: cTop })(
+                HStack(
+                    /*   HStack(
+                          Text('Responsive Table without Table tag'),
+                      ).display('table-caption').textAlign('center').fontSize(30), */
+                    // Header row
+                    HStack(
+                        ...ForEach(columns)(column =>
+                            HStack(
+                                Text(column.title).display('')
+                                    .fontFamily('"Public Sans", sans-serif'),
+                            )
+                                .borderBottom('1px solid hsl(240 30% 96%)')
+                                .fontWeight('600')
+                                .padding(16)
+                                .fontSize(12)
+                                .textTransform('uppercase')
+                                .foregroundColor('rgb(99, 115, 129)')
+                                .lineHeight('1.5rem')
+                                .display('table-cell').textAlign('justify').width(column.width ?? '').height(),
+                        )
+                    )
+
+                        .display('table-header-group')
+                        .background(Color.white)
+                        .border('solid 1px red')
+                        .width().height(),
+                    // table body
+                    HStack(
+                        ...ForEach(data)((row, index) =>
+                            HStack(
+                                // cells
+                                ...ForEach(columns)((column) =>
+                                    HStack(
+                                        HStack({ alignment: cLeading })(
+                                           UISkeleton()
+                                        )
+                                    )
+                                        .borderBottom(index != data.length - 1 ? '1px solid hsl(240 30% 96%)' : '')
+                                        .verticalAlign('middle')
+                                        .lineHeight('1.57')
+                                        .fontSize(14)
+                                        .fontWeight('400')
+                                        .padding(16)
+
+                                        .foregroundColor('rgba(33, 43, 54,0.7)')
+                                        .display('table-cell').width(column.width ?? '').height(),
+                                )
+                            )
+                                .cursor('pointer')
+                                .background({ default: Color.white, hover: 'hsl(240, 100%, 99%)' })
+                                .display('table-row').width().height()
+                                .onClick(() => {
+
+                                    if (is.function(rowClick)) {
+                                        debugger
+                                        rowClick(row, index);
+                                    }
+                                })
+                        )
+                        // row 1
+
+                    ).display('table-row-group').width().height()
+                ).display('table').height().cornerRadius(20).overflow('hidden').border('1px solid hsl(240 30% 96%)')
+
+
+            ).padding(cHorizontal, 20)
+        )
     )
 
     export const TableView = <T>(columns: ITableViewColumn[], data: T[], rowClick?: Function) => (
@@ -522,20 +594,20 @@ export namespace Views {
         return (
             UIContextMenu(
                 ...ForEach(actions)(item =>
-                    item.link != null  ?
-                    UIRouteLink(item.link, item.linkState)(
+                    item.link != null ?
+                        UIRouteLink(item.link, item.linkState)(
+                            HStack({ alignment: cLeading, spacing: 10 })(
+                                Icon(item.icon).size(20).foregroundColor(item.iconColor as any),
+
+                                Text(item.title).foregroundColor(item.iconColor as any)
+
+                            )
+                        ).padding(10).width('100%').height('100%')
+                        :
                         HStack({ alignment: cLeading, spacing: 10 })(
                             Icon(item.icon).size(20).foregroundColor(item.iconColor as any),
-
                             Text(item.title).foregroundColor(item.iconColor as any)
-
-                        )
-                    ).padding(10).width('100%').height('100%')
-                    :
-                    HStack({ alignment: cLeading, spacing: 10 })(
-                        Icon(item.icon).size(20).foregroundColor(item.iconColor as any),
-                        Text(item.title).foregroundColor(item.iconColor as any)
-                    ).padding(10).onClick(() => item.action())
+                        ).padding(10).onClick(() => item.action())
                 )
             )(
 
@@ -726,7 +798,7 @@ export namespace Views {
         )
     }
 
-    export const FormCommanSection = ({ title, content, footer }) => {
+    export const FormCommanSection = ({ title, content, footer }: { title, content, footer?}) => {
 
         return (
             VStack({ alignment: cTopLeading })(
@@ -738,16 +810,19 @@ export namespace Views {
                         content
                     ).width('60%')
                 ).padding(32),
-                HDivider().height(1).background('hsl(240 30% 96%)'),
-                HStack({ alignment: cTrailing })(
-                    footer
-                ).padding(32)
+                footer &&
+                (
+                    HDivider().height(1).background('hsl(240 30% 96%)'),
+                    HStack({ alignment: cTrailing })(
+                        footer
+                    ).padding(32)
+                )
             )
-                .overflow('hidden')
+                //.overflow('hidden')
                 .background(Color.white)
                 .cornerRadius(20)
                 .height()
-                .minHeight('250px')
+                //.minHeight('150px')
                 .maxWidth('1160px')
         )
     }

@@ -11,13 +11,8 @@ interface IFormData {
     position_record_id: string;
     position_name: string;
 }
-export class AddPositionDialog extends DialogController {
+export class AddTitleDialog extends DialogController {
 
-    @State()
-    private titles: IEmployeeTitle[];
-
-    @State()
-    private departments: IDepartment[];
 
     public BindRouterParams(obj) {
         this.setWidth(600);
@@ -53,7 +48,7 @@ export class AddPositionDialog extends DialogController {
                 UICreateContext((create, isLoading) =>
                     VStack({ alignment: cTopLeading, spacing: 10 })(
                         HStack({ alignment: cTopLeading })(
-                            Text('Create Position').fontSize(24).fontWeight('500'),
+                            Text('Create Title').fontSize(24).fontWeight('500'),
                             Spacer(),
                             Icon('\\e5cd').size(20).cursor('pointer').onClick(() => this.OnCancel())
                         ).height(50),
@@ -68,13 +63,13 @@ export class AddPositionDialog extends DialogController {
                                 .floatlabel(false)
                                 .width('100%')
                                 .placeholder('*Record ID')
-                                .formField('position_record_id', [new RequiredRule('Record ID required.')]),
+                                .formField('title_record_id', [new RequiredRule('Record ID required.')]),
 
                             UITextBoxView()
                                 .floatlabel(false)
                                 .width('100%')
                                 .placeholder('*Name')
-                                .formField('position_name', [new RequiredRule('Name required.')]),
+                                .formField('title_name', [new RequiredRule('Name required.')]),
 
                         ),
                         HStack(
@@ -96,7 +91,7 @@ export class AddPositionDialog extends DialogController {
 
                     ).padding(30).foregroundColor('#676767').height()
                 )
-                    .resource('positions')
+                    .resource('titles')
                     .onSuccess(() => {
                         this.InvalidateQueries();
                         this.OnOKClick();
@@ -110,7 +105,7 @@ export class AddPositionDialog extends DialogController {
     public static Show(): Promise<void> {
         return new Promise<void>((resolve, reject) => {
 
-            const dialog = new AddPositionDialog();
+            const dialog = new AddTitleDialog();
             dialog.BindRouterParams({});
             // npd.BindRouterParams();
             dialog.ShowDialogAsync().then(() => {
@@ -118,22 +113,4 @@ export class AddPositionDialog extends DialogController {
             })
         });
     }
-    /*  public static Show(): Promise<void> {
-         return new Promise<void>((resolve, reject) => {
-             const npd = new AddUserDialog();
-             npd.BindRouterParams({})
-             npd.ShowDialogAsync().then(() => {
-                 resolve();
-             })
-         });
-     } */
-
-    /*  public OnOKClick() {
-         this.ShowDialogAsyncResolve(null);
-         this.Hide();
-     }
- 
-     public OnCancel() {
-         this.Hide();
-     } */
 }

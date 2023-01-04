@@ -7,7 +7,7 @@ import {
 
 import {
     IGetTitleResponse, RealmBrokerClient,
-    EmployeeUIService, useOrgProvider, IEmployeeTitle, useOrgUIProvider
+    EmployeeUIService, useOrgProvider, IEmployeeTitle, useOrgUIProvider, useSessionService
 } from '@realmocean/common';
 import { Views } from '../../../Views/Views';
 import { PositionGrid } from '../Views/PositionGrid';
@@ -19,10 +19,6 @@ import { RealmDataContext } from '../../../Views/DataContexts';
 const fontFamily = '"proxima-nova", "proxima nova", "helvetica neue", "helvetica", "arial", sans-serif'
 
 export class PositionListController extends UIController {
-
-  
-
-   
 
     public BindRouterParams({ tenant_id, tenant_name }) {
         const orgProv = useOrgProvider();
@@ -56,18 +52,23 @@ export class PositionListController extends UIController {
                                 Spacer(),
                                 Views.CreateButton({
                                     label: 'New Position', action: () => AddPositionDialog.Show().then(() => {
-                                        this.positions = null;
-                                        const orgService = useOrgProvider();
+                                      // this.positions = null;
+                                       /*  const orgService = useOrgProvider();
                                         orgService.getPositions(0, 200).then(positions =>
                                             this.showingPositions = this.positions = positions
-                                        )
+                                        ) */
                                     })
                                 })
                             ).height().padding(24),
                             UIRecordsContext(({ data, isLoading }) =>
                                 isLoading ? Spinner() :
                                     PositionGrid(data)
-                            ).resource('positions')
+                            )
+                            .resource('positions-meta')
+                            .sort({ field: 'created_at', order: 'DESC' })
+                            .filter({
+                                'tenant_id': useSessionService().TenantId
+                            })
                         )
                 )
             )

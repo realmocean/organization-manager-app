@@ -16,17 +16,13 @@ interface IFormData {
     employee_department: IDepartment;
 
 }
-export class AddUserDialog extends DialogController {
+export class AddDepartmentDialog extends DialogController {
 
-    @State()
-    private titles: IEmployeeTitle[];
-
-    @State()
-    private departments: IDepartment[];
+   
 
     public BindRouterParams(obj) {
         this.setWidth(600);
-        this.setHeight(562);
+        this.setHeight(362);
 
        /*  const orgService = useOrgProvider();
         Promise.all([
@@ -49,21 +45,7 @@ export class AddUserDialog extends DialogController {
             })
 
     }
-    private action_create() {
-        /*  const orgUI = useOrgUIProvider();
-         orgUI.selectEmployee(true);
- 
-         return; */
-
-        /*   if (this.isEmployeeIDdInvalid || this.isEmployeeNamedInvalid) {
-              this.formPostTried = true;
-          } else {
-              RealmBrokerClient.CreateEmployee(this.employeeId, this.employeeName ?? '',
-                  this.employeeLastName ?? '', this.employeeTitle?.Id ?? '', this.employeeDepartment?.Id ?? '').then(() => {
-                      this.OnOKClick()
-                  })
-          } */
-    }
+   
 
     public override LoadView() {
         return (
@@ -71,7 +53,7 @@ export class AddUserDialog extends DialogController {
                 UICreateContext((create, isLoading) =>
                     VStack({ alignment: cTopLeading, spacing: 10 })(
                         HStack({ alignment: cTopLeading })(
-                            Text('Create Employee').fontSize(24).fontWeight('500'),
+                            Text('Create Department').fontSize(24).fontWeight('500'),
                             Spacer(),
                             Icon('\\e5cd').size(20).cursor('pointer').onClick(() => this.OnCancel())
                         ).height(50),
@@ -86,50 +68,14 @@ export class AddUserDialog extends DialogController {
                                 .floatlabel(false)
                                 .width('100%')
                                 .placeholder('*Record ID')
-                                .formField('employee_record_id', [new RequiredRule('Record ID required.')]),
+                                .formField('org_unit_record_id', [new RequiredRule('Record ID required.')]),
 
                             UITextBoxView()
                                 .floatlabel(false)
                                 .width('100%')
                                 .placeholder('*Name')
-                                .formField('employee_name', [new RequiredRule('Employee Name required.')]),
+                                .formField('org_unit_name', [new RequiredRule('Name required.')]),
 
-                            UITextBoxView()
-                                .floatlabel(false)
-                                .width('100%')
-                                .placeholder('*Last Name')
-                                .formField('employee_last_name', [new RequiredRule('Employee Last Name required.')]),
-
-                            HStack(
-                                UIRecordsContext(({ data }) =>
-                                    Views.DropDown({
-                                        label: 'Title',
-                                        dataSource: data,
-                                        fields: { text: 'title_name', value: 'id' },
-                                        placeholder: 'Please select employee title',
-                                        formFieldOptions: { fieldName: 'title_id', rules: [] }
-                                    })
-                                ).resource('titles').filter({ 'tenant_id': useSessionService().TenantId })
-                            ).height(),
-
-                            UIRecordsContext(({ data }) =>
-                                Views.DropDown({
-                                    label: 'Department',
-                                    dataSource: data,
-                                    fields: { text: 'org_unit_name', value: 'id' },
-                                    placeholder: 'Please select department',
-                                    formFieldOptions: { fieldName: 'department_id', rules: [] }
-                                })
-                            ).resource('departments').filter({ 'tenant_id': useSessionService().TenantId }),
-
-
-
-                            // Views.InputTextView('Employee ID *', 'Record ID', $(this.employeeId), true, $(this.isEmployeeIDdInvalid), 'ID is required.', this.formPostTried),
-                            //Views.InputTextView('Name *', 'First Name', $(this.employeeName), true, $(this.isEmployeeNamedInvalid), 'Name is required.', this.formPostTried),
-                            // Views.InputTextView('Last Name', 'Last Name', $(this.employeeLastName)),
-                            // Views.InputDropdownListView('Title', 'Please select employee title', this.titles, this.employeeTitle?.Id, (e) => this.employeeTitle = e.itemData as any),
-                            //Views.InputDropdownListView('Department', 'Please select employee department', this.departments, this.employeeDepartment?.Id, (e) => this.employeeDepartment = e.itemData as any),
-                            //Views.InputDropdownListView('Department', 'Please select employee department', [], this.employeeDepartment?.Id, (e) => void 0),
                         ),
                         HStack(
                             HStack({ alignment: cTrailing, spacing: 10 })(
@@ -149,7 +95,7 @@ export class AddUserDialog extends DialogController {
 
 
                     ).padding(30).foregroundColor('#676767').height()
-                ).resource('employees')
+                ).resource('departments')
                     .onSuccess(() => {
                         this.InvalidateQueries();
                         this.OnOKClick();
@@ -166,7 +112,7 @@ export class AddUserDialog extends DialogController {
     public static Show(): Promise<void> {
         return new Promise<void>((resolve, reject) => {
 
-            const dialog = new AddUserDialog();
+            const dialog = new AddDepartmentDialog();
             dialog.BindRouterParams({});
             // npd.BindRouterParams();
             dialog.ShowDialogAsync().then(() => {

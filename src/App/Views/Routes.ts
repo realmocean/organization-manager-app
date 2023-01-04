@@ -39,6 +39,8 @@ import { AccountView_DetailsController } from '../../Domains/Security/Account/Co
 import { AccountView_ProfileController } from '../../Domains/Security/Account/Controllers/AccountView_ProfileController';
 import { AccountView_AttributesController } from '../../Domains/Security/Account/Controllers/AccountView_AttributesController';
 import { AccountView_AppsController } from '../../Domains/Security/Account/Controllers/AccountView_AppsController';
+import { EditPositionLayoutController } from '../../Domains/Positions/Controllers/EditPositionLayoutController';
+import { EditTitleLayoutController } from '../../Domains/Titles/Controllers/EditTitleLayoutController';
 
 export const Routes = () => {
     const [LoggedIn, setLoggedIn] = bindState(null);
@@ -75,8 +77,16 @@ export const Routes = () => {
                 )('employee/:employee_id', EditUserLayoutController),
 
                 UIRoute(
-                    UIRoute('overview', EditDepartmentController),
-                )('department/:department_id', EditDepartmentLayoutController),
+                    UIRoute('edit', EditDepartmentController),
+                )('departments/:department_id', EditDepartmentLayoutController),
+
+                UIRoute(
+                    UIRoute('edit', EditPositionController),
+                )('positions/:position_id', EditPositionLayoutController),
+
+                UIRoute(
+                    UIRoute('edit', EditTitleController),
+                )('titles/:title_id', EditTitleLayoutController)
                 // MARK: Organization Units Routes
 
 

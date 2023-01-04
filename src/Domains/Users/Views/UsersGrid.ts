@@ -1,25 +1,26 @@
 import { IEmployee } from '@realmocean/common';
-import { HStack, Icon, Text, UIRouteLink, IconLibrary, VStack, cLeading, Color, UIContextMenu, ForEach, bindNavigate, bindController, UIController } from '@tuval/forms';
+import { HStack, Icon, Text, UIRouteLink, IconLibrary, VStack, cLeading, Color, UIContextMenu, ForEach, bindNavigate, bindController, UIController, UIRecordContext } from '@tuval/forms';
 
 import { ITableViewColumn, Views } from '../../../Views/Views';
 import { QueryCache, useQuery, useQueryClient } from "@realmocean/data";
 
 import { HttpClient } from '@tuval/core';
 import { DeleteUserDialog } from '../Dialogs/DeleteEmployeeDialog';
+import { RealmDataContext } from '../../../Views/DataContexts';
 
 const usePosts = () =>
-  useQuery("posts", async () => {
-    alert('')
-   
-    return {};
-  });
+    useQuery("posts", async () => {
+        alert('')
+
+        return {};
+    });
 
 
 
 const columns: ITableViewColumn[] = [
     {
         title: 'Employee',
-        width: '60%',
+        width: '40%',
         view: (row: any) => (
             HStack({ spacing: 15 })(
                 Icon('\\ea67').size(35),
@@ -37,12 +38,38 @@ const columns: ITableViewColumn[] = [
 
     },
     {
-        title: 'Department',
-        key: 'DepartmentName',
-        width: '60%',
+        title: 'Title',
+        width: '30%',
+        view: (row: any) => (
+            RealmDataContext(() =>
+                UIRecordContext(({ data }) =>
+                    VStack({ alignment: cLeading })(
+                        Text(`${data?.title_name}`)
+                            .fontFamily('"Public Sans", sans-serif')
+                    )
+                ).resource('titles').filter({ 'id': row.title_id })
+            )
+
+        )
     },
     {
-        title: '',
+        title: 'Department',
+        key: 'DepartmentName',
+        width: '30%',
+        view: (row: any) => (
+            RealmDataContext(() =>
+                UIRecordContext(({ data }) =>
+                    VStack({ alignment: cLeading })(
+                        Text(`${data?.org_unit_name}`)
+                            .fontFamily('"Public Sans", sans-serif')
+                    )
+                ).resource('departments').filter({ 'id': row.department_id })
+            )
+
+        )
+    },
+    {
+        title: 'Action',
         view: (employee: any) => (
             HStack({ alignment: cLeading })(
                 Views.ActionContextMenu([
@@ -60,7 +87,7 @@ const columns: ITableViewColumn[] = [
                         tooltip: 'Delete',
                         iconColor: Color.red400,
                         //link: `/app(tenantmanager)/employee/delete/${employee.id}`,
-                        action : () => DeleteUserDialog.Show(employee.id),
+                        action: () => DeleteUserDialog.Show(employee.id),
                         linkState: { position: employee }
                     }
                 ])
@@ -71,13 +98,19 @@ const columns: ITableViewColumn[] = [
 
 export const UsersGrid = (users: any[]) => {
 
-    
-    return ({ controller }) => (
 
-        Views.TableView(columns, users, (employee: any, index) => {
-           
-           // controller.navigotor(`/app(tenantmanager)/company/edit/employee/${employee.id}/overview`, { state: { employee_info: employee } })
+    // return ({ controller }) => (
+
+    if (users == null)
+        return Views.EmptyTableView(columns, Array.from({ length: 5 }), (employee: any, index) => {
+
+            // controller.navigotor(`/app(tenantmanager)/company/edit/employee/${employee.id}/overview`, { state: { employee_info: employee } })
+        })
+    else
+        return Views.TableView(columns, users, (employee: any, index) => {
+
+            // controller.navigotor(`/app(tenantmanager)/company/edit/employee/${employee.id}/overview`, { state: { employee_info: employee } })
         })
 
-    )
+    // )
 }

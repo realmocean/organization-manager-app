@@ -1,69 +1,128 @@
-import { $, Binding, bindNavigate, cTopLeading, State, UIController, UIScene, VStack } from '@tuval/forms';
+import {
+    cLeading,
+    cTopLeading,
+    HStack,
+    Spacer,
+    Spinner,
+    State,
+    Text,
+    TextField,
+    UIButton,
+    UIController,
+    UIScene,
+    VStack,
+    cHorizontal,
+    Toggle,
+    SecureField,
+    AutoComplete,
+    $,
+    useApplication,
+    Icon,
+    cTop,
+    RequiredRule,
+    UIFormController,
+    Button,
+    cVertical,
+    UIUpdateContext,
+    useToastService
+} from '@tuval/forms';
 
-import { IEmployeeTitle, IGetTitleResponse, RealmBrokerClient, useOrgProvider } from '@realmocean/common';
+import { RealmBrokerClient, useOrgProvider, IEmployeeTitle, IDepartment, useOrgUIProvider } from '@realmocean/common';
+import { Color, UIImage, NavigateFunction, bindNavigate, Binding } from '@tuval/forms';
+import { ActionButton } from '../../../Views/ActionButton';
+import { Services } from '../../../Services/Services';
 import { Views } from '../../../Views/Views';
+import { UIDropdownListView } from '@realmocean/dropdowns';
+import { UITextBoxView } from '@realmocean/inputs';
+import { is } from '@tuval/core';
+import { RealmDataContext } from '../../../Views/DataContexts';
 
-export class EditTitleController extends UIController {
+const fontFamily = '"proxima-nova", "proxima nova", "helvetica neue", "helvetica", "arial", sans-serif'
+const img = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEoAAABKCAYAAAAc0MJxAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAZdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuMTZEaa/1AAABCUlEQVR4Xu3aMUoDQQCG0VzCY3gOm1zEThAsrT2GR/ImQtpAVjaCRVjxWxxxCa94A9P9fN3A7O4e9gSfx/008T2hIqEioSKhIqEioSKhIqEioSKhIqGiYaFuX07T6+F9k+ZtS5vXECoSKhIqEioSKhIqEioSKhoW6ub5ND29HTZp3ra0eY1hoa6dUJFQkVCRUJFQkVCRUJFQ0bBQnjCRUJFQkVCRUJFQkVCRUJFQkVCcCRUJFQkVCRUJFQkVCRUJFQ0L5ZNG5AkTCRUJFQkVCRUJFQkVCRUJVT0ez4O2aN62uHmFcaEuXY777/sv/V2oKyNUJFQkVCRUJFQkVCRUJFQkVPQVip/sdx+ddLpvQckwsAAAAABJRU5ErkJggg=='
+
+
+export class EditTitleController extends UIFormController {
 
     @State()
-    private title: IEmployeeTitle;
+    private titleId: string;
 
-    @State()
-    private formPostTried: boolean;
 
-    @Binding()
-    private titleRecordId: string;
 
-    @Binding(true)
-    private isTitleRecordIdInvalid: boolean;
 
-    @Binding()
-    private titleName: string;
 
-    @Binding(true)
-    private isTitleNamedInvalid: boolean;
+    protected override BindRouterParams({ title_id }) {
 
-    protected BindRouterParams({ title_id }) {
+        this.titleId = title_id;
 
-        const orgService = useOrgProvider();
-        
-        orgService.getTitleById(title_id).then(title =>{
-            this.title = title;
-
-            this.titleRecordId = title.RecordId;
-            this.titleName = title.Name;
-        })
-       
-    }
-    private ActionPost() {
-      
-            RealmBrokerClient.UpdateTitle(this.title.Id, this.titleRecordId, this.titleName).then(() => {
-                this.navigotor('/app(tenantmanager)/title/list', { replace: true });
-            })
-        
     }
 
     private ActionCancel() {
-        this.navigotor('/app(tenantmanager)/employee/list');
+        this.navigotor('/app(tenantmanager)/title/list');
     }
 
     public LoadView(): any {
         return (
-            UIScene(
-                Views.FormView({
-                    header: `Update Title`,
-                    content: (
-                        VStack({ alignment: cTopLeading, spacing: 10 })(
-                            Views.InputTextView('Title ID *', 'Enter Title Record ID', $(this.titleRecordId), true, $(this.isTitleRecordIdInvalid), 'ID is required.', this.formPostTried),
-                            Views.InputTextView('Name *', 'Enter Title First Name', $(this.titleName), true, $(this.isTitleNamedInvalid), 'Name is required.', this.formPostTried),
+            this.titleId == null ? Spinner() :
+                RealmDataContext(() =>
+                    UIUpdateContext((update) =>
+                        VStack({ alignment: cTop, spacing: 24 })(
+                            Views.FormCommanSection({
+                                title: 'Update Record ID',
+                                content: (
+                                    HStack(
+                                        UITextBoxView()
+                                            .floatlabel(false)
+                                            .width('100%')
+                                            //.placeholder('*Record ID')
+                                            .formField('title_record_id', [new RequiredRule('Record ID required.')]),
+                                    )
+                                ),
+                                footer: (
+                                    Views.AcceptButton({
+                                        label: 'Update', action: () => {
+                                            update();
+                                            this.InvalidateQueries();
+                                        }
+                                    })
+                                    /* .disabled(
+                                        !this.GetFieldState('department_record_id').isTouched ||
+                                        is.nullOrEmpty(this.GetValue('department_record_id'))
+                                    ) */
+                                )
+                            }),
 
-                            Views.AcceptButton({ label: 'Update Title', action: () => this.ActionPost() }),
+                            Views.FormCommanSection({
+                                title: 'Update Name',
+                                content: (
+                                    HStack(
+                                        UITextBoxView()
+                                            .floatlabel(false)
+                                            .width('100%')
+                                            // .placeholder('*Name')
+                                            .formField('title_name', [new RequiredRule('Name required.')]),
+                                    )
+                                ),
+                                footer: (
+                                    Views.AcceptButton({
+                                        label: 'Update', action: () => {
+                                            update();
+                                            this.InvalidateQueries();
+                                        }
+                                    })
+                                )
+                            })
 
-                        ).padding(10).foregroundColor('#676767').height()
-                            .marginTop('10px')
+                        ).padding(10).paddingTop('50px').foregroundColor('#676767')
                     )
-                })
-            )
+                        .resource('titles').filter({ id: this.titleId })
+                        .onSuccess(() =>
+                            useToastService().Success('Updated')
+                            //this.navigotor('/app(tenantmanager)/company/list/employee')
+                        )
+                )
+
+
         )
+
     }
 }

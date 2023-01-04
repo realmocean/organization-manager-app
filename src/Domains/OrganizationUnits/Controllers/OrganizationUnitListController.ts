@@ -1,6 +1,6 @@
 
-import { VStack, cTopLeading, cLeading, HStack, Text, Spacer, TextField, UITable, TableColumn, Icon, IconLibrary, UIContextMenu, UIAppearance, UIScene, UIController, cTop, State, Spinner, UIRouteLink, Color } from '@tuval/forms';
-import { RealmBrokerClient, IGetTitleResponse, IGetOrganizationUnitResponse, useOrgProvider, IDepartment } from '@realmocean/common';
+import { VStack, cTopLeading, cLeading, HStack, Text, Spacer, TextField, UITable, TableColumn, Icon, IconLibrary, UIContextMenu, UIAppearance, UIScene, UIController, cTop, State, Spinner, UIRouteLink, Color, UIRecordsContext } from '@tuval/forms';
+import { RealmBrokerClient, IGetTitleResponse, IGetOrganizationUnitResponse, useOrgProvider, IDepartment, useSessionService } from '@realmocean/common';
 import { ActionButton } from '../../../Views/ActionButton';
 import { Services } from '../../../Services/Services';
 import { ITableViewColumn, Views } from '../../../Views/Views';
@@ -8,6 +8,8 @@ import { UsersGrid } from '../../Users/Views/UsersGrid';
 import { TitleGrid } from '../../Titles/Views/TitleGrid';
 import { OrganizationUnitGrid } from '../Views/OrganizationUnitGrid';
 import { NewOrganizationUnitController } from './NewOrganizationUnitController';
+import { RealmDataContext } from '../../../Views/DataContexts';
+import { AddDepartmentDialog } from '../Dialogs/AddDepartmentDialog';
 
 const fontFamily = '"proxima-nova", "proxima nova", "helvetica neue", "helvetica", "arial", sans-serif'
 
@@ -17,50 +19,54 @@ export class OrganizationUnitListController extends UIController {
     private organizationUnits: IDepartment[];
 
     @State()
-    private showingOrganizationUnits: any[];
+    private searchText: string;
 
-    private isLoading(): boolean {
-        return this.organizationUnits == null;
-    }
+
 
 
     public BindRouterParams({ tenant_id, tenant_name }) {
-        //  if (this.tenants == null) {
 
-        const orgService = useOrgProvider();
+    }
 
-        orgService.getDepartments().then(titles => {
-            this.showingOrganizationUnits = this.organizationUnits = titles;
-        })
-    }
-    private Search_Action(value: string): void {
-        //this.showingTenants = this.tenants.filter((tenant) => tenant.tenant_name.toLowerCase().indexOf(value.toLowerCase()) > -1);
-    }
 
     public LoadView(): any {
         return (
-            HStack({ alignment: cTopLeading })(
-                this.isLoading() ?
-                    VStack(Spinner()) :
-                    VStack({ alignment: cTopLeading })(
-                        HStack({ alignment: cLeading, spacing: 15 })(
-                            // MARK: Search Box
+            RealmDataContext(() =>
+                UIRecordsContext(({ data, isLoading }) =>
+                    HStack({ alignment: cTopLeading })(
+                        VStack({ alignment: cTopLeading })(
+                            HStack({ alignment: cLeading, spacing: 15 })(
+                                // MARK: Search Box
 
-                            TextField().placeholder('Search by Department Name')
-                                .onTextChange((value) => this.Search_Action(value))
+                                TextField().placeholder('Search by Department Name')
+                                    .onTextChange((value) => this.searchText = value)
                             ,
                             Spacer(),
-                            Views.CreateButton({ label: 'New Department', action: ()=> NewOrganizationUnitController.Show().then(()=>{
-                                this.organizationUnits = null;
-                                const orgService = useOrgProvider();
-                                orgService.getDepartments().then(deps =>
-                                    this.showingOrganizationUnits = this.organizationUnits = deps
-                                )
-                            })})
+                            Views.CreateButton({
+                                label: 'New Department', action: () => AddDepartmentDialog.Show().then(() => {
+                                    /*   this.organizationUnits = null;
+                                      const orgService = useOrgProvider();
+                                      orgService.getDepartments().then(deps =>
+                                          this.showingOrganizationUnits = this.organizationUnits = deps
+                                      ) */
+                                })
+                            })
                         ).height().padding(24),
-                        OrganizationUnitGrid(this.organizationUnits) as any
+                        OrganizationUnitGrid(data) as any
                     )
+                )
             )
+                .resource('departments')
+                .sort({ field: 'created_at', order: 'DESC' })
+                .filter({
+                    'tenant_id': useSessionService().TenantId,
+                    ...(this.searchText != null && this.searchText.length > 2 && {
+                        'org_unit_name': this.searchText
+                    })
+                })
+
+        )
+
 
         )
     }
