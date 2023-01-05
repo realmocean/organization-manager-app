@@ -14,13 +14,13 @@ const menuModel = [
             {
                 name: 'Overview',
                 icon: "\\fa2f",
-                link: '/app(realmmanager)/dashboard'
+                link: '/app(tenantmanager)/dashboard'
 
             },
             {
                 name: 'Sessions',
-                icon: "\\e39e",
-                link: '/app(realmmanager)/dashboard'
+                icon: "\\e425",
+                link: '/app(tenantmanager)/sessions'
 
             }
          ] 

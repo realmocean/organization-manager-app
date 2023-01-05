@@ -41,6 +41,7 @@ import { AccountView_AttributesController } from '../../Domains/Security/Account
 import { AccountView_AppsController } from '../../Domains/Security/Account/Controllers/AccountView_AppsController';
 import { EditPositionLayoutController } from '../../Domains/Positions/Controllers/EditPositionLayoutController';
 import { EditTitleLayoutController } from '../../Domains/Titles/Controllers/EditTitleLayoutController';
+import { SessionsController } from '../../Domains/Sessions/Controller/SessionsController';
 
 export const Routes = () => {
     const [LoggedIn, setLoggedIn] = bindState(null);
@@ -58,6 +59,7 @@ export const Routes = () => {
     return UIRoutes(
         UIRoute(
             UIRoute('/app(tenantmanager)/dashboard', DashboardController),
+            UIRoute('/app(tenantmanager)/sessions', SessionsController),
 
             UIRoute(
 
