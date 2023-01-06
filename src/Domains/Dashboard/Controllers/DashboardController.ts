@@ -1,10 +1,11 @@
-import { useOrgUIProvider } from '@realmocean/common';
+import { useOrganizationUIService, useOrgUIProvider } from '@realmocean/common';
 import {
     cLeading, Color, cTopLeading, HStack, IconLibrary, State, UIController, UIScene, VStack, Text,
     bindFormController, UIFormController, Button, useForm, TextField, UIFormView, RequiredRule, MaxLengthRule, DataContext,
      WebApiDataProvider, getView, UIRecordContext, Template, UIView
 } from '@tuval/forms';
 import { UIGridView } from '@realmocean/grids';
+import { UIMapView } from '@realmocean/maps';
 
 
 import { LeftSideMenuView } from '../../../App/Views/LeftSideMenu';
@@ -155,6 +156,13 @@ export class DashboardController extends UIFormController {
                         title: 'Dashboard',
                         content: (
                             VStack({ alignment: cTopLeading, spacing: 20 })(
+                               
+
+                        /*          Button(
+                                    Text('Show')
+                                ).onClick(()=>{
+                                    useOrganizationUIService().selectAccount(true).then(selected => alert(JSON.stringify(selected))); 
+                                }),  */
                                /*  UIGridView()
                                     .height('100%')
                                     .columns(columns as any)
@@ -177,15 +185,19 @@ export class DashboardController extends UIFormController {
                                 HStack({ alignment: cTopLeading, spacing: 10 })(
                                     /*  DashboardItem(IconLibrary.Visibility, 'Logins', '1300', 'AVG'),
                                      DashboardItem(IconLibrary.Visibility, 'App Downloads', '1300', 'AVG') */
-                                    Views.DashboardTile('Tenants', '126', IconLibrary.AccountCircle,
+                                    Views.DashboardTile('Total Active Accounts', '126', IconLibrary.AccountCircle,
                                         Color.blue500, Color.blue100),
                                     Views.DashboardTile('Errors', '12', '\\d21e',
                                         Color.red700, Color.red100),
                                     Views.DashboardTile('Active Tickets', '55', '\\d1f3',
                                         Color.green500, Color.green100),
+                                        Views.DashboardTile('Apps', '55', '\\d1f3',
+                                        Color.green500, Color.green100),
 
-                                ).height()
-                            )
+                                ).height(),
+                                Views.DashboardTileBox('Locations', UIMapView())
+                                
+                            ).padding(20)
                         )
                     })
                 )

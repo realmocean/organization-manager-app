@@ -660,8 +660,32 @@ export namespace Views {
                 .padding('1rem')
                 .border('solid 1px #fafafa')
                 .cornerRadius(6)
+                .background(Color.white)
                 .shadow('0 4px 10px rgba(0,0,0,.03),0 0 2px rgba(0,0,0,.06),0 2px 6px rgba(0,0,0,.12)')
         ).height().width('33%')
+    )
+
+    export const DashboardTileBox = (title: string, content: UIView) => (
+        VStack(
+            VStack({ alignment: cLeading, spacing: 10 })(
+                HStack(
+                    VStack({ alignment: cTopLeading })(
+                        Text(title)
+                            .fontWeight('500')
+                            .foregroundColor('#9e9e9e')
+                            .fontSize(16)
+                            .marginBottom('1rem')
+                    ),
+                    content
+
+                ),
+            )
+                .padding('1rem')
+                .border('solid 1px #fafafa')
+                .cornerRadius(6)
+                .background(Color.white)
+                .shadow('0 4px 10px rgba(0,0,0,.03),0 0 2px rgba(0,0,0,.06),0 2px 6px rgba(0,0,0,.12)')
+        ).height().width()
     )
 
     export const RightSidePage = ({ showBackIcon, title, copyId, tabview, content, maxWidth = '1160px' }: { title: string, showBackIcon?: boolean, copyId?: { value: string, label: string }, tabview?: UIView, content: UIView, maxWidth?: string }): any => {

@@ -1,4 +1,5 @@
-import { VStack, cTopLeading, Icon, IconLibrary, Text, ForEach, HStack, cLeading, bindState, Color, UIRouteLink, cHorizontal, Theme, ScrollView, cVertical } from '@tuval/forms';
+import { useSessionService } from '@realmocean/common';
+import { VStack, cTopLeading, Icon, IconLibrary, Text, ForEach, HStack, cLeading, bindState, Color, UIRouteLink, cHorizontal, Theme, ScrollView, cVertical, cTop, cCenter } from '@tuval/forms';
 import { theme } from '../../Theme';
 
 //const fontFamily = '"proxima-nova", "proxima nova", "helvetica neue", "helvetica", "arial", sans-serif';\
@@ -10,7 +11,7 @@ const backgroundColor = 'white';
 const menuModel = [
     {
         title: 'Dashboard',
-          subItems: [
+        subItems: [
             {
                 name: 'Overview',
                 icon: "\\fa2f",
@@ -23,7 +24,7 @@ const menuModel = [
                 link: '/app(tenantmanager)/sessions'
 
             }
-         ] 
+        ]
     },
 
     {
@@ -191,7 +192,7 @@ const menuModel = [
         ]
     },
 
-   
+
     {
         title: 'Marketplace',
         link: '/app(tenantmanager)/marketplace/list'
@@ -211,16 +212,20 @@ export const LeftSideMenuView = (realmName: string, selectedItem: string) => (
 
     VStack({ alignment: cTopLeading })(
         ScrollView({ axes: cVertical, alignment: cTopLeading })(
-            VStack({alignment:cTopLeading})(
-                HStack(
+            VStack({ alignment: cTopLeading })(
+                HStack({alignment:cLeading, spacing: 10})(
                     Icon('\\d1f1').size(26),
-
+                    Text(useSessionService().TenantName.toUpperCase())
+                        .foregroundColor(theme.surfaceground)
+                        .fontWeight('500')
                 ).height().padding(),
-                HStack({ alignment: cLeading, spacing: 10 })(
+               
+
+               /*  HStack({ alignment: cLeading, spacing: 10 })(
                     Text('Organization Manager')
                         .foregroundColor(theme.surfaceground)
                         .fontWeight('500')
-                ).height(40).padding(cHorizontal, '1rem'),
+                ).height(40).padding(cHorizontal, '1rem'), */
                 ...ForEach(menuModel)(menu =>
                     VStack({ alignment: cTopLeading })(
 

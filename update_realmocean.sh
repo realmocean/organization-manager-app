@@ -16,3 +16,6 @@ npm install @realmocean/grids --save-dev
 
 npm uninstall @realmocean/calendars
 npm install @realmocean/calendars --save-dev
+
+npm uninstall @realmocean/maps
+npm install @realmocean/maps --save-dev
