@@ -156,6 +156,7 @@ export class DashboardController extends UIFormController {
                         title: 'Dashboard',
                         content: (
                             VStack({ alignment: cTopLeading, spacing: 20 })(
+                                TextField(),
                                
 
                         /*          Button(

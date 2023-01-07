@@ -12,15 +12,25 @@ const columns: ITableViewColumn[] = [
         width: '10%',
         view: (row: any) => (
             HStack({ spacing: 2 })(
-                Icon('\\e8b6').size(15)
+                HStack(
+                    Icon('\\e8b6').size(15)
+
+                )
                     .background({ hover: '#e0e0e0' })
                     .padding(5).cornerRadius(3)
-                    .transition('color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out'),
-                Icon('\\e8ac').size(15)
+                    .transition('color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out')
+                    .width().height().tooltip('Details'),
+                HStack(
+                    Icon('\\e8ac').size(15)
+                )
                     .background({ hover: '#e0e0e0' })
                     .padding(5).cornerRadius(3)
-                    .transition('color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out'),
-                Icon('\\e897').size(15)
+                    .transition('color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out')
+                    .width().height().tooltip('Close Session'),
+                HStack(
+                    Icon('\\e897').size(15)
+
+                ).width().height().tooltip('Lock Session')
                     .background({ hover: '#e0e0e0' })
                     .padding(5).cornerRadius(3)
                     .transition('color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out')
@@ -47,7 +57,7 @@ const columns: ITableViewColumn[] = [
             HStack({ spacing: 15 })(
                 VStack({ alignment: cLeading })(
                     Text(moment(row.creation_date).fromNow()).fontSize('10pt')
-                    
+
                 )
             )
         )
@@ -79,11 +89,11 @@ const columns: ITableViewColumn[] = [
         width: '20%',
         view: (row: any) => (
             HStack({ spacing: 5 })(
-              
-                    Text(`${row.client_browser_family}`).fontSize('10pt'),
-                    Text(`${row.client_browser_version}`).fontSize('80%')
-                )
-            
+
+                Text(`${row.client_browser_family}`).fontSize('10pt'),
+                Text(`${row.client_browser_version}`).fontSize('80%')
+            )
+
         )
     },
     {
@@ -92,8 +102,8 @@ const columns: ITableViewColumn[] = [
         view: (row: any) => (
             HStack({ spacing: 15 })(
                 Icon('\\ef4a').size(15)
-                    .foregroundColor( '#DBDBDB' )
-                 
+                    .foregroundColor('#DBDBDB')
+
             )
         )
     },
@@ -103,8 +113,8 @@ const columns: ITableViewColumn[] = [
         view: (row: any) => (
             HStack({ spacing: 15 })(
                 Icon('\\e86c').size(15)
-                    .foregroundColor( '#4cd964' )
-                 
+                    .foregroundColor('#4cd964')
+
             )
         )
     },
@@ -114,8 +124,8 @@ const columns: ITableViewColumn[] = [
         view: (row: any) => (
             HStack({ spacing: 15 })(
                 Icon('\\ef4a').size(15)
-                    .foregroundColor( '#DBDBDB' )
-                 
+                    .foregroundColor('#DBDBDB')
+
             )
         )
     }
