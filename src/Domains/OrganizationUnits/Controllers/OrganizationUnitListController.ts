@@ -10,6 +10,7 @@ import { OrganizationUnitGrid } from '../Views/OrganizationUnitGrid';
 import { NewOrganizationUnitController } from './NewOrganizationUnitController';
 import { RealmDataContext } from '../../../Views/DataContexts';
 import { AddDepartmentDialog } from '../Dialogs/AddDepartmentDialog';
+import { UserFileDownloader } from '@tuval/core';
 
 const fontFamily = '"proxima-nova", "proxima nova", "helvetica neue", "helvetica", "arial", sans-serif'
 
@@ -50,7 +51,17 @@ export class OrganizationUnitListController extends UIController {
                                           this.showingOrganizationUnits = this.organizationUnits = deps
                                       ) */
                                 })
-                            })
+                            }),
+                              
+                            Views.ExportButton({
+                                label: 'Export', action: () => {
+                                    const fd = new UserFileDownloader({
+                                        url: `/api/ExportDepartments?organization_id=${useSessionService().TenantId}`,
+                                        autoStart: true
+                                    })
+                                }
+                            }),
+                            
                         ).height().padding(24),
                         OrganizationUnitGrid(data) as any
                     )

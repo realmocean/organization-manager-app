@@ -46,7 +46,7 @@ const columns: ITableViewColumn[] = [
                     VStack({ alignment: cLeading })(
                         Text(`${data?.title_name}`)
                             .fontFamily('"Public Sans", sans-serif')
-                    )
+                    ).foregroundColor('rgba(33, 43, 54,0.7)')
                 ).resource('titles').filter({ 'id': row.title_id })
             )
 

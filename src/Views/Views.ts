@@ -491,6 +491,27 @@ export namespace Views {
         ).height().width()
     )
 
+    export const ExportButton = ({ label, action }: { label: string, action: Function }) => (
+        HStack(
+            UIButton(
+                Icon('\\e2c4').size(24).marginRight('3px'),
+                Text(label).whiteSpace('nowrap')
+            )
+                .padding(cHorizontal, 15)
+                .padding(cVertical, 7)
+                .background({ default: 'rgb(219,26, 90)', hover: 'rgb(240,45, 101)' })
+                .foregroundColor(Color.white)
+                .fontSize(14)
+                .fontWeight('400')
+                .border({ default: '1px solid rgb(191,13,81)', hover: '1px solid rgb(191,13,81)' })
+                .transition('all .2s ease-in-out')
+                .cornerRadius(5)
+                .shadow({ focus: '0 0 0 1px #fff, 0 0 2px 2px #0069ff' })
+                .tabIndex(2)
+                .onClick(() => action())
+        ).height().width()
+    )
+
     export const DeleteButton = ({ label, action }: { label: string, action: Function }) => (
         HStack(
             UIButton(
