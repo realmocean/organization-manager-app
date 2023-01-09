@@ -139,7 +139,7 @@ export class EditDepartmentController extends UIFormController {
                                     )
                                 ),
                                 footer: (
-                                    Views.AcceptButton({ label: 'Update', action: () => this.Submit() })
+                                    Views.AcceptButton({ label: 'Update', action: () => update() })
                                 )
                             }),
 

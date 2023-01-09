@@ -64,7 +64,7 @@ export class PositionListController extends UIController {
                                 isLoading ? Spinner() :
                                     PositionGrid(data)
                             )
-                            .resource('positions-meta')
+                            .resource('positions')
                             .sort({ field: 'created_at', order: 'DESC' })
                             .filter({
                                 'tenant_id': useSessionService().TenantId

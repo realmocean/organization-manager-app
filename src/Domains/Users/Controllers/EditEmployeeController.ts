@@ -292,7 +292,7 @@ export class EditEmployeeController extends UIFormController {
                                                 .fields({ text: 'title_name', value: 'id' })
                                                 .placeHolder('Please select employee title')
                                                 .width('100%')
-                                                .formField('title_id', [new RequiredRule('Employee Last Name required.')])
+                                                .formField('title_id', [/* new RequiredRule('Employee Last Name required.') */])
                                                 .allowFiltering(true)
                                         ).resource('titles').filter({ 'tenant_id': useSessionService().TenantId })
 
@@ -313,7 +313,7 @@ export class EditEmployeeController extends UIFormController {
                                                 .fields({ text: 'org_unit_name', value: 'id' })
                                                 .placeHolder('Department')
                                                 .width('100%')
-                                                .formField('department_id', [new RequiredRule('Please select employee department')])
+                                                .formField('department_id', [/* new RequiredRule('Please select employee department') */])
                                                 .allowFiltering(true)
                                         ).resource('departments').filter({ 'tenant_id': useSessionService().TenantId })
 
@@ -323,7 +323,7 @@ export class EditEmployeeController extends UIFormController {
                                     )
                                 }),
 
-                                Views.FormDangerSection({
+                              /*   Views.FormDangerSection({
                                     title: 'Danger Zone',
                                     subTitle: 'The employee will be permanently deleted, including all data associated with this employee. This action is irreversible.',
                                     content: (
@@ -339,7 +339,7 @@ export class EditEmployeeController extends UIFormController {
                                     footer: (
                                         Views.DeleteButton({ label: 'Delete', action: () => update() })
                                     )
-                                })
+                                }) */
                             ).padding(10).paddingTop('50px').foregroundColor('#676767')
                         )
 
