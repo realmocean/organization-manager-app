@@ -107,7 +107,7 @@
         "@realmocean/common": "^1.0.198",
         "@realmocean/data": "^0.0.3",
         "@realmocean/dropdowns": "^0.0.20",
-        "@realmocean/grids": "^19.2.63",
+        "@realmocean/grids": "^19.2.67",
         "@realmocean/inputs": "^0.0.12",
         "@realmocean/maps": "^20.4.49",
         "@tuval/cg": "^0.0.16",
