@@ -20,4 +20,4 @@ shell.echo('App file creating...');
 
 tuval.appPackager('./dist/index.js', `./dist/${appName}.app`);
 
-shell.cp('-Rf', './dist/com.tuvalsoft.app.organizationmanager.app', '../../realm-runtime/src/portal/static/applications');
+shell.cp('-Rf', './dist/com.tuvalsoft.app.organizationmanager.app', '../realm-runtime/src/portal/static/applications');
