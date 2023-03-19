@@ -133,7 +133,7 @@ const menuModel = [
             {
                 name: 'Installed Brokers',
                 icon: '\\d235',
-                link: '/app(tenantmanager)/broker/installed'
+                link: '/app/com.tuvalsoft.app.organizationmanager/brokers/installed'
             }
         ]
     },

@@ -113,7 +113,7 @@
         "@realmocean/services": "^21.0.0-beta.5",
         "@tuval/cg": "^0.0.16",
         "@tuval/core": "^0.0.102",
-        "@tuval/forms": "^1.0.1-beta.59",
+        "@tuval/forms": "^1.0.1-beta.114",
         "@tuval/graphics": "^0.0.10",
         "css-loader": "^3.2.0",
         "d3-graphviz": "^4.0.0",

@@ -1,6 +1,8 @@
 import { UIController, UIView, Text, UIRoutes, UIRoute, useLocation } from "@tuval/forms";
 import { DashboardController } from "../controllers/DashboardController";
 import { LayoutController } from "../controllers/LayoutController";
+import { BrokersController } from "../domains/brokers/controllers/BrokersController";
+import { InstalledBrokerListController } from "../domains/brokers/controllers/InstalledBrokerListController";
 import { CompanyController } from "../domains/company/controllers/CompanyController";
 import { DepartmentListController } from "../domains/departments/controllers/DepartmentListController";
 import { AppListController } from "../domains/marketplace/apps/controllers/AppListController";
@@ -38,6 +40,11 @@ export const Routes = () => {
 
                 UIRoute('restrictions/appiprestriction/list', AppIpRestrictionListController),
                 
+
+                UIRoute('brokers', BrokersController).children(
+                    UIRoute('installed', InstalledBrokerListController),
+    
+                ),
 
                 // Marketplace
                 UIRoute('marketplace/apps', AppListController),
