@@ -193,6 +193,7 @@ export class SettingsDialog extends DialogView {
     }
 
     public static Show(broker_info: any): Promise<void> {
+        alert(JSON.stringify(broker_info))
         return new Promise<void>((resolve, reject) => {
 
             const dialog = new SettingsDialog();
