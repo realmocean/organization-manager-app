@@ -229,17 +229,31 @@ const menuModel = [
 
 
     {
-        title: 'Settings',
+        title: 'System',
         icon: Icons.Settings,
-        link: '/app(tenantmanager)/marketplace/list'
-        /*  subItems: [
+        link: '/app(tenantmanager)/marketplace/list',
+          subItems: [
              {
-                 name: 'Dashboard',
-                 icon: IconLibrary.Dashboard1,
+                 name: 'Tag Management',
                  link: '/app(realmmanager)/dashboard'
 
-             }
-         ] */
+             },
+             {
+                name: 'Single Sign On',
+                link: '/app(realmmanager)/dashboard'
+
+            },
+            {
+                name: 'Language',
+                link: '/app(realmmanager)/dashboard'
+
+            },
+            {
+                name: 'Notifications',
+                link: '/app(realmmanager)/dashboard'
+
+            }
+         ] 
     },
 
 ]
