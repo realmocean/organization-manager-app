@@ -1,4 +1,4 @@
-import { HStack, Icon, VStack, cLeading, UIRecordContext, Color, Text, Icons, MenuButton } from "@tuval/forms"
+import { HStack, Icon, VStack, cLeading, UIRecordContext, Color, Text, Icons, MenuButton, useNavigate, UIViewBuilder } from "@tuval/forms"
 import { RealmDataContext } from "../../../views/DataContexts"
 import { ITableViewColumn, Views } from "../../../views/Views"
 import { DeleteUserDialog } from "../dialogs/DeleteUserDialog"
@@ -56,30 +56,45 @@ const columns: ITableViewColumn[] = [
     },
     {
         title: 'Action',
-        view: (employee: any) => (
-            HStack({ alignment: cLeading })(
-                MenuButton()
-               /*  Views.ActionContextMenu([
-                    {
-                        title: 'Edit',
-                        icon: Icons.Edit,
-                        tooltip: 'Edit',
-                        iconColor: '#505A64',
-                        link: `/app(tenantmanager)/company/employee/${employee.id}/edit`,
-                        linkState: { position: employee }
-                    },
-                    {
-                        title: 'Delete',
-                        icon: Icons.Delete,
-                        tooltip: 'Delete',
-                        iconColor: Color.red400,
-                        //link: `/app(tenantmanager)/employee/delete/${employee.id}`,
-                        action: () => DeleteUserDialog.Show(employee.id),
-                        linkState: { position: employee }
-                    }
-                ]) */
-            )
-        )
+        view: (employee: any) => {
+            return UIViewBuilder(() => {
+                const navigate = useNavigate();
+                return (
+                    HStack({ alignment: cLeading })(
+                        MenuButton()
+                            .model([
+                                {
+                                    title: 'Edit',
+                                    icon: Icons.Edit,
+                                    onClick: () => navigate(`/app/com.tuvalsoft.app.organizationmanager/company/edit/employee/${employee.id}`)
+                                }
+                            ])
+                            .icon(Icons.Menu)
+                        // MenuButton()
+                        /*  Views.ActionContextMenu([
+                             {
+                                 title: 'Edit',
+                                 icon: Icons.Edit,
+                                 tooltip: 'Edit',
+                                 iconColor: '#505A64',
+                                 link: `/app(tenantmanager)/company/employee/${employee.id}/edit`,
+                                 linkState: { position: employee }
+                             },
+                             {
+                                 title: 'Delete',
+                                 icon: Icons.Delete,
+                                 tooltip: 'Delete',
+                                 iconColor: Color.red400,
+                                 //link: `/app(tenantmanager)/employee/delete/${employee.id}`,
+                                 action: () => DeleteUserDialog.Show(employee.id),
+                                 linkState: { position: employee }
+                             }
+                         ]) */
+                    )
+                )
+            })
+
+        }
     }
 ]
 

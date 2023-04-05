@@ -14,6 +14,7 @@ import { UserListController } from "../domains/users/controllers/UserListControl
 import { FlowListController } from "../domains/workflows/flows/controllers/FlowListController";
 import { FlowModelController } from "../domains/workflows/flows/controllers/FlowModelController";
 import { FlowProjectListController } from "../domains/workflows/flows/controllers/FlowProjectListController";
+import { EditUserController } from "../domains/users/controllers/EditUserController";
 
 export const Routes = () => {
 
@@ -35,15 +36,16 @@ export const Routes = () => {
                 UIRoute('sessions', SessionsController),
 
                 UIRoute('company/list/employee', UserListController),
+                UIRoute('company/edit/employee/:employee_id', EditUserController),
                 UIRoute('company/list/department', DepartmentListController),
                 UIRoute('company/list/position', PositionListController),
 
                 UIRoute('restrictions/appiprestriction/list', AppIpRestrictionListController),
-                
+
 
                 UIRoute('brokers', BrokersController).children(
                     UIRoute('installed', InstalledBrokerListController),
-    
+
                 ),
 
                 // Marketplace
@@ -53,11 +55,11 @@ export const Routes = () => {
                 // Workflows
                 //UIRoute('workflow/flow/:flow_id/model', FlowModelController),
                 //UIRoute('workflow/flow-projects/:project_id/flows', FlowListController),
-    
+
                 UIRoute('workflow/flows/flow-projects', FlowProjectListController),
                 UIRoute('workflow/flows/flow-projects/:project_id/flows', FlowListController),
                 UIRoute('workflow/flows/:flow_id/model', FlowModelController),
-                
+
 
 
 

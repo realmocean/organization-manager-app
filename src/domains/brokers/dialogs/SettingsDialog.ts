@@ -18,8 +18,8 @@ export class SettingsDialog extends DialogView {
         this.Height = '700px';
 
         /*  return new Promise<void>((resolve, reject) => {
- 
-           
+
+
              RealmBrokerClient.GetBrokerSettingDialog(broker_info.id).then(dialog => {
                  if (is.nullOrEmpty(dialog.description)) {
                      this.setWidth(600)
@@ -27,7 +27,7 @@ export class SettingsDialog extends DialogView {
                      this.setWidth(600 * 2)
                  }
                  this.setHeight(700)
-             
+
                  resolve()
              })
          });
@@ -86,13 +86,13 @@ export class SettingsDialog extends DialogView {
                 formData[name] = value;
                 setCount(count + 1);
             }, 200)
-          
+
         }
-      
+
         return (
             ${settingDialogCode}
         )
-        
+
 
         `;
 
@@ -168,7 +168,7 @@ export class SettingsDialog extends DialogView {
                                     HStack({ alignment: cTopTrailing })(
                                         Button(
                                             Text('Test Connection')
-                                        ).width(158).variant('outlined')
+                                        ).width(158)
                                     )
                                 )
                                     .padding(cHorizontal, 20)
@@ -178,10 +178,10 @@ export class SettingsDialog extends DialogView {
                             HStack({ alignment: cTrailing, spacing: 10 })(
                                 Button(
                                     Text('Reset')
-                                ).variant('outlined'),
+                                ),
                                 Button(
                                     Text('Cancel')
-                                ).variant('outlined'),
+                                ),
                                 Button(
                                     Text('Add')
                                 ).onClick(() => this.Submit())

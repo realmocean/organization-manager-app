@@ -30,12 +30,12 @@ export class EditSettingsDialog extends DialogView {
         this.Height = "700px";
         this.ShowHeader = false;
         /*  return new Promise<void>((resolve, reject) => {
- 
- 
+
+
              this.broker_id = broker_id;
              this.connection_id = connection_id;
              this.setHeight(700);
- 
+
              RealmBrokerClient.GetBrokerSettingDialog(broker_id).then(dialog => {
                  //alert(dialog.description)
                  if (is.nullOrEmpty(dialog.description)) {
@@ -44,7 +44,7 @@ export class EditSettingsDialog extends DialogView {
                      this.setWidth(600 * 2)
                  }
                  this.setHeight(700)
-                
+
                  resolve()
              }) */
         //});
@@ -69,17 +69,17 @@ export class EditSettingsDialog extends DialogView {
                 const VStack = tuval$forms.VStack;
                 const HStack = tuval$forms.HStack;
                 const ForEach = tuval$forms.ForEach;
-        
+
                 const cTop = tuval$forms.cTop;
                 const cTopLeading = tuval$forms.cTopLeading;
                 const cLeading = tuval$forms.cLeading;
                 const cTopTrailing = tuval$forms.cTopTrailing;
                 const cTrailing = tuval$forms.cTrailing;
-        
+
                 const Text = tuval$forms.Text;
                 const Icon = tuval$forms.Icon;
                 const IconLibrary = tuval$forms.IconLibrary;
-        
+
                 const UIContextMenu = tuval$forms.UIContextMenu;
                 const UIImage = tuval$forms.UIImage;
                 const UIButton = tuval$forms.UIButton;
@@ -87,48 +87,48 @@ export class EditSettingsDialog extends DialogView {
                 const Spacer = tuval$forms.Spacer;
                 const DesktopPreview = tuval$forms.DesktopPreview;
                 const useState = tuval$forms.useState;
-        
+
                 const UITable = tuval$forms.UITable;
                 const TableColumn = tuval$forms.TableColumn;
                 const TBody = tuval$forms.TBody;
                 const UIAppearance = tuval$forms.UIAppearance;
                 const Gauge = tuval$forms.Gauge;
-        
+
                 const ScrollView = tuval$forms.ScrollView;
                 const DropDown = tuval$forms.DropDown;
-        
+
                 const RequiredRule = tuval$forms.RequiredRule;
-        
+
                 const UIRecordContext =  tuval$forms.UIRecordContext;
                 const DataContext =  tuval$forms.DataContext;
                 const jsonServerProvider =  tuval$forms.jsonServerProvider;
-             
-        
+
+
                 const [count, setCount] = useState(0);
-        
+
                 function setFormData(name, value){
-        
+
                     setTimeout(()=> {
                         formData[name] = value;
                         setCount(count + 1);
                     }, 200)
-                  
+
                 }
-              
+
                 return (
-                   
+
                             DataContext(
                                 UIRecordContext(({data, isLoading})=>
                                 ${settingDialogCode}
                             ).resource('brokerconnection-dialoginfo').filter({id: '${this.connection_id}'})
                         ).dataProvider(jsonServerProvider('/api'))
-                    
+
                 )
 
             })
         )
 
-        
+
         `;
 
         let result = null;
@@ -210,7 +210,7 @@ export class EditSettingsDialog extends DialogView {
                                     HStack({ alignment: cTopTrailing })(
                                         Button(
                                             Text('Test Connection')
-                                        ).width(158).variant('outlined')
+                                        ).width(158)
                                     )
                                 )
                                     .padding(cHorizontal, 20)
@@ -220,10 +220,10 @@ export class EditSettingsDialog extends DialogView {
                             HStack({ alignment: cTrailing, spacing: 10 })(
                                 Button(
                                     Text('Reset')
-                                ).variant('outlined'),
+                                ),
                                 Button(
                                     Text('Cancel')
-                                ).variant('outlined'),
+                                ),
                                 Button(
                                     Text('Add')
                                 ).onClick(() => this.Submit())

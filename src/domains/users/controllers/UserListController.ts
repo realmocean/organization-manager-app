@@ -21,13 +21,13 @@ export class UserListController extends UIController {
             HStack({ alignment: cTopLeading })(
                 LeftSideMenuView('', 'Employees'),
                 Views.RightSidePage({
-                    
+
                     title: 'Employees',
                     maxWidth: '1400px',
                     content: (
                         RealmDataContext(
                             HStack({ alignment: cTopLeading })(
-                               
+
                                 VStack({ alignment: cTopLeading })(
                                     HStack({ alignment: cLeading, spacing: 15 })(
                                         // MARK: Search Box
@@ -89,7 +89,4 @@ export class UserListController extends UIController {
 
         )
     }
-
-
-
 }
