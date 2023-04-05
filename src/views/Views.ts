@@ -1,9 +1,9 @@
 import { is, Optional } from "@tuval/core";
 import {
     Button, cHorizontal, cLeading, Color, ColorClass, cTop, cTopLeading, cTrailing, cVertical, Dropdown, FieldSettingsModel,
-    ForEach, HDivider, HStack, Icon, Icons, ScrollView, Spacer, Spinner, Text, TextAlignment, Theme, UIButton, UIContextMenu, UIRouteLink, UIView, useLocation, useNavigate, useParams, useState, ValidateRule, VDivider, VStack
+    ForEach, HDivider, HStack, Icon, Icons, ScrollView, Spacer, Spinner, Text, TextAlignment, Theme, UIButton, UIContextMenu, UIRouteLink, UIView, useLocation, useNavigate, useParams, useState, useTheme, ValidateRule, VDivider, VStack
 } from "@tuval/forms";
-import { theme } from "../Theme";
+
 
 
 export const fontFamily = '"Poppins", arial, sans-serif'
@@ -483,6 +483,7 @@ export namespace Views {
 
     export const RightSidePage = ({ showBackIcon, title, copyId, tabview, content, maxWidth = '1160px' }: { title: string | UIView, showBackIcon?: boolean, copyId?: { value: string, label: string }, tabview?: UIView, content: UIView, maxWidth?: string }): any => {
         const navigator = useNavigate();
+        const theme = useTheme();
         return (
             VStack({ alignment: cTop })(
                 VStack({ alignment: cTop })(
@@ -518,7 +519,7 @@ export namespace Views {
                 )
                   //  .paddingLeft('20px')
                     .height()
-                    .background(Theme.applicationBackgroundColor),
+                    .background(theme.palette.background.primary),
                    // .shadow('0 0 25px 0 rgb(73 80 87 / 10%)'),
                 ScrollView({ axes: cVertical, alignment: cTop })(
                     VStack({ alignment: cTopLeading })(
@@ -529,7 +530,7 @@ export namespace Views {
 
             )
 
-                .borderTop(`solid 1px ${theme.surfaceborder}`)
+                .borderTop(`solid 1px var(--surfce-color)`)
                // .background( Theme.darkBackgroundColor)
         )
 

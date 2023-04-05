@@ -5,6 +5,7 @@ import { RealmDataContext } from "../../../views/DataContexts";
 import { LeftSideMenuView } from "../../../views/LeftMenu";
 import { Views } from "../../../views/Views";
 import { DepartmentsGrid } from "../views/DepartmentsGrid";
+import { AddDepartmentDialog } from "../dialogs/AddDepartmentDialog";
 
 const fontFamily = '"proxima-nova", "proxima nova", "helvetica neue", "helvetica", "arial", sans-serif'
 
@@ -35,7 +36,7 @@ export class DepartmentListController extends UIController {
                                             ,
                                             Spacer(),
                                             Views.CreateButton({
-                                                label: 'New Department', action: () => alert('')
+                                                label: 'New Department', action: () => AddDepartmentDialog.Show()
                                             }),
 
                                             Views.ExportButton({

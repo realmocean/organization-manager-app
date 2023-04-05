@@ -2,9 +2,9 @@ import { UISidebar } from "@realmocean/navigations";
 import { useSessionService } from "@realmocean/services";
 import {
     cLeading, cTopLeading, HStack, VStack, Text, ForEach, Color, UIRouteLink,
-    ScrollView, cVertical, Theme, List, ListTitle, ListItem, Fragment, useNavigate, DataContext, jsonServerProvider, UIRecordContext, Icons
+    ScrollView, cVertical, Theme, List, ListTitle, ListItem, Fragment, useNavigate, DataContext,
+     jsonServerProvider, UIRecordContext, Icons
 } from "@tuval/forms"
-import { theme } from "../Theme"
 
 const fontFamily = '"SF Pro Text","Helvetica Neue","SegoeUI",sans-serif';
 
@@ -257,93 +257,6 @@ const menuModel = [
     },
 
 ]
-export const _LeftSideMenuView = (selectedItem: string) => {
-
-    return (
-        VStack({ alignment: cTopLeading })(
-            UISidebar(),
-
-            List(
-                ListTitle().title("title")
-            ),
-            ScrollView({ axes: cVertical, alignment: cTopLeading })(
-                VStack({ alignment: cTopLeading })(
-                    HStack({ alignment: cLeading, spacing: 10 })(
-                        //Icon('\\d1f1').size(26),
-                        Text("Test Tenant")
-                            .foregroundColor(theme.surfaceground)
-                            .fontWeight('500')
-                    ).height().padding(),
-                    ...ForEach(menuModel)(menu =>
-                        VStack({ alignment: cTopLeading })(
-                            menu.link == null ?
-                                HStack({ alignment: cLeading, spacing: 3 })(
-                                    //  Icon('\\e5cf').size(20) .foregroundColor( menu.subItems == null  ? 'transparent' : 'white'),
-                                    Text(menu.title)
-                                        .paddingLeft('15px')
-                                        .fontWeight('500')
-                                        .fontSize('14px').lineHeight('18px')
-                                        .foregroundColor(Color.white)
-                                        .kerning('.06rem')
-                                        .fontFamily('"SF Pro Text","Helvetica Neue","SegoeUI",sans-serif'/* theme.fontFamily */)
-                                    //.paddingLeft('1rem')
-                                    //.textTransform('uppercase')
-                                ).height(28) :
-
-                                UIRouteLink(menu.link ?? '')(
-                                    HStack({ alignment: cLeading, spacing: 3 })(
-                                        // Icon('\\e5cf').size(20).foregroundColor(menu.subItems == null ? 'transparent' : 'white'),
-                                        Text(menu.title)
-                                            .fontWeight('500')
-                                            .fontSize('14px').lineHeight('18px')
-                                            .foregroundColor(Color.white)
-                                            .kerning('.06rem')
-                                            .fontFamily('"SF Pro Text","Helvetica Neue","SegoeUI",sans-serif'/* theme.fontFamily */)
-                                        //.paddingLeft('1rem')
-                                        //.textTransform('uppercase')
-                                    ).height(28)
-                                        .background({ default: selectedItem === menu.title ? 'rgba(255,255,255,.3)' : '', hover: 'rgba(0,0,0,.6)' })
-                                ).width('100%')
-
-                            ,
-
-
-                            ...ForEach((menu as any).subItems)((subItem: any) =>
-                                UIRouteLink(subItem?.link ?? '')(
-                                    HStack({ alignment: cLeading, spacing: 10 })(
-                                        // subItem.icon ? Icon(subItem.icon).size(20) : null,
-                                        Text(subItem.name)
-                                            .fontFamily(fontFamily)
-                                            .fontSize(14)
-                                            .lineHeight('24px')
-                                        //.multilineTextAlignment(TextAlignment.leading)
-                                    )
-                                        .padding('1.3rem')
-                                        .cornerRadius(theme.borderRadius)
-                                        .height(27)
-                                        .foregroundColor("white"/* theme.surfaceground */)
-                                        .background({ default: selectedItem === subItem.name ? 'rgba(255,255,255,.3)' : '', hover: 'rgba(0,0,0,.6)' })
-                                        .fontWeight('400')
-                                        // .fontWeight(selectedItem == subItem.name ? '700' : '400')
-                                        .cursor('pointer')
-                                ).width('100%')
-
-                            )
-                        ).height()
-                            .marginTop('20px')
-                            .borderTop('1px solid #203650')
-                        // .borderBottom('1px solid #8393AE')
-                        // .paddingBottom('20px')
-                    )
-                )
-            )
-        ).width(220).minWidth('220px').maxWidth('220px')
-            .background({ default: Theme.surfceColor })
-            .fontSize(16)
-            .foregroundColor(Color.white)
-    )
-
-}
 
 export const LeftSideMenuView = (test: string, selectedItem: string) => {
 //alert(JSON.stringify(useSessionService()))
