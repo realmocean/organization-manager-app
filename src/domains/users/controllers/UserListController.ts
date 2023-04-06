@@ -33,7 +33,7 @@ export class UserListController extends UIController {
                                         // MARK: Search Box
 
                                         TextField().placeholder('Search by Employee Name')
-                                            .onChange((value) => alert('value'))
+                                            .onChange((value) => this.searchText = value)
                                         ,
                                         Spacer(),
                                         Views.CreateButton({
