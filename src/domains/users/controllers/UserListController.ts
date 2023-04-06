@@ -1,7 +1,7 @@
 //import { useSessionService } from '@realmocean/common';
 import { useSessionService } from "@realmocean/services";
 import { UserFileDownloader } from "@tuval/core";
-import { cLeading, cTopLeading, HStack, Spacer, Spinner, State, Text, TextField, UIController, UIRecordsContext, VStack } from "@tuval/forms";
+import { cLeading, cTopLeading, cTrailing, Heading, HStack, Spacer, Spinner, State, Text, TextField, UIController, UIRecordsContext, VStack } from "@tuval/forms";
 import { RealmDataContext } from "../../../views/DataContexts";
 import { LeftSideMenuView } from "../../../views/LeftMenu";
 import { Views } from "../../../views/Views";
@@ -22,41 +22,39 @@ export class UserListController extends UIController {
                 LeftSideMenuView('', 'Employees'),
                 Views.RightSidePage({
 
-                    title: 'Employees',
+                    title: HStack(
+                        Heading('Employees').h3().width('100%'),
+                        HStack({ alignment: cTrailing, spacing: 15 })(
+                                       
+                            Views.CreateButton({
+                                label: 'New Employee', action: () => AddUserDialog.Show().then(() => {
+                                    /* this.users = null;
+                                    const orgService = useOrgProvider();
+                                    orgService.getEmployees().then(employees =>
+                                        this.showingUsers = this.users = employees
+                                    ) */
+                                })
+                            }),
+
+                            Views.ExportButton({
+                                label: 'Export', action: () => {
+                                    const fd = new UserFileDownloader({
+                                        url: `/api/ExportEmployees?organization_id=${useSessionService().TenantId}`,
+                                        autoStart: true
+                                    })
+                                }
+                            }),
+
+
+                        ).height().padding(24),
+                    ).height(),
                     maxWidth: '1400px',
                     content: (
                         RealmDataContext(
                             HStack({ alignment: cTopLeading })(
 
                                 VStack({ alignment: cTopLeading })(
-                                    HStack({ alignment: cLeading, spacing: 15 })(
-                                        // MARK: Search Box
-
-                                        TextField().placeholder('Search by Employee Name')
-                                            .onChange((value) => this.searchText = value)
-                                        ,
-                                        Spacer(),
-                                        Views.CreateButton({
-                                            label: 'New Employee', action: () => AddUserDialog.Show().then(() => {
-                                                /* this.users = null;
-                                                const orgService = useOrgProvider();
-                                                orgService.getEmployees().then(employees =>
-                                                    this.showingUsers = this.users = employees
-                                                ) */
-                                            })
-                                        }),
-
-                                        Views.ExportButton({
-                                            label: 'Export', action: () => {
-                                                const fd = new UserFileDownloader({
-                                                    url: `/api/ExportEmployees?organization_id=${useSessionService().TenantId}`,
-                                                    autoStart: true
-                                                })
-                                            }
-                                        }),
-
-
-                                    ).height().padding(24),
+                                    
                                     UIRecordsContext(({ data, isLoading }) =>
                                         isLoading ? HStack(Spinner()) :
                                             /*  VStack(
@@ -67,7 +65,7 @@ export class UserListController extends UIController {
                                                          this.grid = grid;
                                                      })
                                              ).padding(cHorizontal, 20) */
-                                            UsersGrid(data) as any
+                                            UsersGrid(data)
                                     )
 
                                         //UsersGrid(data) as any

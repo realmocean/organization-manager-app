@@ -42,7 +42,7 @@ const columns: ITableViewColumn[] = [
                 VStack({ alignment: cLeading })(
                     Text(`${row.account_name}`)
                         .fontWeight('600')
-                        .fontFamily('"Public Sans", sans-serif')
+                       
                 )
             )
         )

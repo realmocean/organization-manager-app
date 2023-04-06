@@ -83,7 +83,7 @@ export namespace Views {
                         ...ForEach(columns)(column =>
                             HStack(
                                 Text(column.title).display('')
-                                    .fontFamily('"Public Sans", sans-serif'),
+                                
                             )
                                 .borderBottom('1px solid hsl(240 30% 96%)')
                                 .fontWeight('600')
@@ -154,7 +154,7 @@ export namespace Views {
                         ...ForEach(columns)(column =>
                             HStack(
                                 Text(column.title).display('')
-                                    .fontFamily('"Public Sans", sans-serif')
+                                 
                                     .whiteSpace('nowrap'),
                             )
                                 .borderBottom('1px solid hsl(240 30% 96%)')
@@ -183,7 +183,7 @@ export namespace Views {
                                             is.function(column.view) ?
                                                 column.view(row)
                                                 :
-                                                Text(row[column.key]).display('').fontFamily('"Public Sans", sans-serif'),
+                                                Text(row[column.key]).display('')
                                         )
                                     )
                                         .borderBottom(index != data.length - 1 ? '1px solid hsl(240 30% 96%)' : '')

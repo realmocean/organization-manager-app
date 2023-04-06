@@ -12,12 +12,12 @@ const columns: ITableViewColumn[] = [
                 Icon(Icons.Announcement).size(35),
                 VStack({ alignment: cLeading })(
                     Text(`${row.employee_name} ${row.employee_last_name}`)
-                        .fontWeight('600')
-                        .fontFamily('"Public Sans", sans-serif'),
+                        .fontWeight('600'),
+                       
                     Text(row.title_name)
                         .foregroundColor('rgb(99, 115, 129)')
                         .fontWeight('400')
-                        .fontFamily('"Public Sans", sans-serif')
+                        
                 )
             )
         )
@@ -31,7 +31,6 @@ const columns: ITableViewColumn[] = [
                 UIRecordContext(({ data }) =>
                     VStack({ alignment: cLeading })(
                         Text(`${data?.title_name}`)
-                            .fontFamily('"Public Sans", sans-serif')
                     ).foregroundColor('rgba(33, 43, 54,0.7)')
                 ).resource('titles').filter({ 'id': row.title_id })
             )
@@ -46,7 +45,7 @@ const columns: ITableViewColumn[] = [
                 UIRecordContext(({ data }) =>
                     VStack({ alignment: cLeading })(
                         Text(`${data?.title_name}`)
-                            .fontFamily('"Public Sans", sans-serif')
+                           
                     ).foregroundColor('rgba(33, 43, 54,0.7)')
                 ).resource('titles').filter({ 'id': row.title_id })
             )
@@ -62,7 +61,7 @@ const columns: ITableViewColumn[] = [
                 UIRecordContext(({ data }) =>
                     VStack({ alignment: cLeading })(
                         Text(`${data?.title_name}`)
-                            .fontFamily('"Public Sans", sans-serif')
+                         
                     ).foregroundColor('rgba(33, 43, 54,0.7)')
                 ).resource('titles').filter({ 'id': row.title_id })
             )
@@ -78,7 +77,7 @@ const columns: ITableViewColumn[] = [
                 UIRecordContext(({ data }) =>
                     VStack({ alignment: cLeading })(
                         Text(`${data?.title_name}`)
-                            .fontFamily('"Public Sans", sans-serif')
+                        
                     ).foregroundColor('rgba(33, 43, 54,0.7)')
                 ).resource('titles').filter({ 'id': row.title_id })
             )
@@ -94,7 +93,7 @@ const columns: ITableViewColumn[] = [
                 UIRecordContext(({ data }) =>
                     VStack({ alignment: cLeading })(
                         Text(`${data?.title_name}`)
-                            .fontFamily('"Public Sans", sans-serif')
+                            
                     ).foregroundColor('rgba(33, 43, 54,0.7)')
                 ).resource('titles').filter({ 'id': row.title_id })
             )
@@ -110,7 +109,7 @@ const columns: ITableViewColumn[] = [
                 UIRecordContext(({ data }) =>
                     VStack({ alignment: cLeading })(
                         Text(`${data?.title_name}`)
-                            .fontFamily('"Public Sans", sans-serif')
+                           
                     ).foregroundColor('rgba(33, 43, 54,0.7)')
                 ).resource('titles').filter({ 'id': row.title_id })
             )
@@ -125,7 +124,7 @@ const columns: ITableViewColumn[] = [
                 UIRecordContext(({ data }) =>
                     VStack({ alignment: cLeading })(
                         Text(`${data?.title_name}`)
-                            .fontFamily('"Public Sans", sans-serif')
+                          
                     ).foregroundColor('rgba(33, 43, 54,0.7)')
                 ).resource('titles').filter({ 'id': row.title_id })
             )

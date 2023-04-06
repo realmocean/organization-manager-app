@@ -1,4 +1,4 @@
-import { UIController, UIView, Text, HStack, cTopLeading } from "@tuval/forms";
+import { UIController, UIView, Text, HStack, cTopLeading, UIDataTable } from "@tuval/forms";
 import { LeftSideMenuView } from "../views/LeftMenu";
 
 export class DashboardController extends UIController {
@@ -7,8 +7,10 @@ export class DashboardController extends UIController {
         return (
             HStack({ alignment: cTopLeading })(
                 LeftSideMenuView('', 'Overview'),
-                Text("Dashboard")
-           )
+                UIDataTable().model([{
+                    name: 'test'
+                }])
+            )
         )
     }
 
