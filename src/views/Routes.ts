@@ -15,6 +15,9 @@ import { FlowListController } from "../domains/workflows/flows/controllers/FlowL
 import { FlowModelController } from "../domains/workflows/flows/controllers/FlowModelController";
 import { FlowProjectListController } from "../domains/workflows/flows/controllers/FlowProjectListController";
 import { EditUserController } from "../domains/users/controllers/EditUserController";
+import { EditDepartmentController } from "../domains/departments/controllers/EditDepartmentController";
+import { Tab1Controller } from "../domains/users/controllers/Tab1";
+import { Tab2Controller } from "../domains/users/controllers/Tab2";
 
 export const Routes = () => {
 
@@ -35,9 +38,15 @@ export const Routes = () => {
             UIRoute('/', LayoutController).children(
                 UIRoute('sessions', SessionsController),
 
-                UIRoute('company/list/employee', UserListController),
+                UIRoute('company/list/employee', UserListController).children(
+                    UIRoute('tab1', Tab1Controller),
+                    UIRoute('tab2', Tab2Controller),
+                ),
                 UIRoute('company/edit/employee/:employee_id', EditUserController),
+
                 UIRoute('company/list/department', DepartmentListController),
+                UIRoute('company/edit/department/:department_id', EditDepartmentController),
+
                 UIRoute('company/list/position', PositionListController),
 
                 UIRoute('restrictions/appiprestriction/list', AppIpRestrictionListController),

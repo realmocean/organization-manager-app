@@ -11,27 +11,27 @@ import {
 import { RealmDataContext } from "../../../views/DataContexts";
 import { LeftSideMenuView } from "../../../views/LeftMenu";
 import { Views } from "../../../views/Views";
-import { AddUserDialog } from "../dialogs/AddUserDialog";
-import { UsersGrid } from "../views/UsersGrid";
+
 import { UITextBoxView } from "@realmocean/inputs";
 import { TextField } from "../../../views/components/TextField";
 import { Dropdown } from "../../../views/components/Dropdown";
 
 
 
-export class EditUserController extends UIFormController {
+export class EditDepartmentController extends UIFormController {
 
     @State()
     private searchText: string;
 
     public LoadView(): any {
-        const { employee_id } = useParams();
+        const { department_id } = useParams();
+
         const navigate = useNavigate();
         return (
             HStack({ alignment: cTopLeading })(
                 LeftSideMenuView('', 'Employees'),
                 Views.RightSidePage({
-                    title: 'Edit Employee',
+                    title: 'Edit Department',
                     maxWidth: '1400px',
                     content: (
                         HStack({ alignment: cTop })(
@@ -39,44 +39,26 @@ export class EditUserController extends UIFormController {
                                 UIUpdateContext((update, data, isLoading, isUpdateing) =>
                                     VStack({ alignment: cTopLeading, spacing: 10 })(
                                         VStack({ alignment: cTopLeading, spacing: 20 })(
-                                            Text('Employee Information'),
+                                            Text('Department Information'),
 
                                             TextField()
                                                 .label('*Record ID')
-                                                .formField('employee_record_id', [new RequiredRule('Record ID required.')]),
+                                                .formField('org_unit_record_id', [new RequiredRule('Record ID required.')]),
 
                                             TextField()
                                                 .label('*Name')
-                                                .formField('employee_name', [new RequiredRule('Employee Name required.')]),
+                                                .formField('org_unit_name', [new RequiredRule('Name required.')]),
 
-                                            TextField()
-                                                .label('*Last Name')
-                                                .formField('employee_last_name', [new RequiredRule('Employee Last Name required.')]),
-
-
-                                            Dropdown()
-                                                .fields({ text: 'title_name', value: 'id' })
-                                                .label('Title')
-                                                .formField('title_id', [])
-                                                .resource('titles')
-                                                .filter({ 'tenant_id': useSessionService().TenantId }),
-
-
-                                            Dropdown()
-                                                .fields({ text: 'org_unit_name', value: 'id' })
-                                                .label('Department')
-                                                .formField('department_id', [])
-                                                .resource('departments')
-                                                .filter({ 'tenant_id': useSessionService().TenantId })
+                                        
                                         ),
                                         HStack(
                                             HStack({ alignment: cTrailing, spacing: 10 })(
                                                 Button(
                                                     Text('Cancel')
                                                 ).kind(ButtonType.SECONDARY)
-                                                    .onClick(() => {
-                                                        navigate(-1);
-                                                    }),
+                                                .onClick(()=> {
+                                                    navigate(-1);
+                                                }),
                                                 Views.AcceptButton({
                                                     label: 'Update', loading: isUpdateing, action: () => {
                                                         this.SetValue('tenant_id', useSessionService().TenantId);
@@ -90,10 +72,10 @@ export class EditUserController extends UIFormController {
                                         ).paddingTop('20px').height()
 
                                     ).padding(30).foregroundColor('#676767').height().maxWidth('50%')
-                                ).resource('employees').filter({ id: employee_id })
+                                ).resource('departments').filter({ id: department_id })
                                     .onSuccess(() => {
                                         this.InvalidateQueries();
-                                        navigate('/app/com.tuvalsoft.app.organizationmanager/company/list/employee');
+                                        navigate('/app/com.tuvalsoft.app.organizationmanager/company/list/department');
                                         //this.OnOKClick();
                                     })
                             )

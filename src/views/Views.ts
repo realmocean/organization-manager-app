@@ -48,6 +48,8 @@ export interface IDropDownParams {
     }
 }
 
+
+
 export namespace Views {
 
     export const DropDown = (params: Optional<IDropDownParams>) => (
@@ -83,7 +85,7 @@ export namespace Views {
                         ...ForEach(columns)(column =>
                             HStack(
                                 Text(column.title).display('')
-                                
+
                             )
                                 .borderBottom('1px solid hsl(240 30% 96%)')
                                 .fontWeight('600')
@@ -154,14 +156,14 @@ export namespace Views {
                         ...ForEach(columns)(column =>
                             HStack(
                                 Text(column.title).display('')
-                                 
+
                                     .whiteSpace('nowrap'),
                             )
                                 .borderBottom('1px solid hsl(240 30% 96%)')
                                 .fontWeight('600')
                                 .padding(16)
                                 .fontSize(12)
-                               // .textTransform('uppercase')
+                                // .textTransform('uppercase')
                                 .foregroundColor('rgb(99, 115, 129)')
                                 .lineHeight('1.5rem')
                                 .display('table-cell').textAlign('justify').width(column.width ?? '').height(),
@@ -488,7 +490,7 @@ export namespace Views {
             VStack({ alignment: cTop })(
                 VStack({ alignment: cTop })(
                     VStack({ alignment: cLeading })(
-                        HStack({ spacing: 5, alignment:cLeading })(
+                        HStack({ spacing: 5, alignment: cLeading })(
                             showBackIcon && Icon(Icons.MoveArrowLeft).size(20).onClick(() => navigator(-1)).cursor('pointer'),
                             is.string(title) ?
                                 Text(title)
@@ -509,7 +511,7 @@ export namespace Views {
                                 .background('rgb(250, 250, 255)')
                                 .onClick(() => navigator.clipboard.writeText(copyId.value))
                         ).height().padding('0 10px 0 15px')
-                        .borderBottom('solid 1px rgb(232,234,237)')
+                            .borderBottom('solid 1px rgb(232,234,237)')
                         ,
                         tabview &&
                         HStack(
@@ -517,10 +519,10 @@ export namespace Views {
                         ).height(51).width()
                     ).height()//.maxWidth(maxWidth)
                 )
-                  //  .paddingLeft('20px')
+                    //  .paddingLeft('20px')
                     .height()
-                    .background(theme.palette.background.primary),
-                   // .shadow('0 0 25px 0 rgb(73 80 87 / 10%)'),
+                    .background('#F4F5F7'),
+                // .shadow('0 0 25px 0 rgb(73 80 87 / 10%)'),
                 ScrollView({ axes: cVertical, alignment: cTop })(
                     VStack({ alignment: cTopLeading })(
                         content
@@ -531,7 +533,7 @@ export namespace Views {
             )
 
                 .borderTop(`solid 1px var(--surfce-color)`)
-               // .background( Theme.darkBackgroundColor)
+            // .background( Theme.darkBackgroundColor)
         )
 
 

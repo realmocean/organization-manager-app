@@ -144,16 +144,17 @@ export class AppListController extends UIController {
 
                                                         VStack({ alignment: cTopLeading })(
                                                             Text(category.title).height(40).fontSize(20).fontWeight('600').padding('1rem'),
-                                                            HStack({ alignment: cTopLeading, spacing: 24 })(
+                                                            HStack({ alignment: cTopLeading })(
                                                                 ...ForEach(category.items)((item: any) =>
                                                                     AppCardView(item.app_qualified_name, item.app_icon, item.app_display_name, item.app_short_description)
-                                                                        .onClick(() => InstallBrokerDialog.Show(item.id))
+                                                                       // .onClick(() => InstallBrokerDialog.Show(item.id))
                                                                 )
                                                             ).width().height().wrap('wrap')
                                                         )
                                                             .paddingLeft('20px')
                                                             .padding(10)
-                                                            .height().background('#F6F6F6')
+                                                            .height()
+                                                            //.background('#F6F6F6')
 
                                                     )
                                                 )

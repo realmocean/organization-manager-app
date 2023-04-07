@@ -111,12 +111,6 @@ const _columns: IDataTableColumn[] = [
                 //Icon(Icons.Acc).size(35),
                 VStack({ alignment: cLeading })(
                     Text(`${row.employee_full_name}`)
-                        .fontWeight('500')
-                      
-                    /*   Text(row.title_name)
-                          .foregroundColor('rgb(99, 115, 129)')
-                          .fontWeight('400')
-                          .fontFamily('"Public Sans", sans-serif') */
                 )
             )
         )
@@ -214,13 +208,13 @@ export const UsersGrid = (users: any[]) => {
 
     console.log(users)
     return (
-        HStack(
+        
             HStack(
                 UIDataTable()
                     .columns(_columns)
                     .model(users).width('100%')
             ).border('solid 1px #DEE2E6').cornerRadius(10).overflow('hidden')
-        ).padding()
+    
     )
 
 

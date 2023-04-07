@@ -1,7 +1,10 @@
 //import { useSessionService } from '@realmocean/common';
 import { useSessionService } from "@realmocean/services";
 import { UserFileDownloader } from "@tuval/core";
-import { cLeading, cTopLeading, cTrailing, Heading, HStack, Spacer, Spinner, State, Text, TextField, UIController, UIRecordsContext, VStack } from "@tuval/forms";
+import {
+    cLeading, cTopLeading, cTrailing, Heading, HStack,
+    Spacer, Spinner, State, Text, TextField, UIController, UIRecordsContext, VStack, TabList, cVertical, UIRouteOutlet
+} from "@tuval/forms";
 import { RealmDataContext } from "../../../views/DataContexts";
 import { LeftSideMenuView } from "../../../views/LeftMenu";
 import { Views } from "../../../views/Views";
@@ -25,7 +28,7 @@ export class UserListController extends UIController {
                     title: HStack(
                         Heading('Employees').h3().width('100%'),
                         HStack({ alignment: cTrailing, spacing: 15 })(
-                                       
+
                             Views.CreateButton({
                                 label: 'New Employee', action: () => AddUserDialog.Show().then(() => {
                                     /* this.users = null;
@@ -50,37 +53,7 @@ export class UserListController extends UIController {
                     ).height(),
                     maxWidth: '1400px',
                     content: (
-                        RealmDataContext(
-                            HStack({ alignment: cTopLeading })(
-
-                                VStack({ alignment: cTopLeading })(
-                                    
-                                    UIRecordsContext(({ data, isLoading }) =>
-                                        isLoading ? HStack(Spinner()) :
-                                            /*  VStack(
-                                                 UIGridView()
-                                                     .columns(columns as any)
-                                                     .datasource(data)
-                                                     .self((grid) => {
-                                                         this.grid = grid;
-                                                     })
-                                             ).padding(cHorizontal, 20) */
-                                            UsersGrid(data)
-                                    )
-
-                                        //UsersGrid(data) as any
-
-                                        .resource('employees')
-                                        .filter({
-                                            'tenant_id': useSessionService().TenantId,
-                                            ...(this.searchText != null && this.searchText.length > 2 && {
-                                                'employee_name': this.searchText
-                                            })
-                                        })
-
-                                )
-                            )
-                        )
+                       UIRouteOutlet().width('100%').height('100%')
                     )
                 })
             )
