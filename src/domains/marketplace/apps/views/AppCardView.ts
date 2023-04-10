@@ -56,9 +56,13 @@ export const AppCardView = (broker_qualified_name: string, image: string, name: 
             image &&
             UIImage(image).width(50).height(50).cornerRadius('20%'),
             // .shadow('0 1px 2px 0 rgba(60,64,67,.3), 0 1px 3px 1px rgba(60,64,67,.15)'),
-            Heading(name).h4(),
-            Heading(description || '').h6().ellipsis(true)
-                .ellipsisMaxLines(2)
+            HStack({ alignment: cLeading })(
+                Heading(name).h4()
+            ).allHeight(30),
+            HStack({ alignment: cLeading })(
+                Heading(description || '').h6().ellipsis(true)
+                    .ellipsisMaxLines(2)
+            )
             ,
             HStack({ alignment: cCenter })(
                 Button(

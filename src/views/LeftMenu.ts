@@ -16,7 +16,7 @@ const menuModel = [
             {
                 name: 'Overview',
                 icon: Icons.API,
-                link: '/app/com.tuvalsoft.app.organizationmanager/b'
+                link: '/app/com.tuvalsoft.app.organizationmanager/overview'
 
             },
             {
@@ -32,30 +32,30 @@ const menuModel = [
         title: 'Directory',
         icon: Icons.Home,
         subItems: [
-            {
+            /* {
                 name: 'Users',
                 icon: '\\e0af',
                 link: '/app/com.tuvalsoft.app.organizationmanager/company/list/employee'
-            },
+            }, */
             {
                 name: 'Employees',
                 icon: '\\e0af',
-                link: '/app/com.tuvalsoft.app.organizationmanager/company/list/employee/tab1'
+                link: '/app/com.tuvalsoft.app.organizationmanager/company/list/employee/active-employees'
             },
             {
                 name: 'Departments',
                 icon: '\\e0af',
-                link: '/app/com.tuvalsoft.app.organizationmanager/company/list/department'
+                link: '/app/com.tuvalsoft.app.organizationmanager/company/list/department/active-departments'
             },
             {
                 name: 'Positions',
                 icon: '\\e0af',
-                link: '/app/com.tuvalsoft.app.organizationmanager/company/list/position'
+                link: '/app/com.tuvalsoft.app.organizationmanager/company/list/position/active-positions'
             },
             {
                 name: 'Titles',
                 icon: '\\e0af',
-                link: '/app/com.tuvalsoft.app.organizationmanager/company/list/employee'
+                link: '/app/com.tuvalsoft.app.organizationmanager/company/list/title/active-titles'
             },
             /*   {
                   name: 'Departments',

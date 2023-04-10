@@ -1,40 +1,43 @@
 import { useSessionService } from "@realmocean/services";
 import { UserFileDownloader } from "@tuval/core";
-import { cLeading, cTopLeading, HStack, Spacer, State, TextField, UIController, UIRecordsContext, VStack, Text, Spinner, Heading, cTrailing, UIRouteOutlet } from "@tuval/forms";
-import { RealmDataContext } from "../../../views/DataContexts";
+import { cTopLeading, cTrailing, Heading, HStack, UIFormController, UIRouteOutlet } from "@tuval/forms";
 import { LeftSideMenuView } from "../../../views/LeftMenu";
 import { Views } from "../../../views/Views";
-import { DepartmentsGrid } from "../views/DepartmentsGrid";
-import { AddDepartmentDialog } from "../dialogs/AddDepartmentDialog";
+import { AddTitleDialog } from "../dialogs/AddTitleDialog";
 
-const fontFamily = '"proxima-nova", "proxima nova", "helvetica neue", "helvetica", "arial", sans-serif'
+export class TitleListController extends UIFormController {
 
-export class DepartmentListController extends UIController {
+   
+    private Search_Action(value: string): void {
+        //this.showingTenants = this.tenants.filter((tenant) => tenant.tenant_name.toLowerCase().indexOf(value.toLowerCase()) > -1);
+    }
 
-
-    @State()
-    private searchText: string;
-
+  
 
     public LoadView(): any {
         return (
             HStack({ alignment: cTopLeading })(
-                LeftSideMenuView('', 'Departments'),
+                LeftSideMenuView('', 'Titles'),
                 Views.RightSidePage({
 
                     title: HStack(
-                        Heading('Departments').h3().width('100%'),
+                        Heading('Titles').h3().width('100%'),
                         HStack({ alignment: cTrailing, spacing: 15 })(
 
                             Views.CreateButton({
-                                label: 'New Department', action: () => AddDepartmentDialog.Show().then(() => {
+                                label: 'New title', action: () => AddTitleDialog.Show().then(() => {
+                                    /* this.users = null;
+                                    const orgService = useOrgProvider();
+                                    orgService.getEmployees().then(employees =>
+                                        this.showingUsers = this.users = employees
+                                    ) */
                                 })
                             }),
 
                             Views.ExportButton({
                                 label: 'Export', action: () => {
                                     const fd = new UserFileDownloader({
-                                        url: `/api/ExportDepartments?organization_id=${useSessionService().TenantId}`,
+                                        url: `/api/ExportTitles?organization_id=${useSessionService().TenantId}`,
                                         autoStart: true
                                     })
                                 }
@@ -52,6 +55,4 @@ export class DepartmentListController extends UIController {
 
         )
     }
-
-
 }

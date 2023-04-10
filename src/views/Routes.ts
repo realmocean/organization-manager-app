@@ -16,8 +16,17 @@ import { FlowModelController } from "../domains/workflows/flows/controllers/Flow
 import { FlowProjectListController } from "../domains/workflows/flows/controllers/FlowProjectListController";
 import { EditUserController } from "../domains/users/controllers/EditUserController";
 import { EditDepartmentController } from "../domains/departments/controllers/EditDepartmentController";
-import { Tab1Controller } from "../domains/users/controllers/Tab1";
-import { Tab2Controller } from "../domains/users/controllers/Tab2";
+import { ActiveEmployeesController } from "../domains/users/controllers/ActiveEmployeesController";
+import { EmployeeAuditLogController } from "../domains/users/controllers/EmployeeAuditLogController";
+import { ActiveDepartmentsController } from "../domains/departments/controllers/ActiveDepartmentsController";
+import { DepartmentAuditLogController } from "../domains/departments/controllers/DepartmentAuditLogController";
+import { ActivePositionsController } from "../domains/positions/controllers/ActivePositionsController";
+import { PositionAuditLogController } from "../domains/positions/controllers/PositionAuditLogController";
+import { EditPositionController } from "../domains/positions/controllers/EditPositionController";
+import { TitleListController } from "../domains/titles/controllers/TitleListController";
+import { ActiveTitlesController } from "../domains/titles/controllers/ActiveTitlesController";
+import { TitleAuditLogController } from "../domains/titles/controllers/TitleAuditLogController";
+import { EditTitlesController } from "../domains/titles/controllers/EditTitlesController";
 
 export const Routes = () => {
 
@@ -39,15 +48,31 @@ export const Routes = () => {
                 UIRoute('sessions', SessionsController),
 
                 UIRoute('company/list/employee', UserListController).children(
-                    UIRoute('tab1', Tab1Controller),
-                    UIRoute('tab2', Tab2Controller),
+                    UIRoute('active-employees', ActiveEmployeesController),
+                    UIRoute('employee-audit', EmployeeAuditLogController),
                 ),
                 UIRoute('company/edit/employee/:employee_id', EditUserController),
 
-                UIRoute('company/list/department', DepartmentListController),
+                UIRoute('company/list/department', DepartmentListController).children(
+                    UIRoute('active-departments', ActiveDepartmentsController),
+                    UIRoute('department-audit', DepartmentAuditLogController),
+                ),
+
                 UIRoute('company/edit/department/:department_id', EditDepartmentController),
 
-                UIRoute('company/list/position', PositionListController),
+                
+                UIRoute('company/list/position', PositionListController).children(
+                    UIRoute('active-positions', ActivePositionsController),
+                    UIRoute('position-audit', PositionAuditLogController),
+                ),
+                UIRoute('company/edit/position/:position_id', EditPositionController),
+
+                UIRoute('company/list/title', TitleListController).children(
+                    UIRoute('active-titles', ActiveTitlesController),
+                    UIRoute('title-audit', TitleAuditLogController),
+                ),
+                UIRoute('company/edit/title/:title_id', EditTitlesController),
+
 
                 UIRoute('restrictions/appiprestriction/list', AppIpRestrictionListController),
 
@@ -72,7 +97,8 @@ export const Routes = () => {
 
 
 
-                UIRoute('b', DashboardController),
+               // UIRoute('b', DashboardController),
+                UIRoute('overview', DashboardController),
                 UIRoute('', DashboardController).isIndex(true)
             )
         )

@@ -1,8 +1,12 @@
-import { DialogView, ViewProperty, Text, UICreateContext, cTopLeading, cTrailing, HStack, Icon, RequiredRule, Spacer, UIRecordsContext, VStack } from "@tuval/forms";
+import { DialogView, ViewProperty, Text, UICreateContext, 
+    cTopLeading, cTrailing, HStack, Icon, RequiredRule, Spacer, 
+    UIRecordsContext, VStack } from "@tuval/forms";
 import { RealmDataContext } from "../../../views/DataContexts";
 import { Views } from "../../../views/Views";
 import { UITextBoxView } from "@realmocean/inputs";
 import { useSessionService } from "@realmocean/services";
+import { Dropdown } from "../../../views/components/Dropdown";
+import { TextField } from "../../../views/components/TextField";
 
 export class AddUserDialog extends DialogView {
 
@@ -36,45 +40,33 @@ export class AddUserDialog extends DialogView {
                     VStack({ alignment: cTopLeading, spacing: 10 })(
                         VStack({ alignment: cTopLeading, spacing: 15 })(
 
-                            UITextBoxView()
-                                .floatlabel(false)
-                                .width('100%')
-                                .placeholder('*Record ID')
+                            TextField()
+                                .label('*Record ID')
                                 .formField('employee_record_id', [new RequiredRule('Record ID required.')]),
 
-                            UITextBoxView()
-                                .floatlabel(false)
-                                .width('100%')
-                                .placeholder('*Name')
+                            TextField()
+                                .label('*Name')
                                 .formField('employee_name', [new RequiredRule('Employee Name required.')]),
 
-                            UITextBoxView()
-                                .floatlabel(false)
-                                .width('100%')
-                                .placeholder('*Last Name')
+                            TextField()
+                                .label('*Last Name')
                                 .formField('employee_last_name', [new RequiredRule('Employee Last Name required.')]),
- 
-                             HStack(
-                                UIRecordsContext(({ data }) =>
-                                    Views.DropDown({
-                                        label: 'Title',
-                                        dataSource: data,
-                                        fields: { text: 'title_name', value: 'id' },
-                                        placeholder: 'Please select employee title',
-                                        formFieldOptions: { fieldName: 'title_id', rules: [] }
-                                    })
-                                ).resource('titles').filter({ 'tenant_id': useSessionService().TenantId })
-                            ).height(),
 
-                            UIRecordsContext(({ data }) =>
-                                Views.DropDown({
-                                    label: 'Department',
-                                    dataSource: data,
-                                    fields: { text: 'org_unit_name', value: 'id' },
-                                    placeholder: 'Please select department',
-                                    formFieldOptions: { fieldName: 'department_id', rules: [] }
-                                })
-                            ).resource('departments').filter({ 'tenant_id': useSessionService().TenantId }), 
+
+                            Dropdown()
+                                .fields({ text: 'title_name', value: 'id' })
+                                .label('Title')
+                                .formField('title_id', [])
+                                .resource('titles')
+                                .filter({ 'tenant_id': useSessionService().TenantId }),
+
+
+                            Dropdown()
+                                .fields({ text: 'org_unit_name', value: 'id' })
+                                .label('Department')
+                                .formField('department_id', [])
+                                .resource('departments')
+                                .filter({ 'tenant_id': useSessionService().TenantId })
 
 
 
@@ -91,7 +83,7 @@ export class AddUserDialog extends DialogView {
                                     .fontWeight('600').cursor('pointer').onClick(() => this.OnCancel()),
                                 Views.AcceptButton({
                                     label: 'Create', loading: isLoading, action: () => {
-                                       this.SetValue('tenant_id', useSessionService().TenantId);
+                                        this.SetValue('tenant_id', useSessionService().TenantId);
                                         create()
                                     }
                                 }),
@@ -106,7 +98,7 @@ export class AddUserDialog extends DialogView {
                     ).padding(30).foregroundColor('#676767').height()
                 ).resource('employees')
                     .onSuccess(() => {
-                       // this.InvalidateQueries();
+                        // this.InvalidateQueries();
                         //this.OnOKClick();
                     })
             )
@@ -114,7 +106,7 @@ export class AddUserDialog extends DialogView {
     }
 
     public static Show() {
-       
+
         const dialog = new AddUserDialog();
         dialog.BindRouterParams()
         return dialog.ShowDialogAsync();

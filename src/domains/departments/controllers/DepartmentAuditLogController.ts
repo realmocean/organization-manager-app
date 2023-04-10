@@ -8,18 +8,16 @@ import {
 import { RealmDataContext } from "../../../views/DataContexts";
 import { LeftSideMenuView } from "../../../views/LeftMenu";
 import { Views } from "../../../views/Views";
-import { AddUserDialog } from "../dialogs/AddUserDialog";
-import { UsersGrid } from "../views/UsersGrid";
 
 
 
-export class Tab1Controller extends UIController {
+
+export class DepartmentAuditLogController extends UIController {
 
     @State()
     private searchText: string;
 
     public LoadView(): any {
-
         const navigate = useNavigate();
         return (
 
@@ -30,18 +28,23 @@ export class Tab1Controller extends UIController {
                         HStack({ alignment: cLeading })(
                             TabList(
                                 {
-                                    
-                                    text: 'Active Employees',
-                                    onClick:()=>navigate('/app/com.tuvalsoft.app.organizationmanager/company/list/employee/tab1')
+                                    id: '1',
+                                    active: false,
+                                    text: 'Active Departments',
+                                    value: 1,
+                                    onClick:()=>navigate('/app/com.tuvalsoft.app.organizationmanager/company/list/department/active-departments')
                                 },
                                 {
+                                    id: '2',
+                                    active: false,
                                     text: 'Audit Log',
-                                    onClick:()=>navigate('/app/com.tuvalsoft.app.organizationmanager/company/list/employee/tab2')
+                                    value: 2,
+                                    onClick:()=>navigate('/app/com.tuvalsoft.app.organizationmanager/company/list/department/department-auditlog')
                                 }
-                            ).activeTabId(0)
+                            ).activeTabId(1)
                         ).height().padding(cVertical, '1rem'),
                         UIRecordsContext(({ data, isLoading }) =>
-                            isLoading ? HStack(Spinner()) :
+                            isLoading ? HStack(Spinner()) : Text('Audit log not found.')
                                 /*  VStack(
                                      UIGridView()
                                          .columns(columns as any)
@@ -50,7 +53,7 @@ export class Tab1Controller extends UIController {
                                              this.grid = grid;
                                          })
                                  ).padding(cHorizontal, 20) */
-                                UsersGrid(data)
+                                //UsersGrid(data)
                         )
 
                             //UsersGrid(data) as any

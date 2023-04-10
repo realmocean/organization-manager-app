@@ -4,14 +4,14 @@ import { RealmDataContext } from "../../../views/DataContexts";
 import { Views } from "../../../views/Views";
 import { UIRecordContext } from "@tuval/forms";
 
-export class DeletePositionDialog extends DialogView {
+export class DeleteTitleDialog extends DialogView {
 
     @ViewProperty()
     private id: string;
 
     public constructor() {
         super();
-        this.Header = 'Delete position'
+        this.Header = 'Delete title'
         this.Width = '500px'
         //this.Height = '500px'
 
@@ -39,7 +39,7 @@ export class DeletePositionDialog extends DialogView {
                     UIRecordContext(({ data }) =>
                         VStack({ alignment: cTopLeading, spacing: 10 })(
 
-                            Text(`Are you sure you want to delete **${data?.position_name}** ?`).renderingType(RenderingTypes.Markdown),
+                            Text(`Are you sure you want to delete **${data?.title_name}** ?`).renderingType(RenderingTypes.Markdown),
 
                             HStack({ alignment: cTrailing, spacing: 10 })(
                                 Text('Cancel').foregroundColor('rgb(96, 106, 123)').fontSize(14).fontWeight('600').cursor('pointer').onClick(() => this.OnCancel()),
@@ -57,16 +57,16 @@ export class DeletePositionDialog extends DialogView {
 
 
                         ).padding(30).foregroundColor('#676767').height()
-                    ).resource('positions').filter({
+                    ).resource('titles').filter({
                         'id': this.id
                     })
 
                 )
-                    .resource('positions').filter({
+                    .resource('titles').filter({
                         'id': this.id
                     })
                     .onSuccess(() => {
-                        this.InvalidateQuerie('positions');
+                        this.InvalidateQuerie('titles');
                         this.OnOK();
                     })
 
@@ -84,7 +84,7 @@ export class DeletePositionDialog extends DialogView {
     }
 
     public static Show(id: string) {
-        const dialog = new DeletePositionDialog();
+        const dialog = new DeleteTitleDialog();
         dialog.BindRouterParams(id)
         dialog.ShowDialogAsync();
     }

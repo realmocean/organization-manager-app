@@ -13,7 +13,7 @@ import { UsersGrid } from "../views/UsersGrid";
 
 
 
-export class Tab2Controller extends UIController {
+export class EmployeeAuditLogController extends UIController {
 
     @State()
     private searchText: string;
@@ -33,7 +33,7 @@ export class Tab2Controller extends UIController {
                                     active: false,
                                     text: 'Active Employees',
                                     value: 1,
-                                    onClick:()=>navigate('/app/com.tuvalsoft.app.organizationmanager/company/list/employee/tab1')
+                                    onClick:()=>navigate('/app/com.tuvalsoft.app.organizationmanager/company/list/employee/active-employees')
                                 },
                                 {
                                     id: '2',

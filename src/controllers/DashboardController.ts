@@ -7,9 +7,9 @@ export class DashboardController extends UIController {
         return (
             HStack({ alignment: cTopLeading })(
                 LeftSideMenuView('', 'Overview'),
-                UIDataTable().model([{
+                /* UIDataTable().model([{
                     name: 'test'
-                }])
+                }]) */
             )
         )
     }

@@ -173,13 +173,13 @@ export const DepartmentsGrid = (titles: any[]) => {
     // return ({ controller }) => (
 
        return  (
-        HStack(
+       
             HStack(
                 UIDataTable()
                     .columns(_columns)
                     .model(titles).width('100%')
             ).border('solid 1px #DEE2E6').cornerRadius(10).overflow('hidden')
-        ).padding()
+      
        )
 
    // )

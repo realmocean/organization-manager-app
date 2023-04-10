@@ -4,7 +4,7 @@ import { DialogView, UICreateContext, VStack, cTopLeading, RequiredRule, HStack,
 import { RealmDataContext } from "../../../views/DataContexts";
 import { Views } from "../../../views/Views";
 
-export class AddPositionDialog extends DialogView {
+export class AddTitleDialog extends DialogView {
 
     public constructor() {
         super();
@@ -38,11 +38,11 @@ export class AddPositionDialog extends DialogView {
 
                         TextField()
                             .label('*Record ID')
-                            .formField('position_record_id', [new RequiredRule('Record ID required.')]),
+                            .formField('title_record_id', [new RequiredRule('Record ID required.')]),
 
                         TextField()
                             .label('*Name')
-                            .formField('position_name', [new RequiredRule('Name required.')]),
+                            .formField('title_name', [new RequiredRule('Name required.')]),
                         HStack(
                             HStack({ alignment: cTrailing, spacing: 10 })(
                                 Text('Cancel').foregroundColor('rgb(96, 106, 123)').fontSize(14)
@@ -59,9 +59,9 @@ export class AddPositionDialog extends DialogView {
                                 .borderTop('solid 1px hsl(230, 30%, 96%)')
                         ).paddingTop('20px').height()
                     ).padding(30).foregroundColor('#676767').height()
-                ).resource('positions')
+                ).resource('titles')
                     .onSuccess(() => {
-                         this.InvalidateQuerie('positions');
+                         this.InvalidateQuerie('titles');
                          this.OnOK();
                     })
             )
@@ -70,7 +70,7 @@ export class AddPositionDialog extends DialogView {
 
     public static Show() {
 
-        const dialog = new AddPositionDialog();
+        const dialog = new AddTitleDialog();
         dialog.BindRouterParams()
         return dialog.ShowDialogAsync();
     }
