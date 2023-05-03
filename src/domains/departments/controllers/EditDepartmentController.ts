@@ -29,7 +29,7 @@ export class EditDepartmentController extends UIFormController {
         const navigate = useNavigate();
         return (
             HStack({ alignment: cTopLeading })(
-                LeftSideMenuView('', 'Employees'),
+                LeftSideMenuView('', 'Departments'),
                 Views.RightSidePage({
                     title: 'Edit Department',
                     maxWidth: '1400px',
