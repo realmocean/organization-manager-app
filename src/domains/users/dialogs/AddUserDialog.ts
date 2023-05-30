@@ -1,6 +1,8 @@
-import { DialogView, ViewProperty, Text, UICreateContext, 
-    cTopLeading, cTrailing, HStack, Icon, RequiredRule, Spacer, 
-    UIRecordsContext, VStack } from "@tuval/forms";
+import {
+    DialogView, ViewProperty, Text, UICreateContext,
+    cTopLeading, cTrailing, HStack, Icon, RequiredRule, Spacer,
+    UIRecordsContext, VStack
+} from "@tuval/forms";
 import { RealmDataContext } from "../../../views/DataContexts";
 import { Views } from "../../../views/Views";
 import { UITextBoxView } from "@realmocean/inputs";
@@ -98,8 +100,8 @@ export class AddUserDialog extends DialogView {
                     ).padding(30).foregroundColor('#676767').height()
                 ).resource('employees')
                     .onSuccess(() => {
-                        // this.InvalidateQueries();
-                        //this.OnOKClick();
+                        this.InvalidateQueries();
+                        this.OnOK();
                     })
             )
         )

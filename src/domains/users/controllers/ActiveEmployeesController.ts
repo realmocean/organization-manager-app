@@ -62,6 +62,10 @@ export class ActiveEmployeesController extends UIController {
                                     'employee_name': this.searchText
                                 })
                             })
+                            .sort({
+                                field:'created_at',
+                                order: 'DESC'
+                            })
 
                     )
                 )
