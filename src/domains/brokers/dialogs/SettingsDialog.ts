@@ -1,5 +1,6 @@
 import { is } from "@tuval/core";
-import { Button, cHorizontal, cLeading, cTop, cTopLeading, cTopTrailing, cTrailing, Text, cVertical, DialogView, HDivider, HStack, Icon, RenderingTypes, RequiredRule, ScrollView, Spacer, Spinner, State, TextField, UIImage, UIRecordContext, VStack, CheckBox, ViewProperty } from "@tuval/forms";
+import { Button, cHorizontal, cLeading, cTop, cTopLeading, cTopTrailing, cTrailing, Text, cVertical, DialogView, HDivider, HStack, Icon, RenderingTypes, RequiredRule, ScrollView, Spacer, Spinner, State, TextField, UIImage, UIRecordContext, VStack, 
+     ViewProperty } from "@tuval/forms";
 
 import { RealmoceanDataContext } from "../../../views/DataContexts";
 
@@ -158,8 +159,8 @@ export class SettingsDialog extends DialogView {
                                             Text('').whiteSpace('nowrap')
                                         ).minWidth('150px').maxWidth('150px'),
                                         HStack({ alignment: cLeading })(
-                                            CheckBox()
-                                                .labelView(Text('Set as default'))
+                                          //  CheckBox()
+                                          //      .labelView(Text('Set as default'))
                                             // .formField('is_default', [])
                                         )
 

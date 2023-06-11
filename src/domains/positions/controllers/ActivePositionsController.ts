@@ -2,14 +2,17 @@
 import { useSessionService } from "@realmocean/services";
 import {
     HStack,
+    Icon,
+    Icons,
     Spinner, State,
     TabList,
-    UIController, UIRecordsContext, VStack,
+    UIController, UIRecordsContext, VStack, Text,
     cLeading, cTopLeading,
-    cVertical, useNavigate
+    cVertical, useNavigate, WorkProtocol, useProtocol
 } from "@tuval/forms";
 import { RealmDataContext } from "../../../views/DataContexts";
 import { PositionGrid } from "../views/PositionGrid";
+import { SelectPositionViewDialog } from "../dialogs/SelectPositionViewDialog";
 
 
 
@@ -22,25 +25,28 @@ export class ActivePositionsController extends UIController {
     public LoadView(): any {
 
         const navigate = useNavigate();
+
+        const { gql, _mutation } = useProtocol(WorkProtocol);
+
+        const { data: { views }, isLoading } = gql`
+        views(workspace_id:"directory", folder_id:"position", applet_id:"position"){
+            id
+            title
+        }
+        `
+
+        const { mutate: createView } = _mutation`create_view {
+            id
+            title
+        }`
+
+
         return (
 
             RealmDataContext(
                 HStack({ alignment: cTopLeading })(
 
                     VStack({ alignment: cTopLeading })(
-                        HStack({ alignment: cLeading })(
-                            TabList(
-                                {
-                                    
-                                    text: 'Active Positions',
-                                    onClick:()=>navigate('/app/com.tuvalsoft.app.organizationmanager/company/list/position/active-positions')
-                                },
-                                {
-                                    text: 'Audit Log',
-                                    onClick:()=>navigate('/app/com.tuvalsoft.app.organizationmanager/company/list/position/position-audit')
-                                }
-                            ).activeTabId(0)
-                        ).height().padding(cVertical, '1rem'),
                         UIRecordsContext(({ data, isLoading }) =>
                             isLoading ? HStack(Spinner()) :
                                 PositionGrid(data)

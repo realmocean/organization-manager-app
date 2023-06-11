@@ -1,6 +1,6 @@
 import { is } from "@tuval/core";
 import {
-    Button, cHorizontal, cLeading, cTop, cTopLeading, cTopTrailing, Text, CheckBox,
+    Button, cHorizontal, cLeading, cTop, cTopLeading, cTopTrailing, Text, 
     cTrailing, cVertical, DialogView, HDivider, HStack, Icon, RenderingTypes, RequiredRule, ScrollView, Spacer, Spinner, State, TextField, UIImage, UIRecordContext, UIRecordsContext, VStack, ViewProperty, Fragment, UIViewBuilder
 } from "@tuval/forms";
 import { RealmoceanDataContext } from "../../../views/DataContexts";
@@ -200,8 +200,8 @@ export class EditSettingsDialog extends DialogView {
                                             Text('').whiteSpace('nowrap')
                                         ).minWidth('150px').maxWidth('150px'),
                                         HStack({ alignment: cLeading })(
-                                            CheckBox()
-                                                .labelView(Text('Set as default'))
+                                           // CheckBox()
+                                            //    .labelView(Text('Set as default'))
                                             //.formField('is_default', [])
                                         )
 

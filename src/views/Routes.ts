@@ -27,6 +27,7 @@ import { TitleListController } from "../domains/titles/controllers/TitleListCont
 import { ActiveTitlesController } from "../domains/titles/controllers/ActiveTitlesController";
 import { TitleAuditLogController } from "../domains/titles/controllers/TitleAuditLogController";
 import { EditTitlesController } from "../domains/titles/controllers/EditTitlesController";
+import { ViewController } from "../domains/positions/controllers/ViewController";
 
 export const Routes = () => {
 
@@ -64,6 +65,7 @@ export const Routes = () => {
                 UIRoute('company/list/position', PositionListController).children(
                     UIRoute('active-positions', ActivePositionsController),
                     UIRoute('position-audit', PositionAuditLogController),
+                    UIRoute('position-view/:view_id', ViewController),
                 ),
                 UIRoute('company/edit/position/:position_id', EditPositionController),
 

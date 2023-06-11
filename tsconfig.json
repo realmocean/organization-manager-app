@@ -22,7 +22,7 @@
     "declarationDir": "dist_types/types",
     "outDir": "dist/lib",
     "jsx": "react",
-    "jsxFactory": "Teact.createElement",
+    "jsxFactory": "React.createElement",
     "typeRoots": [
       "node_modules/@types"
     ]

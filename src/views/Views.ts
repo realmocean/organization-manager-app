@@ -483,7 +483,7 @@ export namespace Views {
         ).height().width()
     )
 
-    export const RightSidePage = ({ showBackIcon, title, copyId, tabview, content, maxWidth = '1160px' }: { title: string | UIView, showBackIcon?: boolean, copyId?: { value: string, label: string }, tabview?: UIView, content: UIView, maxWidth?: string }): any => {
+    export const RightSidePage = ({ showBackIcon, title, copyId, tabview, content/* , maxWidth = '1160px' */ }: { title: string | UIView, showBackIcon?: boolean, copyId?: { value: string, label: string }, tabview?: UIView, content: UIView, maxWidth?: string }): any => {
         const navigator = useNavigate();
         const theme = useTheme();
         return (
@@ -526,7 +526,8 @@ export namespace Views {
                 ScrollView({ axes: cVertical, alignment: cTop })(
                     VStack({ alignment: cTopLeading })(
                         content
-                    ).maxWidth(maxWidth)
+                    )
+                    //.maxWidth(maxWidth)
                 )
 
 

@@ -1,4 +1,4 @@
-import { HStack, Icon, VStack, cLeading, Color , Text, Icons, IDataTableColumn, MenuButton, UIDataTable, UIViewBuilder, cCenter, useNavigate} from "@tuval/forms"
+import { HStack, Icon, VStack, cLeading, Color, Text, Icons, IDataTableColumn, MenuButton, UIDataTable, UIViewBuilder, cCenter, useNavigate, TextField } from "@tuval/forms"
 import { ITableViewColumn, Views } from "../../../views/Views"
 import { DeletePositionDialog } from "../dialogs/DeletePositionDialog"
 import { moment } from "@tuval/core"
@@ -14,8 +14,8 @@ const columns: ITableViewColumn[] = [
                 VStack({ alignment: cLeading })(
                     Text(`${row.position_name}`)
                         .fontWeight('600')
-                     
-                   
+
+
                 )
             )
         )
@@ -66,9 +66,12 @@ const _columns: IDataTableColumn[] = [
         width: '60%',
         filter: true,
         sortable: true,
+        editor: ({rowData}) => (
+            TextField().value(rowData.position_name)
+        )
 
     },
-    
+
     {
         header: 'Created At',
         width: '15%',
@@ -139,24 +142,31 @@ const _columns: IDataTableColumn[] = [
             })
 
         }
-    }
+    },
+    {
+        header: '',
+        width: '15%',
+        rowEditor: true,
+        
+    } as any,
 ]
 
 export const PositionGrid = (positions: any[]) => {
 
-     // const controller:UIController = bindController();
+    // const controller:UIController = bindController();
     // return ({ controller }) => (
 
-       return  (
-       
-            HStack(
-                UIDataTable()
-                    .columns(_columns)
-                    .model(positions).width('100%')
-            ).border('solid 1px #DEE2E6').cornerRadius(10).overflow('hidden')
-      
-       )
+    return (
 
-   // )
+        HStack(
+            UIDataTable()
+            .editMode('row')
+                .columns(_columns)
+                .model(positions).width('100%')
+        ).border('solid 1px #DEE2E6').cornerRadius(10).overflow('hidden')
+
+    )
+
+    // )
 
 }
