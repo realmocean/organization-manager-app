@@ -523,12 +523,12 @@ export namespace Views {
                     .height()
                     .background('#F4F5F7'),
                 // .shadow('0 0 25px 0 rgb(73 80 87 / 10%)'),
-                ScrollView({ axes: cVertical, alignment: cTop })(
+              //  ScrollView({ axes: cVertical, alignment: cTop })(
                     VStack({ alignment: cTopLeading })(
                         content
                     )
                     //.maxWidth(maxWidth)
-                )
+               // )
 
 
             )
