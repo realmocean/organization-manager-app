@@ -137,10 +137,10 @@ export class PositionListController extends UIFormController {
                                     )
                                     .height()
                                     .padding(cVertical, '1rem'),
-                            ).allHeight(50),
+                            ).allHeight(50)
+                            .borderBottom('solid 1px #E8EAED'),
                             UIRouteOutlet().width('100%').height('100%')
                         )
-
                     )
                 })
             )

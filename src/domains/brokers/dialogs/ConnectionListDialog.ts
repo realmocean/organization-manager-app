@@ -5,10 +5,6 @@ import { ITableViewColumn, Views } from "../../../views/Views";
 import { EditSettingsDialog } from "./EditSettingsDialog";
 import { SettingsDialog } from "./SettingsDialog";
 
-
-
-
-
 export class ConnectionListDialog extends DialogView {
 
     @ViewProperty()
@@ -26,7 +22,6 @@ export class ConnectionListDialog extends DialogView {
     private isLoading(): boolean {
         return this.broker_connections == null;
     }
-
 
     protected BindRouterParams({ broker_info }) {
         console.log(broker_info)
@@ -51,7 +46,7 @@ export class ConnectionListDialog extends DialogView {
                             .width(35).height(35)
                             .cornerRadius(20).background({ hover: '#EEE' })
                             .onClick(() => EditSettingsDialog.Show(broker_info,row.id, row.broker_id, row.tenant_id))
-        
+
                         ,
                         HStack(
                             Icon(Icons.Delete).size(22)

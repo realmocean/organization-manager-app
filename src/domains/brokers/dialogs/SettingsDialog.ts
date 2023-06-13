@@ -1,8 +1,12 @@
 import { is } from "@tuval/core";
-import { Button, cHorizontal, cLeading, cTop, cTopLeading, cTopTrailing, cTrailing, Text, cVertical, DialogView, HDivider, HStack, Icon, RenderingTypes, RequiredRule, ScrollView, Spacer, Spinner, State, TextField, UIImage, UIRecordContext, VStack, 
-     ViewProperty } from "@tuval/forms";
+import {
+    Button, cHorizontal, cLeading, cTop, cTopLeading, cTopTrailing, cTrailing, Text, cVertical, DialogView, HDivider, HStack, Icon, RenderingTypes, RequiredRule, ScrollView, Spacer, Spinner, State, TextField, UIImage, UIRecordContext, VStack,
+    ViewProperty,
+    UICreateContext
+} from "@tuval/forms";
 
-import { RealmoceanDataContext } from "../../../views/DataContexts";
+import { RealmDataContext, RealmoceanDataContext } from "../../../views/DataContexts";
+import { useSessionService } from "@realmocean/services";
 
 export class SettingsDialog extends DialogView {
 
@@ -110,10 +114,10 @@ export class SettingsDialog extends DialogView {
 
     protected override OnSubmit(data) {
         alert(JSON.stringify(data))
-      /*   ROC.CreateBrokerConnection(this.broker_info.broker_qualified_name, this.broker_info.id, data.connection_name, JSON.stringify(data), data.is_default).then(() => {
-            this.InvalidateQueries();
-            this.Hide();
-        }); */
+        /*   ROC.CreateBrokerConnection(this.broker_info.broker_qualified_name, this.broker_info.id, data.connection_name, JSON.stringify(data), data.is_default).then(() => {
+              this.InvalidateQueries();
+              this.Hide();
+          }); */
 
     }
     public override LoadView() {
@@ -150,7 +154,6 @@ export class SettingsDialog extends DialogView {
                                         ).height(),
                                         TextField()
                                             .formField('connection_name', [new RequiredRule('Please set connection name')])
-
                                     ).height(),
                                     HDivider().height(1).background('rgb(125,125,125, 0.1)'),
                                     this.getDynamicView(data?.dialog_code),
@@ -159,11 +162,10 @@ export class SettingsDialog extends DialogView {
                                             Text('').whiteSpace('nowrap')
                                         ).minWidth('150px').maxWidth('150px'),
                                         HStack({ alignment: cLeading })(
-                                          //  CheckBox()
-                                          //      .labelView(Text('Set as default'))
+                                            //  CheckBox()
+                                            //      .labelView(Text('Set as default'))
                                             // .formField('is_default', [])
                                         )
-
                                     ).height()
                                     ,
                                     HStack({ alignment: cTopTrailing })(
@@ -183,9 +185,23 @@ export class SettingsDialog extends DialogView {
                                 Button(
                                     Text('Cancel')
                                 ),
-                                Button(
-                                    Text('Add')
-                                ).onClick(() => this.Submit())
+                                RealmDataContext(
+                                    UICreateContext((create ) =>
+                                    Button(
+                                        Text('Add')
+                                    ).onClick(() => {
+                                        this.SetValue('tenant_id',useSessionService().TenantId);
+                                        this.SetValue('broker_id',this.broker_info.id);
+                                        this.SetValue('broker_qualified_name',this.broker_info.broker_qualified_name);
+                                        this.SetValue('connection_name',this.GetValue('connection_name'));
+                                        this.SetValue('connection_info',JSON.stringify(this.formData));
+                                        alert(create)
+                                        create()
+                                    })
+                                ).resource('brokerconnection')
+                                )
+
+
                             ).height(),
                         ).padding(20)
                 ).resource('brokersettingdialog').filter({ id: this.broker_info.id })
