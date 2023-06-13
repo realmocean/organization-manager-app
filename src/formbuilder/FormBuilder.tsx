@@ -1,5 +1,5 @@
 import { is } from "@tuval/core";
-import { DirectoryProtocol } from "@tuval/forms";
+import { DirectoryProtocol, Fragment } from "@tuval/forms";
 import { useProtocol } from "@tuval/forms";
 import { UIViewBuilder } from "@tuval/forms";
 import { TextField, VStack, cTopLeading, cHorizontal, cLeading, Text, CodeEditor, TextAlignment, ForEach, CheckBox, useFormController, UIRadioGroup, HStack, Dropdown } from "@tuval/forms";
@@ -154,7 +154,7 @@ const __formMeta = {
     }
 }
 
-const formMeta = {
+const form_Meta = {
     "fieldMap": {
         "firstName": {
             "id": "firstName",
@@ -234,6 +234,8 @@ const formMeta = {
         ]
     }
 }
+
+console.log(JSON.stringify(form_Meta))
 
 const formMeta___ = {
     "fieldMap": {
@@ -605,7 +607,7 @@ const SelectFormView = (textData: any) => {
         return (
             UIViewBuilder(() => {
                 const { query } = useProtocol(DirectoryProtocol);
-              
+
                 const { data } = query(body);
 
                 return (
@@ -642,12 +644,12 @@ const SelectFormView = (textData: any) => {
                 Text(textData.label).kerning('0.00938em').lineHeight('24px').foregroundColor('#333D47').fontSize(14),
                 Dropdown((option) =>
                     HStack({ alignment: cLeading })(
-                        Text(option.position_name)
+                        Text(option.text)
                     )
 
                 )((option) =>
                     HStack({ alignment: cLeading })(
-                        Text(option.position_name)
+                        Text(option.text)
                     )
                         .paddingLeft('10px')
                 )
@@ -795,7 +797,20 @@ const KeyValueView = (textData: any) => {
     }
 }
 
-export const FormBuilder = () => {
+export const FormBuilder = (formMeta: string | object) => {
+    if (formMeta == null) {
+        return Fragment();
+    }
+
+    try {
+        if (is.string(formMeta)) {
+            formMeta = JSON.parse(formMeta);
+        }
+
+    } catch (e) {
+        return Text(e.toString())
+    }
+
     const views = []
     const { fieldMap, layout } = formMeta as any;
 
@@ -825,19 +840,28 @@ export const FormBuilder = () => {
 }
 
 function getView(viewInfo) {
-    switch (viewInfo.type) {
-        case 'text':
-            return TextFormView(viewInfo);
-        case 'checkbox':
-            return CheckBoxFormView(viewInfo);
-        case 'radiogroup':
-            return RadioGroupoFormView(viewInfo);
-        case 'select':
-            return SelectFormView(viewInfo);
-        case 'keyvalue':
-            return KeyValueView(viewInfo);
-        case 'editor':
-            return EditorView(viewInfo);
+    try {
+        switch (viewInfo.type) {
+            case 'text':
+                return TextFormView(viewInfo);
+            case 'checkbox':
+                return CheckBoxFormView(viewInfo);
+            case 'radiogroup':
+                return RadioGroupoFormView(viewInfo);
+            case 'select':
+                return SelectFormView(viewInfo);
+            case 'keyvalue':
+                return KeyValueView(viewInfo);
+            case 'editor':
+                return EditorView(viewInfo);
+        }
+    } catch (e) {
+        return (
+            VStack(
+                Text('Error : ' + e.toString()),
+                Text('Info : ' + JSON.stringify(viewInfo))
+            )
+        )
     }
 }
 

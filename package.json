@@ -103,7 +103,7 @@
     "devDependencies": {
         "@realmocean/bpmn": "^21.0.0-beta.2",
         "@realmocean/charts": "^0.0.6",
-        "@realmocean/common": "^21.0.7",
+        "@realmocean/common": "^21.0.8",
         "@realmocean/data": "^0.0.2",
         "@realmocean/diagram": "^0.0.2",
         "@realmocean/grids": "^19.2.59",
