@@ -1,5 +1,6 @@
-import { cLeading, cTop, cTopLeading, cVertical, DialogView, HStack, Icon, Text, RenderingTypes, ScrollView, Spacer, Spinner, UIImage, UIRecordContext, UIScene, ViewProperty, VStack, Button } from "@tuval/forms";
-import { RealmoceanDataContext } from "../../../views/DataContexts";
+import { cLeading, cTop, cTopLeading, cVertical, DialogView, HStack, Icon, Text, RenderingTypes, ScrollView, Spacer, Spinner, UIImage, UIRecordContext, UIScene, ViewProperty, VStack, Button, UICreateContext } from "@tuval/forms";
+import { RealmDataContext, RealmoceanDataContext } from "../../../views/DataContexts";
+import { useSessionService } from "@realmocean/services";
 
 
 const text = `**Category** Test
@@ -30,7 +31,7 @@ export class InstallBrokerDialog extends DialogView {
         //RBR.GetInstalledBrokers().then((brokers)=> alert(JSON.stringify(brokers)))
 
         /*   RealmBrokerClient.GetBrokerById(broker_id).then(broker => {
-             
+
               this.broker = broker;
           }); */
 
@@ -144,9 +145,22 @@ export class InstallBrokerDialog extends DialogView {
                                             Text(text).renderingType(RenderingTypes.Markdown),
 
                                         ).padding(),
-                                        Button(
-                                            Text('Install')
-                                        ).onClick(() => this.action_Install()).width(250),
+                                        RealmDataContext(
+                                            UICreateContext((create, isLoading) =>
+                                            Button(
+                                                Text('Install')
+                                            ).onClick(() => {
+                                                this.SetValue('tenant_id', useSessionService().TenantId);
+                                                this.SetValue('broker_qualified_name', data.broker_qualified_name);
+                                                this.SetValue('broker_display_name', data.broker_display_name);
+                                                this.SetValue('broker_short_description', data.broker_short_description);
+                                                this.SetValue('icon_link', data.icon_link);
+                                                create();
+                                            }).width(250)
+                                        ).resource('installedbroker')
+                                        )
+
+                                        ,
                                         //UIButtonView().text('Close').action(() => this.dialog.OnCancel())
                                     ).width(300)
 

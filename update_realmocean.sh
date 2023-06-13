@@ -11,3 +11,5 @@ npm install @realmocean/services@beta --save-dev
 
 npm uninstall @realmocean/bpmn@beta
 npm install @realmocean/bpmn@beta --save-dev
+
+npm uninstall @realmocean/common && npm install @realmocean/common --save-dev

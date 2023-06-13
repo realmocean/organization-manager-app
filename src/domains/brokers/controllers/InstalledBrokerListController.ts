@@ -10,9 +10,6 @@ export class InstalledBrokerListController extends UIFormController {
     @State()
     private brokers: any[];
 
-   
-
-
     public BindRouterParams({ }) {
 
     }
@@ -71,7 +68,7 @@ export class InstalledBrokerListController extends UIFormController {
                 })
             )
         )
-        
+
 
     }
 }
