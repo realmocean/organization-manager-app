@@ -3,6 +3,21 @@ import { DirectoryProtocol, Fragment } from "@tuval/forms";
 import { useProtocol } from "@tuval/forms";
 import { UIViewBuilder } from "@tuval/forms";
 import { TextField, VStack, cTopLeading, cHorizontal, cLeading, Text, CodeEditor, TextAlignment, ForEach, CheckBox, useFormController, UIRadioGroup, HStack, Dropdown } from "@tuval/forms";
+import * as Handlebars from 'handlebars'
+import { MathHelpers } from "../formbuilder/helpers/math";
+
+
+
+
+function compile(formData: any, code: string) {
+    const template = Handlebars.compile(code);
+    return template(formData, {
+        helpers: {
+            counter: () => 1000,
+            ...MathHelpers
+        }
+    })
+}
 
 const simpleForm = {
     "fieldMap": {
@@ -488,7 +503,7 @@ const EditorView = (textData: any) => {
 
 const TextFormView = (textData: any) => {
     const formController = useFormController();
-    const { visibleWhen, required, multiline, description } = textData;
+    const { visibleWhen, required, multiline, description, formula } = textData;
     let canRender = false;
     debugger
     if (visibleWhen != null && !is.array(visibleWhen)) {
@@ -528,16 +543,25 @@ const TextFormView = (textData: any) => {
                 Text(textData.label + (required ? '*' : '')).kerning('0.00938em')
                     .lineHeight('24px').foregroundColor('#333D47').fontSize(14)
                     .fontWeight(required ? '600' : '400'),
-                TextField()
-                    .multiline(multiline)
-                    .height(multiline ? '' : '38px')
-                    .foregroundColor('rgb(51,61,71)')
-                    .cornerRadius(2)
-
-                    .formField(textData.name, [])
-                    .border('1px solid #D6E4ED')
-                    .shadow({ focus: 'none' })
-                    .fontSize(15),
+                formula != null ?
+                    TextField()
+                        .value(compile(formController.GetFormData(), formula))
+                        .multiline(multiline)
+                        .height(multiline ? '' : '38px')
+                        .foregroundColor('rgb(51,61,71)')
+                        .cornerRadius(2)
+                        .border('1px solid #D6E4ED')
+                        .shadow({ focus: 'none' })
+                        .fontSize(15) :
+                    TextField()
+                        .multiline(multiline)
+                        .height(multiline ? '' : '38px')
+                        .foregroundColor('rgb(51,61,71)')
+                        .cornerRadius(2)
+                        .formField(textData.name, [])
+                        .border('1px solid #D6E4ED')
+                        .shadow({ focus: 'none' })
+                        .fontSize(15),
                 description &&
                 Text(description).multilineTextAlignment(TextAlignment.leading)
                     .foregroundColor('#95ABBC')

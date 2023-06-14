@@ -1,6 +1,9 @@
-import { UIController, UIView, Text, HStack, cTopLeading, UIDataTable, VStack, UIFormController, CodeEditor, State } from "@tuval/forms";
+import { UIController, UIView, Text, HStack, cTopLeading, UIDataTable,
+    VStack, UIFormController, CodeEditor, State, ScrollView , cVertical} from "@tuval/forms";
 import { LeftSideMenuView } from "../views/LeftMenu";
 import { FormBuilder } from "../formbuilder/FormBuilder";
+
+
 
 export class DashboardController extends UIFormController {
 
@@ -15,12 +18,15 @@ export class DashboardController extends UIFormController {
                 LeftSideMenuView('', 'Overview'),
                 VStack(
                     Text(JSON.stringify(this.GetFormData())),
-                    HStack({alignment:cTopLeading})(
+                    HStack({ alignment: cTopLeading })(
                         CodeEditor()
                             .width(600)
                             .height('100%')
                             .onChange((e) => this.code = e),
-                            FormBuilder(this.code)
+                            ScrollView({axes:cVertical, alignment:cTopLeading})(
+                                 FormBuilder(this.code)
+                            ).padding()
+
                     )
                 ).padding()
 

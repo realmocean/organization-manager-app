@@ -131,6 +131,41 @@ const menuModel = [
         icon: Icons.Integrations,
         subItems: [
             {
+                name: 'Connections',
+                icon: '\\d235',
+                link: '/app/com.tuvalsoft.app.organizationmanager/brokers/installed'
+            },
+            {
+                name: 'Imports',
+                icon: '\\d235',
+                link: '/app/com.tuvalsoft.app.organizationmanager/brokers/installed'
+            },
+            {
+                name: 'Exports',
+                icon: '\\d235',
+                link: '/app/com.tuvalsoft.app.organizationmanager/brokers/installed'
+            },
+            {
+                name: 'Agents',
+                icon: '\\d235',
+                link: '/app/com.tuvalsoft.app.organizationmanager/brokers/installed'
+            },
+            {
+                name: 'iClients',
+                icon: '\\d235',
+                link: '/app/com.tuvalsoft.app.organizationmanager/brokers/installed'
+            },
+            {
+                name: 'Flow Builder',
+                icon: '\\d235',
+                link: '/app/com.tuvalsoft.app.organizationmanager/brokers/installed'
+            },
+            {
+                name: 'Data Loader',
+                icon: '\\d235',
+                link: '/app/com.tuvalsoft.app.organizationmanager/brokers/installed'
+            },
+            {
                 name: 'Installed Brokers',
                 icon: '\\d235',
                 link: '/app/com.tuvalsoft.app.organizationmanager/brokers/installed'
@@ -253,7 +288,7 @@ const menuModel = [
                 link: '/app(realmmanager)/dashboard'
 
             }
-         ] 
+         ]
     },
 
 ]
