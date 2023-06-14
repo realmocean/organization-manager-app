@@ -1,15 +1,25 @@
 import { is } from "@tuval/core";
-import { DirectoryProtocol, Fragment } from "@tuval/forms";
+import { Button, DirectoryProtocol, Fragment, UICreateContext, UIFormController, UIUpdateContext, UIView } from "@tuval/forms";
 import { useProtocol } from "@tuval/forms";
 import { UIViewBuilder } from "@tuval/forms";
 import { TextField, VStack, cTopLeading, cHorizontal, cLeading, Text, CodeEditor, TextAlignment, ForEach, CheckBox, useFormController, UIRadioGroup, HStack, Dropdown } from "@tuval/forms";
 import * as Handlebars from 'handlebars'
 import { MathHelpers } from "../formbuilder/helpers/math";
+import { TextFormView } from "./views/text";
+import { RelativeUriView } from "./views/relativeuri";
+import { RadioGroupoFormView } from "./views/radiogroup";
+import { VirtualView } from "./views/virtual";
+import { SelectFormView } from "./views/select";
+import { PositionSelectView } from "./views/positionselect";
 
 
 
 
-function compile(formData: any, code: string) {
+export function compileFormula(formData: any, code: string) {
+    if (is.nullOrEmpty(code)) {
+        return null;
+    }
+
     const template = Handlebars.compile(code);
     return template(formData, {
         helpers: {
@@ -18,6 +28,8 @@ function compile(formData: any, code: string) {
         }
     })
 }
+
+
 
 const simpleForm = {
     "fieldMap": {
@@ -501,79 +513,7 @@ const EditorView = (textData: any) => {
     }
 }
 
-const TextFormView = (textData: any) => {
-    const formController = useFormController();
-    const { visibleWhen, required, multiline, description, formula } = textData;
-    let canRender = false;
-    debugger
-    if (visibleWhen != null && !is.array(visibleWhen)) {
-        const field = visibleWhen.field;
-        const fieldValue = visibleWhen.is;
-        if (field != null) {
-            const fieldFormValue = formController.GetValue(field);
-            if (fieldValue == fieldFormValue) {
-                canRender = true;
-            }
-        }
-    } else if (visibleWhen != null && is.array(visibleWhen)) {
-        const fails = []
-        for (let i = 0; i < visibleWhen.length; i++) {
-            const field = visibleWhen[i].field;
-            const fieldValue = visibleWhen[i].is;
-            if (field != null) {
-                const fieldFormValue = formController.GetValue(field);
-                if (fieldValue == fieldFormValue) {
 
-                } else {
-                    fails.push(0)
-                }
-            }
-        }
-        if (fails.length === 0) {
-            canRender = true;
-        }
-
-    } else {
-        canRender = true;
-    }
-
-    if (canRender) {
-        return (
-            VStack({ alignment: cTopLeading })(
-                Text(textData.label + (required ? '*' : '')).kerning('0.00938em')
-                    .lineHeight('24px').foregroundColor('#333D47').fontSize(14)
-                    .fontWeight(required ? '600' : '400'),
-                formula != null ?
-                    TextField()
-                        .value(compile(formController.GetFormData(), formula))
-                        .multiline(multiline)
-                        .height(multiline ? '' : '38px')
-                        .foregroundColor('rgb(51,61,71)')
-                        .cornerRadius(2)
-                        .border('1px solid #D6E4ED')
-                        .shadow({ focus: 'none' })
-                        .fontSize(15) :
-                    TextField()
-                        .multiline(multiline)
-                        .height(multiline ? '' : '38px')
-                        .foregroundColor('rgb(51,61,71)')
-                        .cornerRadius(2)
-                        .formField(textData.name, [])
-                        .border('1px solid #D6E4ED')
-                        .shadow({ focus: 'none' })
-                        .fontSize(15),
-                description &&
-                Text(description).multilineTextAlignment(TextAlignment.leading)
-                    .foregroundColor('#95ABBC')
-                    .fontSize('12px')
-                    .fontFamily('"Roboto", "Helvetica", "Arial", sans-serif')
-                    .kerning('0.03333em')
-                    .lineHeight('20px')
-                    .marginTop('4px')
-            ).height().marginBottom('16px')
-        )
-    }
-}
 const CheckBoxFormView = (textData: any) => {
     const formController = useFormController();
     return (
@@ -589,110 +529,10 @@ const CheckBoxFormView = (textData: any) => {
     )
 }
 
-const RadioGroupoFormView = (textData: any) => {
-    const formController = useFormController();
-    return (
-        VStack({ alignment: cTopLeading, spacing: 4 })(
-            Text(textData.label).kerning('0.00938em').lineHeight('24px')
-                .foregroundColor('#333D47').fontSize(14),
-            UIRadioGroup()
-                .radioButtons(textData.options.map(option => option.items.map(item => {
-                    if (is.string(item)) {
-                        return {
-                            label: item,
-                            value: item
-                        }
-                    } else if (item.value == null) {
-                        return {
-                            label: item.label,
-                            value: item.label
-                        }
-                    } else {
-                        return {
-                            label: item.label,
-                            value: item.value
-                        }
-                    }
-                }))[0])
-                .value(formController.GetValue(textData.name))
-                .onChange((e) => formController.SetValue(textData.name, e))
-            // .formField(textData.name, [])
-        ).height().marginBottom('16px')
-    )
-}
 
 
-const SelectFormView = (textData: any) => {
-    const formController = useFormController();
-    const { query } = textData;
-    if (query != null) {
-        const { body, resource, text, key } = query;
-
-        return (
-            UIViewBuilder(() => {
-                const { query } = useProtocol(DirectoryProtocol);
-
-                const { data } = query(body);
-
-                return (
-                    VStack({ alignment: cTopLeading })(
-                        Text(textData.label).kerning('0.00938em').lineHeight('24px').foregroundColor('#333D47').fontSize(14),
-                        Dropdown((option) =>
-                            HStack({ alignment: cLeading })(
-                                Text(option[text])
-                            )
-
-                        )((option) =>
-                            HStack({ alignment: cLeading })(
-                                Text(option[text])
-                            )
-                                .paddingLeft('10px')
-                        )
-                            .floatlabel(false)
-                            .dataSource(data[resource]/* textData?.options[0]?.items.map(item => ({ text: item, value: item })) */)
-                            .fields({ text: text, value: key })
-                            //.placeHolder(params.placeholder)
-                            .width('100%')
-                            .height(38)
-                            .formField(textData.name, [])
-                            .border('1px solid #D6E4ED')
-                            .shadow({ focus: 'none' })
-                        // .formField(textData.name, [])
-                    ).height().marginBottom('16px')
-                )
-            })
-        )
-    } else {
-        return (
-            VStack({ alignment: cTopLeading })(
-                Text(textData.label).kerning('0.00938em').lineHeight('24px').foregroundColor('#333D47').fontSize(14),
-                Dropdown((option) =>
-                    HStack({ alignment: cLeading })(
-                        Text(option.text)
-                    )
-
-                )((option) =>
-                    HStack({ alignment: cLeading })(
-                        Text(option.text)
-                    )
-                        .paddingLeft('10px')
-                )
-                    .floatlabel(false)
-                    .dataSource(textData?.options[0]?.items.map(item => ({ text: item, value: item })))
-                    .fields({ text: 'text', value: 'value' })
-                    //.placeHolder(params.placeholder)
-                    .width('100%')
-                    .height(38)
-                    .formField(textData.name, [])
-                    .border('1px solid #D6E4ED')
-                    .shadow({ focus: 'none' })
-                // .formField(textData.name, [])
-            ).height().marginBottom('16px')
-        )
-    }
 
 
-}
 
 const ColumnFormView = (columnInfo: any, fieldMap) => {
 
@@ -704,7 +544,7 @@ const ColumnFormView = (columnInfo: any, fieldMap) => {
             VStack({ alignment: cTopLeading, spacing: 10 })(
                 Text(label).fontSize(17).lineHeight(22).foregroundColor('#333D47'),
                 ...ForEach(fields)((field) =>
-                    getView(fieldMap[field as any])
+                    FormBuilder.getView(fieldMap[field as any])
                 )
             )
         )
@@ -820,8 +660,8 @@ const KeyValueView = (textData: any) => {
         )
     }
 }
-
-export const FormBuilder = (formMeta: string | object) => {
+/* 
+export const _FormBuilder = (formMeta: string | object) => {
     if (formMeta == null) {
         return Fragment();
     }
@@ -861,9 +701,9 @@ export const FormBuilder = (formMeta: string | object) => {
     return VStack({ alignment: cTopLeading })(
         ...ForEach(views)(view => view)
     )
-}
+} */
 
-function getView(viewInfo) {
+function _getView(viewInfo) {
     try {
         switch (viewInfo.type) {
             case 'text':
@@ -889,3 +729,209 @@ function getView(viewInfo) {
     }
 }
 
+
+
+export class FormBuilder {
+    public static viewFactories = {};
+    public static layoutFactories = {};
+    public static containerFactories = {};
+    public static injectView(viewType: string, viewFactory: any) {
+        FormBuilder.viewFactories[viewType] = viewFactory;
+    }
+    public static injectLayout(layoutType: string, viewFactory: any) {
+        FormBuilder.layoutFactories[layoutType] = viewFactory;
+    }
+    public static injectContainer(containerType: string, viewFactory: any) {
+        FormBuilder.containerFactories[containerType] = viewFactory;
+    }
+
+    public static getViewFactory(type: string) {
+        return FormBuilder.viewFactories[type];
+    }
+    public static getView(fieldInfo: any) {
+        const viewType = fieldInfo?.type;
+        const viewFunc = FormBuilder.getViewFactory(viewType);
+        if (is.function(viewFunc)) {
+            return viewFunc(fieldInfo)
+        } else {
+            return Text(viewType + ' not found.')
+        }
+    }
+
+    public static canRender(fieldInfo: any, formController: UIFormController) {
+        const { visibleWhen } = fieldInfo;
+        if (visibleWhen == null) {
+            return true;
+        }
+
+        let canRender = false;
+
+        if (visibleWhen != null && !is.array(visibleWhen)) {
+            const field = visibleWhen.field;
+            const fieldValue = visibleWhen.is;
+            if (field != null) {
+                const fieldFormValue = formController.GetValue(field);
+                if (fieldValue == fieldFormValue) {
+                    canRender = true;
+                }
+            }
+        } else if (visibleWhen != null && is.array(visibleWhen)) {
+            const fails = []
+            for (let i = 0; i < visibleWhen.length; i++) {
+                const field = visibleWhen[i].field;
+                const fieldValue = visibleWhen[i].is;
+                if (field != null) {
+                    const fieldFormValue = formController.GetValue(field);
+                    if (fieldValue == fieldFormValue) {
+
+                    } else {
+                        fails.push(0)
+                    }
+                }
+            }
+            if (fails.length === 0) {
+                canRender = true;
+            }
+
+        } else {
+            canRender = true;
+        }
+
+        return canRender;
+    }
+
+    public static render(formMeta: string | object) {
+        const formController = useFormController();
+
+        if (formMeta == null) {
+            return Fragment();
+        }
+
+        try {
+            if (is.string(formMeta)) {
+                formMeta = JSON.parse(formMeta);
+            }
+
+        } catch (e) {
+            return Text(e.toString())
+        }
+
+        const views = []
+        const { fieldMap, layout, mode, resource, resourceId } = formMeta as any;
+
+        if (layout != null && layout.type != null) {
+            const factoryFunc = FormBuilder.layoutFactories[layout.type];
+            if (factoryFunc == null) {
+                views.push(Text(layout.type + ' not found'))
+            } else {
+                views.push(factoryFunc(layout, fieldMap))
+            }
+        }
+
+        if (layout != null && layout.type == null && is.array(layout.containers)) {
+            for (let i = 0; i < layout.containers.length; i++) {
+                const container = layout.containers[i];
+                if (container != null && container.type != null) {
+                    const factoryFunc = FormBuilder.containerFactories[container.type];
+                    if (factoryFunc == null) {
+                        views.push(Text(layout.type + ' not found'))
+                    } else {
+                        views.push(factoryFunc(container, fieldMap))
+                    }
+                }
+
+            }
+        }
+
+
+        if (layout == null) {
+            for (let key in fieldMap) {
+                const viewType = fieldMap[key].type;
+                const factoryFunc = FormBuilder.viewFactories[viewType];
+                if (factoryFunc == null) {
+                    views.push(Text(viewType + ' not found'))
+                } else {
+                    views.push(factoryFunc(fieldMap[key]));
+                }
+            }
+        }
+
+        if (mode == 'create') {
+            return (
+                UICreateContext((create, isLoading) =>
+                    VStack(
+                        VStack({ alignment: cTopLeading })(
+                            ...ForEach(views)(view => view)
+                        )
+                            .background('#F8FAFF')
+                            .padding('24px 24px 0px')
+                            .borderBottom('1px solid #D6E4ED'),
+                        HStack({ alignment: cLeading })(
+                            Button(
+                                Text('Save')
+                            ).onClick(() => {
+                                // formController.SetValue('tenant_id', useSessionService().TenantId);
+                                create();
+                            })
+                        )
+                            .height()
+                            .padding()
+
+                    )
+                ).resource(resource)
+                    .onSuccess(() => {
+                        formController.InvalidateQuerie(resource);
+                        //this.OnOK();
+                    })
+            )
+        } else if (mode === 'update') {
+            if (mode == 'create') {
+                return (
+                    UIUpdateContext((update, isLoading) =>
+                        VStack(
+                            VStack({ alignment: cTopLeading })(
+                                ...ForEach(views)(view => view)
+                            ).background('#F8FAFF').padding()
+                                .borderBottom('1px solid #D6E4ED'),
+                            HStack({ alignment: cLeading })(
+                                Button(
+                                    Text('Save')
+                                ).onClick(() => {
+                                    // formController.SetValue('tenant_id', useSessionService().TenantId);
+                                    update();
+                                })
+                            ).padding()
+
+                        )
+                    ).resource(resource).filter({ id: resourceId })
+                        .onSuccess(() => {
+                            formController.InvalidateQuerie(resource);
+                            //this.OnOK();
+                        })
+                )
+            }
+        } else {
+            return (
+                VStack({ alignment: cTopLeading })(
+                    ...ForEach(views)(view => view)
+                ).background('#F8FAFF').padding()
+                    .borderBottom('1px solid #D6E4ED')
+
+            )
+        }
+    }
+}
+
+FormBuilder.injectView('editor', EditorView);
+FormBuilder.injectView('text', TextFormView);
+FormBuilder.injectView('checkbox', CheckBoxFormView);
+FormBuilder.injectView('radiogroup', RadioGroupoFormView);
+FormBuilder.injectView('select', SelectFormView);
+FormBuilder.injectView('keyvalue', KeyValueView);
+
+FormBuilder.injectLayout('column', ColumnFormView);
+
+FormBuilder.injectView('relativeuri', RelativeUriView);
+FormBuilder.injectView('virtual', VirtualView);
+
+FormBuilder.injectView('positionselect', PositionSelectView);

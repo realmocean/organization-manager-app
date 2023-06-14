@@ -1,22 +1,25 @@
 import { UITextBoxView } from "@realmocean/inputs";
 import { useSessionService } from "@realmocean/services";
-import { DialogView, UICreateContext, VStack, cTopLeading, RequiredRule, HStack, UIRecordsContext, cTrailing, Text, TextField } from "@tuval/forms";
+import { DialogView, UICreateContext, VStack, cTopLeading, RequiredRule, HStack, UIRecordsContext, cTrailing, Text, TextField, Button, cLeading, State, Spinner, ViewProperty } from "@tuval/forms";
 import { RealmDataContext } from "../../../views/DataContexts";
 import { Views } from "../../../views/Views";
+import { FormBuilder } from "../../../formbuilder/FormBuilder";
 
 export class AddPositionDialog extends DialogView {
 
+    @ViewProperty()
+    private form: any;
+
     public constructor() {
         super();
-        this.Header = 'Create Position'
-        this.Width = '700px'
-        //this.Height = '500px'
-
+        this.Header = 'Form'
+        this.Width = '700px';
+        this.Position = 'right';
+        this.Height = '100vh'
     }
 
-
-    public BindRouterParams() {
-
+    public BindRouterParams(formData) {
+        this.form = formData;
     }
 
     public OnOK() {
@@ -29,13 +32,11 @@ export class AddPositionDialog extends DialogView {
     }
 
 
-    public override LoadView() {
+    public __LoadView() {
         return (
             RealmDataContext(
                 UICreateContext((create, isLoading) =>
                     VStack({ alignment: cTopLeading, spacing: 15 })(
-
-
                         TextField()
                             .label('*Record ID')
                             .formField('position_record_id', [new RequiredRule('Record ID required.')]),
@@ -61,17 +62,28 @@ export class AddPositionDialog extends DialogView {
                     ).padding(30).foregroundColor('#676767').height()
                 ).resource('positions')
                     .onSuccess(() => {
-                         this.InvalidateQuerie('positions');
-                         this.OnOK();
+                        this.InvalidateQuerie('positions');
+                        this.OnOK();
                     })
             )
         )
     }
 
-    public static Show() {
+    public override LoadView() {
+        
+        return (this.form == null ? Spinner():
+            RealmDataContext(
+                VStack(
+                    FormBuilder.render(this.form),
+                )
+            )
+        )
+    }
 
+    public static Show(formData: any) {
         const dialog = new AddPositionDialog();
-        dialog.BindRouterParams()
+        dialog.Header = formData.title || '';
+        dialog.BindRouterParams(formData)
         return dialog.ShowDialogAsync();
     }
 }

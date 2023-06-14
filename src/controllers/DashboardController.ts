@@ -24,7 +24,7 @@ export class DashboardController extends UIFormController {
                             .height('100%')
                             .onChange((e) => this.code = e),
                             ScrollView({axes:cVertical, alignment:cTopLeading})(
-                                 FormBuilder(this.code)
+                                 FormBuilder.render(this.code)
                             ).padding()
 
                     )

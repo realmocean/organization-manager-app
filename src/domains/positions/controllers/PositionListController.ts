@@ -8,6 +8,7 @@ import { PositionGrid } from "../views/PositionGrid";
 import { UserFileDownloader } from "@tuval/core";
 import { AddUserDialog } from "../../users/dialogs/AddUserDialog";
 import { SelectPositionViewDialog } from "../dialogs/SelectPositionViewDialog";
+import { AddPositionDialogData } from "../dialogs/AddPositionDialogData";
 
 export class PositionListController extends UIFormController {
 
@@ -49,7 +50,7 @@ export class PositionListController extends UIFormController {
                         HStack({ alignment: cTrailing, spacing: 15 })(
 
                             Views.CreateButton({
-                                label: 'New Position', action: () => AddPositionDialog.Show().then(() => {
+                                label: 'New Position', action: () => AddPositionDialog.Show(AddPositionDialogData).then(() => {
                                     /* this.users = null;
                                     const orgService = useOrgProvider();
                                     orgService.getEmployees().then(employees =>

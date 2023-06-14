@@ -10,6 +10,9 @@ import { LeftSideMenuView } from "../../../views/LeftMenu";
 import { Views } from "../../../views/Views";
 import { AddUserDialog } from "../dialogs/AddUserDialog";
 import { UsersGrid } from "../views/UsersGrid";
+import { AddPositionDialog } from "../../positions/dialogs/AddPositionDialog";
+import { AddDepartmentDialog } from "../../departments/dialogs/AddDepartmentDialog";
+import { AddUserDialogData } from "../dialogs/AddUserDialogData";
 
 
 
@@ -30,7 +33,7 @@ export class UserListController extends UIController {
                         HStack({ alignment: cTrailing, spacing: 15 })(
 
                             Views.CreateButton({
-                                label: 'New Employee', action: () => AddUserDialog.Show().then(() => {
+                                label: 'New Employee', action: () => AddPositionDialog.Show(AddUserDialogData).then(() => {
                                     /* this.users = null;
                                     const orgService = useOrgProvider();
                                     orgService.getEmployees().then(employees =>
