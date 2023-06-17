@@ -13,9 +13,9 @@ export class AddPositionDialog extends DialogView {
     public constructor() {
         super();
         this.Header = 'Form'
-        this.Width = '700px';
+        this.Width = '824px';
         this.Position = 'right';
-        this.Height = '100vh'
+        this.Height = '100%'
     }
 
     public BindRouterParams(formData) {
@@ -70,7 +70,7 @@ export class AddPositionDialog extends DialogView {
     }
 
     public override LoadView() {
-        
+
         return (this.form == null ? Spinner():
             RealmDataContext(
                 VStack(

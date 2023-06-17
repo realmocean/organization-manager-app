@@ -4,6 +4,7 @@ import { compile } from "handlebars";
 import { Validator } from "jsonschema";
 import { FormBuilder, compileFormula } from "../FormBuilder";
 import { label } from "../components/label";
+import * as objectPath from 'object-path';
 
 const v = new Validator();
 
@@ -28,11 +29,11 @@ export const VirtualView = (fieldInfo: any) => {
 
     const formController = useFormController();
     const currentValue = formController.GetValue(name);
-   
+
     if (currentValue !== value){
         formController.SetValue(name, value);
     }
-    
+
     return Fragment();
 
 

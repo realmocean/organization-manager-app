@@ -1,9 +1,10 @@
-import { useFormController, UIViewBuilder, useProtocol, Text,DirectoryProtocol, VStack, cTopLeading, Dropdown, HStack, cLeading } from "@tuval/forms";
+import { useFormController, UIViewBuilder, useProtocol, Text, DirectoryProtocol, VStack, cTopLeading, Dropdown, HStack, cLeading } from "@tuval/forms";
 import { label } from "../components/label";
+import { is } from "@tuval/core";
 
 export const SelectFormView = (textData: any) => {
     const formController = useFormController();
-    const { query } = textData;
+    const { query, options } = textData;
     if (query != null) {
         const { body, resource, text, key } = query;
 
@@ -15,7 +16,7 @@ export const SelectFormView = (textData: any) => {
 
                 return (
                     VStack({ alignment: cTopLeading })(
-                       label(textData),
+                        label(textData),
                         Dropdown((option) =>
                             HStack({ alignment: cLeading })(
                                 Text(option[text])
@@ -57,7 +58,7 @@ export const SelectFormView = (textData: any) => {
                         .paddingLeft('10px')
                 )
                     .floatlabel(false)
-                    .dataSource(textData?.options[0]?.items.map(item => ({ text: item, value: item })))
+                    .dataSource(options?.[0]?.items.map(item => (is.string(item) ? { text: item, value: item } : { text: item.label, value: item.value })))
                     .fields({ text: 'text', value: 'value' })
                     //.placeHolder(params.placeholder)
                     .width('100%')

@@ -103,7 +103,7 @@
     "devDependencies": {
         "@realmocean/bpmn": "^21.0.0-beta.2",
         "@realmocean/charts": "^0.0.6",
-        "@realmocean/common": "^21.0.8",
+        "@realmocean/common": "^21.0.10",
         "@realmocean/data": "^0.0.2",
         "@realmocean/diagram": "^0.0.2",
         "@realmocean/grids": "^19.2.59",
@@ -113,7 +113,7 @@
         "@realmocean/services": "^21.0.0-beta.5",
         "@tuval/cg": "^0.0.16",
         "@tuval/core": "^0.0.103",
-        "@tuval/forms": "^1.0.1-beta.271",
+        "@tuval/forms": "^1.0.1-beta.272",
         "@tuval/graphics": "^0.0.11",
         "css-loader": "^3.2.0",
         "d3-graphviz": "^4.0.0",
@@ -131,6 +131,7 @@
     "dependencies": {
         "handlebars": "^4.7.7",
         "jsonschema": "^1.4.1",
+        "object-path": "^0.11.8",
         "react-promise-suspense": "^0.3.4",
         "url": "^0.11.1"
     }

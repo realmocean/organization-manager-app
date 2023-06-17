@@ -7,10 +7,12 @@ import { LeftSideMenuView } from "../../../views/LeftMenu";
 import { Views } from "../../../views/Views";
 import { InstallBrokerDialog } from "../dialogs/InstallBrokerDialog";
 import { BrokerAddonCard } from "../views/BrokerAddonCard";
+import { connector_options } from "../../../views/connectors";
+import { AddPositionDialog } from "../../positions/dialogs/AddPositionDialog";
 
 const fontFamily = '"proxima-nova", "proxima nova", "helvetica neue", "helvetica", "arial", sans-serif'
 
-const broker_cats = [
+const _broker_cats = [
     {
         title: 'Explore',
         subItems: [
@@ -94,14 +96,12 @@ export class MarketplaceListController extends UIController {
     }
 
     public LoadView(): any {
-
-
         return (
             HStack({ alignment: cTopLeading })(
-                LeftSideMenuView('', 'Brokers'),
+                LeftSideMenuView('', 'Connectors'),
                 RealmoceanDataContext(
                     Views.RightSidePage({
-                        title: 'Brokers',
+                        title: 'Connectors',
                         maxWidth: 'auto',
                         content: (
                             HStack({ alignment: cTopLeading })(
@@ -115,7 +115,7 @@ export class MarketplaceListController extends UIController {
 
                                     ).height().marginBottom('24px'),
                                     HStack({ alignment: cTopLeading })(
-                                        ScrollView({ axes: cVertical, alignment: cTopLeading })(
+                                        /* ScrollView({ axes: cVertical, alignment: cTopLeading })(
                                             VStack({ alignment: cTopLeading })(
                                                 ...ForEach(broker_cats)(cat =>
                                                     VStack({ alignment: cTopLeading })(
@@ -134,23 +134,20 @@ export class MarketplaceListController extends UIController {
                                                 )
 
                                             ).height().padding('10px')
-                                        ).width(300),
+                                        ).width(300), */
                                         UIRecordsContext(({ data, total, isLoading }) =>
                                             isLoading ? HStack(Spinner()) :
                                                 ScrollView({ axes: cVertical, alignment: cTopLeading })(
-                                                    ...ForEach([
-                                                        {
-                                                            title: 'All Categories',
-                                                            items: [...data]
-                                                        }
-                                                    ])(category =>
+                                                    ...ForEach(connector_options)((category) =>
 
                                                         VStack({ alignment: cTopLeading })(
-                                                            Text(category.title).height(40).fontSize(20).fontWeight('600').padding('1rem'),
+                                                            Text(category.label).height(40).fontSize(20).fontWeight('600').padding('1rem'),
                                                             HStack({ alignment: cTopLeading, spacing: 24 })(
-                                                                ...ForEach(category.items)((item: any) =>
-                                                                    BrokerAddonCard(item.broker_qualified_name, item.icon_link, item.broker_display_name, item.broker_short_description)
-                                                                        .onClick(() => InstallBrokerDialog.Show(item.id))
+
+                                                                ...ForEach((category as any).options)((connector: any) =>
+                                                                    BrokerAddonCard(connector.value, `/static/images/connectors/small/${connector.value}.png`,
+                                                                        connector.label, '')
+                                                                        .onClick(() => AddPositionDialog.Show((connector as any).formData)/* InstallBrokerDialog.Show(connector.value) */)
                                                                 )
                                                             ).width().height().wrap('wrap')
                                                         )

@@ -14,7 +14,7 @@ export const BrokerAddonCard = (broker_qualified_name: string, image: string, na
                     ).width(48).allHeight(58).overflow('hidden'),
 
                     HStack({ alignment: cLeading, spacing: 5 })(
-                        Heading(name).h4(),
+                        Heading(name).h4().ellipsis(true).ellipsisMaxLines(2),
 
                         data?.find(broker => broker.broker_qualified_name === broker_qualified_name) &&
                         HStack(Icon(Icons.Check).size(18).foregroundColor('rgb(0, 157, 255)'))
@@ -36,7 +36,7 @@ export const BrokerAddonCard = (broker_qualified_name: string, image: string, na
                     ,
                     HStack({ alignment: cCenter })(
                         Button(
-                            Text('Install')
+                            Text('Add Connection')
                         )
                             //.loading(isLoading && (opa.type === this.last_added_opa_type))
                             //.disabled(!opa.enabled)
@@ -54,7 +54,7 @@ export const BrokerAddonCard = (broker_qualified_name: string, image: string, na
                                  this.SetValue('item_sub_type', opa.type);
                                  this.SetValue('app_id', 'com.tuvalsoft.app.workbench');
                                  this.SetValue('content', '')
-                 
+
                                  this.last_added_opa_type = opa.type;
                                  create(); */
                             })

@@ -1,5 +1,5 @@
 import { is } from "@tuval/core";
-import { Button, DirectoryProtocol, Fragment, UICreateContext, UIFormController, UIUpdateContext, UIView } from "@tuval/forms";
+import { Button, DirectoryProtocol, Fragment, ScrollView, UICreateContext, UIFormController, UIUpdateContext, UIView, cVertical } from "@tuval/forms";
 import { useProtocol } from "@tuval/forms";
 import { UIViewBuilder } from "@tuval/forms";
 import { TextField, VStack, cTopLeading, cHorizontal, cLeading, Text, CodeEditor, TextAlignment, ForEach, CheckBox, useFormController, UIRadioGroup, HStack, Dropdown } from "@tuval/forms";
@@ -11,6 +11,7 @@ import { RadioGroupoFormView } from "./views/radiogroup";
 import { VirtualView } from "./views/virtual";
 import { SelectFormView } from "./views/select";
 import { PositionSelectView } from "./views/positionselect";
+import { WidgetView } from "./views/widget";
 
 
 
@@ -556,6 +557,87 @@ const ColumnFormView = (columnInfo: any, fieldMap) => {
     )
 }
 
+const renderContainers = (layout: any, fieldMap) => {
+    const views = []
+    if (layout != null && layout.type == null && is.array(layout.containers)) {
+        for (let i = 0; i < layout.containers.length; i++) {
+            const container = layout.containers[i];
+            if (container != null && container.type != null) {
+                const subContainers = renderContainers(container, fieldMap);
+                if (is.array(subContainers)) {
+                    views.push(...subContainers);
+                }
+                const factoryFunc = FormBuilder.containerFactories[container.type];
+                if (factoryFunc == null) {
+                    views.push(Text(layout.type + ' not found'))
+                } else {
+                    views.push(factoryFunc(container, fieldMap))
+                }
+            } else if (container.fields != null) {
+                for (let i = 0; i < container.fields.length; i++) {
+                    const viewName = container.fields[i];
+                    const view = fieldMap[viewName];
+                    const factoryFunc = FormBuilder.viewFactories[view.type];
+                    if (factoryFunc == null) {
+                        views.push(Text(view.type + ' not found'))
+                    } else {
+                        views.push(factoryFunc(fieldMap[viewName]));
+                    }
+                }
+            }
+        }
+    } else if (layout.fields != null) {
+        for (let i = 0; i < layout.fields.length; i++) {
+            const viewName = layout.fields[i];
+            const view = fieldMap[viewName];
+            const factoryFunc = FormBuilder.viewFactories[view.type];
+            if (factoryFunc == null) {
+                views.push(Text(view.type + ' not found'))
+            } else {
+                views.push(factoryFunc(fieldMap[viewName]));
+            }
+        }
+    }
+
+    return views;
+}
+const CollapseFormView = (columnInfo: any, fieldMap) => {
+
+    const views = [];
+    const { containers } = columnInfo;
+    for (let i = 0; i < containers.length; i++) {
+        const { label, fields } = containers[i];
+        const subContainers = renderContainers(containers[i], fieldMap);
+        const subViews = [];
+        if (is.array(subContainers)) {
+            subViews.push(...subContainers);
+        }
+        views.push(
+            VStack({ alignment: cTopLeading, spacing: 10 })(
+                HStack({ alignment: cLeading })(
+                    Text(label).fontFamily('source sans pro').fontSize(17).lineHeight(40).foregroundColor('#333D47')
+                )
+                    .height()
+                    .padding()
+                    .allHeight(40)
+                    .borderBottom('solid 1px #D6E4ED'),
+                VStack({ alignment: cTopLeading })(
+                    ...subViews
+                    /* ...ForEach(fields)((field) =>
+                        FormBuilder.getView(fieldMap[field as any])
+                    ) */
+                ).padding()
+            ).height().background('white')
+                .border('solid 1px #D6E4ED').cornerRadius(5)
+        )
+    }
+    return (
+        VStack({ alignment: cTopLeading, spacing: 20 })(
+            ...views
+        )
+    )
+}
+
 const KeyValueView = (textData: any) => {
     const formController = useFormController();
     const { visibleWhen, required, multiline, name, description } = textData;
@@ -660,74 +742,8 @@ const KeyValueView = (textData: any) => {
         )
     }
 }
-/* 
-export const _FormBuilder = (formMeta: string | object) => {
-    if (formMeta == null) {
-        return Fragment();
-    }
-
-    try {
-        if (is.string(formMeta)) {
-            formMeta = JSON.parse(formMeta);
-        }
-
-    } catch (e) {
-        return Text(e.toString())
-    }
-
-    const views = []
-    const { fieldMap, layout } = formMeta as any;
-
-    if (layout != null) {
-        switch ((layout as any).type) {
-            case 'column':
-                views.push(ColumnFormView(layout, fieldMap))
-                break;
-            default:
-                for (let key of (layout as any).fields) {
-                    views.push(getView(fieldMap[key]))
-                }
-                break;
-        }
-    }
 
 
-    if (layout == null) {
-        for (let key in fieldMap) {
-            views.push(getView(fieldMap[key]))
-        }
-    }
-
-    return VStack({ alignment: cTopLeading })(
-        ...ForEach(views)(view => view)
-    )
-} */
-
-function _getView(viewInfo) {
-    try {
-        switch (viewInfo.type) {
-            case 'text':
-                return TextFormView(viewInfo);
-            case 'checkbox':
-                return CheckBoxFormView(viewInfo);
-            case 'radiogroup':
-                return RadioGroupoFormView(viewInfo);
-            case 'select':
-                return SelectFormView(viewInfo);
-            case 'keyvalue':
-                return KeyValueView(viewInfo);
-            case 'editor':
-                return EditorView(viewInfo);
-        }
-    } catch (e) {
-        return (
-            VStack(
-                Text('Error : ' + e.toString()),
-                Text('Info : ' + JSON.stringify(viewInfo))
-            )
-        )
-    }
-}
 
 
 
@@ -858,14 +874,21 @@ export class FormBuilder {
 
         if (mode == 'create') {
             return (
+
                 UICreateContext((create, isLoading) =>
                     VStack(
-                        VStack({ alignment: cTopLeading })(
-                            ...ForEach(views)(view => view)
-                        )
-                            .background('#F8FAFF')
-                            .padding('24px 24px 0px')
-                            .borderBottom('1px solid #D6E4ED'),
+                        ScrollView({ axes: cVertical, alignment: cTopLeading })(
+                            VStack({ alignment: cTopLeading })(
+                                VStack({ alignment: cTopLeading })(
+                                    ...ForEach(views)(view => view)
+                                )
+                                    .height()
+                                    .background('#F8FAFF')
+                                    .padding('24px 24px 0px')
+
+                            )
+                                .background('#F8FAFF')
+                        ),
                         HStack({ alignment: cLeading })(
                             Button(
                                 Text('Save')
@@ -876,6 +899,7 @@ export class FormBuilder {
                         )
                             .height()
                             .padding()
+                            .borderTop('1px solid #D6E4ED')
 
                     )
                 ).resource(resource)
@@ -883,6 +907,8 @@ export class FormBuilder {
                         formController.InvalidateQuerie(resource);
                         //this.OnOK();
                     })
+
+
             )
         } else if (mode === 'update') {
             if (mode == 'create') {
@@ -890,7 +916,7 @@ export class FormBuilder {
                     UIUpdateContext((update, isLoading) =>
                         VStack(
                             VStack({ alignment: cTopLeading })(
-                                ...ForEach(views)(view => view)
+                                ...ForEach(views)(view => view),
                             ).background('#F8FAFF').padding()
                                 .borderBottom('1px solid #D6E4ED'),
                             HStack({ alignment: cLeading })(
@@ -912,11 +938,18 @@ export class FormBuilder {
             }
         } else {
             return (
-                VStack({ alignment: cTopLeading })(
-                    ...ForEach(views)(view => view)
-                ).background('#F8FAFF').padding()
-                    .borderBottom('1px solid #D6E4ED')
-
+                ScrollView({ axes: cVertical, alignment: cTopLeading })(
+                    VStack({ alignment: cTopLeading })(
+                        VStack({ alignment: cTopLeading })(
+                            ...ForEach(views)(view => view)
+                        )
+                            .height()
+                            .background('#F8FAFF')
+                            .padding('24px 24px 0px')
+                            .borderBottom('1px solid #D6E4ED')
+                    )
+                        .background('#F8FAFF')
+                )
             )
         }
     }
@@ -930,8 +963,10 @@ FormBuilder.injectView('select', SelectFormView);
 FormBuilder.injectView('keyvalue', KeyValueView);
 
 FormBuilder.injectLayout('column', ColumnFormView);
+FormBuilder.injectLayout('collapse', CollapseFormView);
 
 FormBuilder.injectView('relativeuri', RelativeUriView);
 FormBuilder.injectView('virtual', VirtualView);
 
 FormBuilder.injectView('positionselect', PositionSelectView);
+FormBuilder.injectView('widget', WidgetView);

@@ -131,6 +131,11 @@ const menuModel = [
         icon: Icons.Integrations,
         subItems: [
             {
+                name: 'Connectors',
+                icon: '\\e73a',
+                link: '/app/com.tuvalsoft.app.organizationmanager/marketplace/brokers'
+            },
+            {
                 name: 'Connections',
                 icon: '\\d235',
                 link: '/app/com.tuvalsoft.app.organizationmanager/brokers/installed'
@@ -181,11 +186,7 @@ const menuModel = [
                 icon: '\\e73a',
                 link: '/app/com.tuvalsoft.app.organizationmanager/marketplace/apps'
             },
-            {
-                name: 'Brokers',
-                icon: '\\e73a',
-                link: '/app/com.tuvalsoft.app.organizationmanager/marketplace/brokers'
-            },
+
             {
                 name: 'Licenses',
                 icon: '\\e73a',
