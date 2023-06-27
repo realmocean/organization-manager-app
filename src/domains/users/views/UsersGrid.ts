@@ -3,6 +3,8 @@ import { RealmDataContext } from "../../../views/DataContexts"
 import { ITableViewColumn, Views } from "../../../views/Views"
 import { DeleteUserDialog } from "../dialogs/DeleteUserDialog"
 import { moment } from "@tuval/core"
+import { AddUserDialogData } from "../dialogs/AddUserDialogData"
+import { AddPositionDialog } from "../../positions/dialogs/AddPositionDialog"
 
 const columns: ITableViewColumn[] = [
     {
@@ -14,11 +16,11 @@ const columns: ITableViewColumn[] = [
                 VStack({ alignment: cLeading })(
                     Text(`${row.employee_name} ${row.employee_last_name}`)
                         .fontWeight('600'),
-                        
+
                     Text(row.title_name)
                         .foregroundColor('rgb(99, 115, 129)')
                         .fontWeight('400')
-                      
+
                 )
             )
         )
@@ -32,7 +34,7 @@ const columns: ITableViewColumn[] = [
                 UIRecordContext(({ data }) =>
                     VStack({ alignment: cLeading })(
                         Text(`${data?.title_name}`)
-                          
+
                     ).foregroundColor('rgba(33, 43, 54,0.7)')
                 ).resource('titles').filter({ 'id': row.title_id })
             )
@@ -48,7 +50,7 @@ const columns: ITableViewColumn[] = [
                 UIRecordContext(({ data }) =>
                     VStack({ alignment: cLeading })(
                         Text(`${data?.org_unit_name}`)
-                     
+
                     )
                 ).resource('departments').filter({ 'id': row.department_id })
             )
@@ -168,7 +170,16 @@ const _columns: IDataTableColumn[] = [
                                 {
                                     title: 'Edit',
                                     icon: Icons.Edit,
-                                    onClick: () => navigate(`/app/com.tuvalsoft.app.organizationmanager/company/edit/employee/${employee.id}`)
+                                    onClick: () => {
+                                        const formData = Object.assign(AddUserDialogData,
+                                            {
+                                                title: 'Update employee',
+                                                mode: 'update',
+                                                resourceId: employee.id
+                                        });
+                                        AddPositionDialog.Show(formData)
+                                    },
+                                   // onClick: () => navigate(`/app/com.tuvalsoft.app.organizationmanager/company/edit/employee/${employee.id}`)
                                 },
                                 {
                                     title: 'Delete',
@@ -208,20 +219,20 @@ export const UsersGrid = (users: any[]) => {
 
     console.log(users)
     return (
-        
+
             HStack(
                 UIDataTable()
                     .columns(_columns)
                     .model(users).width('100%')
             ).border('solid 1px #DEE2E6').cornerRadius(10).overflow('hidden')
-    
+
     )
 
 
 
     /*  if (users == null)
          return Views.EmptyTableView(columns, Array.from({ length: 5 }), (employee: any, index) => {
- 
+
           })
      else
          return Views.TableView(columns, users, (employee: any, index) => {

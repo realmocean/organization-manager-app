@@ -6,6 +6,8 @@ import { LeftSideMenuView } from "../../../views/LeftMenu";
 import { Views } from "../../../views/Views";
 import { DepartmentsGrid } from "../views/DepartmentsGrid";
 import { AddDepartmentDialog } from "../dialogs/AddDepartmentDialog";
+import { AddDepartmentDialogData } from "../dialogs/AddDepartmentDialogData";
+import { AddPositionDialog } from "../../positions/dialogs/AddPositionDialog";
 
 const fontFamily = '"proxima-nova", "proxima nova", "helvetica neue", "helvetica", "arial", sans-serif'
 
@@ -27,8 +29,14 @@ export class DepartmentListController extends UIController {
                         HStack({ alignment: cTrailing, spacing: 15 })(
 
                             Views.CreateButton({
-                                label: 'New Department', action: () => AddDepartmentDialog.Show().then(() => {
-                                })
+                                label: 'New Department', action: () => {
+                                    const formData = Object.assign(AddDepartmentDialogData,
+                                        {
+                                            title: 'Create department',
+                                            mode: 'create'
+                                    });
+                                    AddPositionDialog.Show(formData)
+                                }
                             }),
 
                             Views.ExportButton({

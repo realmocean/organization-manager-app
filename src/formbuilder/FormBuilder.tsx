@@ -1,5 +1,5 @@
 import { is } from "@tuval/core";
-import { Button, DirectoryProtocol, Fragment, ScrollView, UICreateContext, UIFormController, UIUpdateContext, UIView, cVertical } from "@tuval/forms";
+import { Button, DirectoryProtocol, Fragment, ScrollView, UICreateContext, UIFormController, UIUpdateContext, UIView, cVertical, useDialog } from "@tuval/forms";
 import { useProtocol } from "@tuval/forms";
 import { UIViewBuilder } from "@tuval/forms";
 import { TextField, VStack, cTopLeading, cHorizontal, cLeading, Text, CodeEditor, TextAlignment, ForEach, CheckBox, useFormController, UIRadioGroup, HStack, Dropdown } from "@tuval/forms";
@@ -12,6 +12,7 @@ import { VirtualView } from "./views/virtual";
 import { SelectFormView } from "./views/select";
 import { PositionSelectView } from "./views/positionselect";
 import { WidgetView } from "./views/widget";
+import { DataTableView } from "./views/datatable";
 
 
 
@@ -776,6 +777,7 @@ export class FormBuilder {
 
     public static canRender(fieldInfo: any, formController: UIFormController) {
         const { visibleWhen } = fieldInfo;
+
         if (visibleWhen == null) {
             return true;
         }
@@ -794,15 +796,32 @@ export class FormBuilder {
         } else if (visibleWhen != null && is.array(visibleWhen)) {
             const fails = []
             for (let i = 0; i < visibleWhen.length; i++) {
-                const field = visibleWhen[i].field;
-                const fieldValue = visibleWhen[i].is;
-                if (field != null) {
-                    const fieldFormValue = formController.GetValue(field);
-                    if (fieldValue == fieldFormValue) {
-
-                    } else {
-                        fails.push(0)
+                let found = false;
+                const { field, is, isNot } = visibleWhen[i];
+                if (Array.isArray(is)) {
+                    for (let j = 0; j < is.length; j++) {
+                        const fieldValue = visibleWhen[i].is[j];
+                        if (field != null) {
+                            const fieldFormValue = formController.GetValue(field);
+                            if (fieldValue == fieldFormValue) {
+                                found = true;
+                            }
+                        }
                     }
+                }
+                if (Array.isArray(isNot)) {
+                    for (let j = 0; j < isNot.length; j++) {
+                        const fieldValue = visibleWhen[i].isNot[j];
+                        if (field != null) {
+                            const fieldFormValue = formController.GetValue(field);
+                            if (fieldValue != fieldFormValue) {
+                                found = true;
+                            }
+                        }
+                    }
+                }
+                if (!found) {
+                    fails.push(0)
                 }
             }
             if (fails.length === 0) {
@@ -818,6 +837,7 @@ export class FormBuilder {
 
     public static render(formMeta: string | object) {
         const formController = useFormController();
+        const dialog = useDialog();
 
         if (formMeta == null) {
             return Fragment();
@@ -874,11 +894,11 @@ export class FormBuilder {
 
         if (mode == 'create') {
             return (
-
                 UICreateContext((create, isLoading) =>
                     VStack(
                         ScrollView({ axes: cVertical, alignment: cTopLeading })(
                             VStack({ alignment: cTopLeading })(
+                                // Text(JSON.stringify(formController.GetFormData())),
                                 VStack({ alignment: cTopLeading })(
                                     ...ForEach(views)(view => view)
                                 )
@@ -892,10 +912,13 @@ export class FormBuilder {
                         HStack({ alignment: cLeading })(
                             Button(
                                 Text('Save')
-                            ).onClick(() => {
-                                // formController.SetValue('tenant_id', useSessionService().TenantId);
-                                create();
-                            })
+                            )
+                                .loading(isLoading)
+                                .onClick(() => {
+                                    // formController.SetValue('tenant_id', useSessionService().TenantId);
+
+                                    create();
+                                })
                         )
                             .height()
                             .padding()
@@ -903,53 +926,71 @@ export class FormBuilder {
 
                     )
                 ).resource(resource)
-                    .onSuccess(() => {
+                    .onSuccess((result) => {
                         formController.InvalidateQuerie(resource);
+                        dialog.OnOK(result);
                         //this.OnOK();
                     })
-
-
             )
         } else if (mode === 'update') {
-            if (mode == 'create') {
-                return (
-                    UIUpdateContext((update, isLoading) =>
-                        VStack(
+            return (
+                UIUpdateContext((update, isLoading, isUpdating) =>
+                    VStack(
+                        ScrollView({ axes: cVertical, alignment: cTopLeading })(
                             VStack({ alignment: cTopLeading })(
-                                ...ForEach(views)(view => view),
-                            ).background('#F8FAFF').padding()
-                                .borderBottom('1px solid #D6E4ED'),
-                            HStack({ alignment: cLeading })(
-                                Button(
-                                    Text('Save')
-                                ).onClick(() => {
+                                // Text(JSON.stringify(formController.GetFormData())),
+                                VStack({ alignment: cTopLeading })(
+                                    ...ForEach(views)(view => view)
+                                )
+                                    .height()
+                                    .background('#F8FAFF')
+                                    .padding('24px 24px 0px')
+
+                            )
+                                .background('#F8FAFF')
+                        ),
+                        HStack({ alignment: cLeading })(
+                            Button(
+                                Text('Save')
+                            )
+                                .loading(isUpdating)
+                                .onClick(() => {
                                     // formController.SetValue('tenant_id', useSessionService().TenantId);
+
                                     update();
                                 })
-                            ).padding()
-
-                        )
-                    ).resource(resource).filter({ id: resourceId })
-                        .onSuccess(() => {
-                            formController.InvalidateQuerie(resource);
-                            //this.OnOK();
-                        })
-                )
-            }
-        } else {
-            return (
-                ScrollView({ axes: cVertical, alignment: cTopLeading })(
-                    VStack({ alignment: cTopLeading })(
-                        VStack({ alignment: cTopLeading })(
-                            ...ForEach(views)(view => view)
                         )
                             .height()
-                            .background('#F8FAFF')
-                            .padding('24px 24px 0px')
-                            .borderBottom('1px solid #D6E4ED')
+                            .padding()
+                            .borderTop('1px solid #D6E4ED')
+
                     )
-                        .background('#F8FAFF')
+                ).resource(resource).filter({ id: resourceId })
+                    .onSuccess((result) => {
+                        formController.InvalidateQuerie(resource);
+                        dialog.OnOK(result);
+                        //this.OnOK();
+                    })
+            )
+        } else {
+            return (
+                VStack(
+                    ScrollView({ axes: cVertical, alignment: cTopLeading })(
+                        VStack({ alignment: cTopLeading })(
+                            VStack({ alignment: cTopLeading })(
+                                ...ForEach(views)(view => view)
+                            )
+                                .height()
+                                .background('#F8FAFF')
+                            //.padding('24px 24px 0px')
+
+                        )
+
+                    )
                 )
+                    .background('#F8FAFF')
+                    .borderBottom('1px solid #D6E4ED')
+
             )
         }
     }
@@ -970,3 +1011,4 @@ FormBuilder.injectView('virtual', VirtualView);
 
 FormBuilder.injectView('positionselect', PositionSelectView);
 FormBuilder.injectView('widget', WidgetView);
+FormBuilder.injectView('datatable', DataTableView);

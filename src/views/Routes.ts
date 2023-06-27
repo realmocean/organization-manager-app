@@ -28,6 +28,8 @@ import { ActiveTitlesController } from "../domains/titles/controllers/ActiveTitl
 import { TitleAuditLogController } from "../domains/titles/controllers/TitleAuditLogController";
 import { EditTitlesController } from "../domains/titles/controllers/EditTitlesController";
 import { ViewController } from "../domains/positions/controllers/ViewController";
+import { ConnectionsController } from "../domains/integrations/controllers/ConnectionsController";
+import { ActiveConnectionsController } from "../domains/integrations/controllers/ActiveConnectionsController";
 
 export const Routes = () => {
 
@@ -61,7 +63,7 @@ export const Routes = () => {
 
                 UIRoute('company/edit/department/:department_id', EditDepartmentController),
 
-                
+
                 UIRoute('company/list/position', PositionListController).children(
                     UIRoute('active-positions', ActivePositionsController),
                     UIRoute('position-audit', PositionAuditLogController),
@@ -74,6 +76,10 @@ export const Routes = () => {
                     UIRoute('title-audit', TitleAuditLogController),
                 ),
                 UIRoute('company/edit/title/:title_id', EditTitlesController),
+
+                UIRoute('company/list/connection', ConnectionsController).children(
+                    UIRoute('active-connections', ActiveConnectionsController),
+                ),
 
 
                 UIRoute('restrictions/appiprestriction/list', AppIpRestrictionListController),

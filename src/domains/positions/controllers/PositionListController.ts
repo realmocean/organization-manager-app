@@ -80,7 +80,6 @@ export class PositionListController extends UIFormController {
                                     },
                                     ...(!isLoading && views?.map((view, index) => {
                                         return {
-
                                             view: () => HStack(
                                                 index === 0 ?  VDivider().width(1).height('60%').background('#E8EAED'): Fragment(),
                                                 HStack({ spacing: 5 })(

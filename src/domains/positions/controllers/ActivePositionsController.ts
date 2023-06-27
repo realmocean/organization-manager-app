@@ -8,11 +8,16 @@ import {
     TabList,
     UIController, UIRecordsContext, VStack, Text,
     cLeading, cTopLeading,
-    cVertical, useNavigate, WorkProtocol, useProtocol
+    cVertical, useNavigate, WorkProtocol, useProtocol, MenuButton, TextField, UIViewBuilder, cCenter
 } from "@tuval/forms";
 import { RealmDataContext } from "../../../views/DataContexts";
 import { PositionGrid } from "../views/PositionGrid";
 import { SelectPositionViewDialog } from "../dialogs/SelectPositionViewDialog";
+import { moment } from "@tuval/core";
+import { FormBuilder } from "../../../formbuilder/FormBuilder";
+import { AddPositionDialog } from "../dialogs/AddPositionDialog";
+import { AddPositionDialogData } from "../dialogs/AddPositionDialogData";
+import { DeletePositionDialog } from "../dialogs/DeletePositionDialog";
 
 
 
@@ -22,7 +27,7 @@ export class ActivePositionsController extends UIController {
     @State()
     private searchText: string;
 
-    public LoadView(): any {
+    public _LoadView(): any {
 
         const navigate = useNavigate();
 
@@ -65,6 +70,158 @@ export class ActivePositionsController extends UIController {
                     )
                 )
             )
+
+        )
+    }
+
+    public LoadView(): any {
+
+        const navigate = useNavigate();
+        return (
+            FormBuilder.render({
+                fieldMap: {
+                    tenant_id: {
+                        name: 'tenant_id',
+                        value: useSessionService().TenantId,
+                        type: 'virtual'
+                    },
+                    datatable: {
+                        id: "datatable",
+                        name: "datatable",
+                        type: "datatable",
+                        resource: 'positions',
+                        columns: [
+                            {
+                                field: 'position_name',
+                                header: 'Position',
+                                width: '60%',
+                                filter: true,
+                                sortable: true,
+                                body: (row: any) => (
+                                    HStack({ spacing: 15 })(
+                                        //Icon(Icons.Acc).size(35),
+                                        VStack({ alignment: cLeading })(
+                                            Text(`${row.position_name}`).fontFamily('source sans pro').fontSize(16).foregroundColor('#1D76C7')
+                                        )
+                                    ).cursor('pointer')
+                                    .onClick(() => {
+                                        const formData = Object.assign(AddPositionDialogData,
+                                            {
+                                                title: 'Update position',
+                                                mode: 'update',
+                                                resourceId: row.id
+                                            });
+                                        AddPositionDialog.Show(formData)
+                                    })
+                                ),
+                                /* editor: ({ rowData }) => (
+                                    TextField().value(rowData.position_name)
+                                ) */
+                            },
+
+                            {
+                                header: 'Created At',
+                                width: '15%',
+                                body: (row: any) => (
+                                    HStack({ spacing: 15 })(
+                                        VStack({ alignment: cLeading })(
+                                            Text(moment(row.created_at).fromNow())
+                                        )
+                                    )
+                                )
+                            },
+                            {
+                                header: 'Updated At',
+                                width: '15%',
+                                body: (row: any) => (
+                                    HStack({ spacing: 15 })(
+                                        VStack({ alignment: cLeading })(
+                                            Text(moment(row.updated_at).fromNow())
+                                        )
+                                    )
+                                )
+                            },
+                            {
+                                //field: 'employee_name',
+                                header: 'Actions',
+                                width: '10%',
+                                body: (department: any) => {
+                                    return UIViewBuilder(() => {
+                                        const navigate = useNavigate();
+                                        return (
+                                            HStack({ alignment: cCenter })(
+                                                MenuButton()
+                                                    .model([
+                                                        {
+                                                            title: 'Edit',
+                                                            icon: Icons.Edit,
+                                                            onClick: () => {
+                                                                const formData = Object.assign(AddPositionDialogData,
+                                                                    {
+                                                                        title: 'Update position',
+                                                                        mode: 'update',
+                                                                        resourceId: department.id
+                                                                    });
+                                                                AddPositionDialog.Show(formData)
+                                                            },
+                                                            //  onClick: () => navigate(`/app/com.tuvalsoft.app.organizationmanager/company/edit/position/${department.id}`)
+                                                        },
+                                                        {
+                                                            title: 'Delete',
+                                                            icon: Icons.Delete,
+                                                            onClick: () => DeletePositionDialog.Show(department.id)
+                                                        }
+                                                    ])
+                                                    .icon(Icons.Menu)
+                                                // MenuButton()
+                                                /*  Views.ActionContextMenu([
+                                                     {
+                                                         title: 'Edit',
+                                                         icon: Icons.Edit,
+                                                         tooltip: 'Edit',
+                                                         iconColor: '#505A64',
+                                                         link: `/app(tenantmanager)/company/employee/${employee.id}/edit`,
+                                                         linkState: { position: employee }
+                                                     },
+                                                     {
+                                                         title: 'Delete',
+                                                         icon: Icons.Delete,
+                                                         tooltip: 'Delete',
+                                                         iconColor: Color.red400,
+                                                         //link: `/app(tenantmanager)/employee/delete/${employee.id}`,
+                                                         action: () => DeleteUserDialog.Show(employee.id),
+                                                         linkState: { position: employee }
+                                                     }
+                                                 ]) */
+                                            )
+                                        )
+                                    })
+
+                                }
+                            },
+                            {
+                                header: '',
+                                width: '15%',
+                                rowEditor: true,
+
+                            } as any,
+                        ],
+                        filter: {
+                            'tenant_id': useSessionService().TenantId,
+                            ...(this.searchText != null && this.searchText.length > 2 && {
+                                'employee_name': this.searchText
+                            })
+                        },
+                        sort: {
+                            field: 'created_at',
+                            order: 'DESC'
+                        },
+                        helpText: "Tell us your middle name,<br /> initial, or type N/A."
+                    }
+
+
+                }
+            })
 
         )
     }

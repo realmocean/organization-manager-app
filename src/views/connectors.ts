@@ -871,6 +871,43 @@ export const connector_options = [
               "defaultValue": "",
               "helpKey": "connection.rdbms.concurrencyLevel"
             }
+          },
+          layout:{
+            "type": "collapse",
+            "containers": [
+              {
+                "collapsed": true,
+                "label": "General",
+                "fields": [
+                  "name",
+                  "application",
+                  "mode",
+                  "_agentId"
+                ]
+              },
+              {
+                "collapsed": true,
+                "label": "Application details",
+                "fields": [
+                  "rdbms.version",
+                  "rdbms.host",
+                  "rdbms.database",
+                  "rdbms.user",
+                  "rdbms.password",
+                  "rdbms.instanceName",
+                  "rdbms.port"
+                ]
+              },
+              {
+                "collapsed": true,
+                "label": "Advanced",
+                "fields": [
+                  "rdbms.options",
+                  "_borrowConcurrencyFromConnectionId",
+                  "rdbms.concurrencyLevel"
+                ]
+              }
+            ]
           }
         }
       },
@@ -6903,7 +6940,2128 @@ export const connector_options = [
         "value": "http",
         "type": "http",
         "label": "HTTP",
-        "keywords": "technology,protocol"
+        "keywords": "technology,protocol",
+        "formData":{
+          "layout": {
+            "type": "collapse",
+            "containers": [
+              {
+                "collapsed": true,
+                "label": "General",
+                "fields": [
+                  "name",
+                  "application",
+                  "connectionFormView",
+                  "mode",
+                  "_agentId"
+                ]
+              },
+              {
+                "collapsed": true,
+                "label": "Application details",
+                "fields": [
+                  "http._httpConnectorVersionId",
+                  "http.baseURI",
+                  "http.headers",
+                  "http.mediaType",
+                  "http.type",
+                  "http.successMediaType",
+                  "http.errorMediaType"
+                ]
+              },
+              {
+                "collapsed": true,
+                "label": "Configure authentication",
+                "containers": [
+                  {
+                    "fields": [
+                      "http.auth.type"
+                    ]
+                  },
+                  {
+                    "type": "collapse",
+                    "containers": [
+                      {
+                        "collapsed": true,
+                        "label": "Configure basic auth",
+                        "fields": [
+                          "http.auth.basic.username",
+                          "http.auth.basic.password"
+                        ]
+                      },
+                      {
+                        "collapsed": true,
+                        "label": "Configure cookie auth",
+                        "fields": [
+                          "http.auth.cookie.method",
+                          "http.auth.cookie.uri",
+                          "http.auth.cookie.body",
+                          "http.auth.cookie.successStatusCode"
+                        ]
+                      },
+                      {
+                        "collapsed": false,
+                        "label": "Configure custom auth",
+                        "fields": [
+                          "http.custom.encrypted",
+                          "http.custom.unencrypted",
+                          "configureCutomAuthTokenRefresh"
+                        ]
+                      },
+                      {
+                        "collapsed": true,
+                        "label": "Configure digest auth",
+                        "fields": [
+                          "http.auth.digest.username",
+                          "http.auth.digest.password"
+                        ]
+                      },
+                      {
+                        "collapsed": true,
+                        "label": "Configure OAuth 2.0",
+                        "fields": [
+                          "http._iClientId",
+                          "http.auth.oauth.scope"
+                        ]
+                      },
+                      {
+                        "collapsed": true,
+                        "label": "Configure OAuth 1.0",
+                        "fields": [
+                          "http.auth.oauth.oauth1.signatureMethod"
+                        ],
+                        "containers": [
+                          {
+                            "type": "indent",
+                            "containers": [
+                              {
+                                "fields": [
+                                  "http.auth.oauth.oauth1.consumerKey",
+                                  "http.auth.oauth.oauth1.consumerSecret",
+                                  "http.auth.oauth.oauth1.accessToken",
+                                  "http.auth.oauth.oauth1.tokenSecret",
+                                  "http.auth.oauth.oauth1.consumerPrivateKey",
+                                  "http.auth.oauth.oauth1.realm"
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "collapsed": true,
+                        "label": "Configure token auth",
+                        "fields": [
+                          "http.auth.token.token",
+                          "http.auth.token.location",
+                          "http.auth.token.headerName",
+                          "http.auth.token.scheme",
+                          "http.customAuthScheme",
+                          "http.auth.token.paramName",
+                          "configureTokenRefresh"
+                        ]
+                      },
+                      {
+                        "collapsed": true,
+                        "label": "Configure refresh token",
+                        "fields": [
+                          "http.auth.token.refreshToken",
+                          "http.auth.token.refreshMethod",
+                          "http.auth.token.refreshRelativeURI",
+                          "http.auth.token.refreshHeaders",
+                          "http.auth.token.refreshMediaType",
+                          "http.auth.token.refreshBody",
+                          "http.auth.token.refreshTokenPath",
+                          "http.auth.token.tokenPaths"
+                        ]
+                      },
+                      {
+                        "collapsed": true,
+                        "label": "Configure WSSE auth",
+                        "fields": [
+                          "http.auth.wsse.username",
+                          "http.auth.wsse.password",
+                          "http.auth.wsse.headerName"
+                        ]
+                      },
+                      {
+                        "collapsed": true,
+                        "label": "Non-standard API response patterns",
+                        "fields": [
+                          "http.auth.failStatusCode",
+                          "http.auth.failPath",
+                          "http.auth.failPathForOauth",
+                          "http.auth.failValues",
+                          "http.auth.failValuesForOauth"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "collapsed": true,
+                "label": "Non-standard API rate limiter",
+                "fields": [
+                  "http.rateLimit.limit",
+                  "http.rateLimit.failStatusCode",
+                  "http.rateLimit.failPath",
+                  "http.rateLimit.failValues",
+                  "http.retryHeader"
+                ]
+              },
+              {
+                "collapsed": true,
+                "label": "How to test this connection?",
+                "fields": [
+                  "http.ping.method",
+                  "http.ping.relativeURI",
+                  "http.ping.body",
+                  "http.ping.failPath",
+                  "http.ping.failValues",
+                  "http.ping.successPath",
+                  "http.ping.successValues",
+                  "http.ping.errorPath"
+                ]
+              },
+              {
+                "collapsed": true,
+                "label": "Advanced",
+                "containers": [
+                  {
+                    "fields": [
+                      "http.disableStrictSSL",
+                      "_borrowConcurrencyFromConnectionId",
+                      "http.concurrencyLevel",
+                      "http.clientCertificates.type"
+                    ]
+                  },
+                  {
+                    "type": "indent",
+                    "containers": [
+                      {
+                        "fields": [
+                          "http.clientCertificates.key",
+                          "http.clientCertificates.cert",
+                          "http.clientCertificates.pfx",
+                          "http.clientCertificates.passphrase"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "fields": [
+                      "http.encrypted",
+                      "http.unencrypted"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "fieldMap": {
+            "name": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "isLoggable": true,
+              "type": "text",
+              "label": "Name",
+              "defaultDisabled": false,
+              "required": true,
+              "fieldId": "name",
+              "id": "name",
+              "name": "/name",
+              "defaultValue": "",
+              "helpKey": "connection.name"
+            },
+            "application": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "isLoggable": true,
+              "id": "application",
+              "type": "text",
+              "label": "Application",
+              "defaultValue": "HTTP",
+              "defaultDisabled": true,
+              "fieldId": "application",
+              "name": "/application",
+              "helpKey": "connection.application"
+            },
+            "connectionFormView": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "isLoggable": true,
+              "id": "connectionFormView",
+              "type": "connectionFormView",
+              "label": "Form view",
+              "required": true,
+              "visible": true,
+              "defaultValue": "false",
+              "helpKey": "formView",
+              "fieldId": "connectionFormView",
+              "name": "/connectionFormView"
+            },
+            "mode": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "id": "mode",
+              "type": "radiogroup",
+              "label": "Mode",
+              "isLoggable": true,
+              "defaultValue": "cloud",
+              "options": [
+                {
+                  "items": [
+                    {
+                      "label": "Cloud",
+                      "value": "cloud"
+                    },
+                    {
+                      "label": "On-premise",
+                      "value": "onpremise"
+                    }
+                  ]
+                }
+              ],
+              "name": "/mode",
+              "helpKey": "connection.mode"
+            },
+            "_agentId": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "agents",
+              "isLoggable": true,
+              "type": "selectresource",
+              "label": "Agent",
+              "fieldId": "_agentId",
+              "visibleWhen": [
+                {
+                  "field": "mode",
+                  "is": [
+                    "onpremise"
+                  ]
+                }
+              ],
+              "id": "_agentId",
+              "name": "/_agentId",
+              "defaultValue": "",
+              "helpKey": "connection._agentId"
+            },
+            "http._httpConnectorVersionId": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "fieldId": "http._httpConnectorVersionId",
+              "type": "text",
+              "visible": false,
+              "label": "API version",
+              "id": "http._httpConnectorVersionId",
+              "name": "/http/_httpConnectorVersionId",
+              "defaultValue": "",
+              "helpKey": "connection.http._httpConnectorVersionId"
+            },
+            "http.baseURI": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "isLoggable": true,
+              "type": "text",
+              "label": "Base URI",
+              "required": true,
+              "fieldId": "http.baseURI",
+              "id": "http.baseURI",
+              "name": "/http/baseURI",
+              "defaultValue": "",
+              "helpKey": "connection.http.baseURI"
+            },
+            "http.headers": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "isLoggable": true,
+              "type": "keyvalue",
+              "keyName": "name",
+              "valueName": "value",
+              "valueType": "keyvalue",
+              "defaultValue": "",
+              "label": "Configure HTTP headers",
+              "fieldId": "http.headers",
+              "id": "http.headers",
+              "name": "/http/headers",
+              "helpKey": "connection.http.headers"
+            },
+            "http.mediaType": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "isLoggable": true,
+              "type": "select",
+              "label": "Media type",
+              "required": true,
+              "defaultValue": "json",
+              "options": [
+                {
+                  "items": [
+                    {
+                      "label": "XML",
+                      "value": "xml"
+                    },
+                    {
+                      "label": "JSON",
+                      "value": "json"
+                    },
+                    {
+                      "label": "URL encoded",
+                      "value": "urlencoded"
+                    },
+                    {
+                      "label": "Multipart / form-data",
+                      "value": "form-data"
+                    }
+                  ]
+                }
+              ],
+              "fieldId": "http.mediaType",
+              "id": "http.mediaType",
+              "name": "/http/mediaType",
+              "helpKey": "connection.http.mediaType"
+            },
+            "http.type": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "label": "API type",
+              "type": "amazonmwstype",
+              "required": true,
+              "helpKey": "amazonmws.connection.http.type",
+              "defaultDisabled": false,
+              "defaultValue": "",
+              "skipSort": true,
+              "fieldId": "http.type",
+              "visible": false,
+              "omitWhenHidden": true,
+              "id": "http.type",
+              "name": "/http/type"
+            },
+            "http.successMediaType": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "isLoggable": true,
+              "type": "selectoverridemediatype",
+              "label": "Override media type for success responses",
+              "placeholder": "Do not override",
+              "options": [
+                {
+                  "label": "XML",
+                  "value": "xml"
+                },
+                {
+                  "label": "JSON",
+                  "value": "json"
+                },
+                {
+                  "label": "CSV",
+                  "value": "csv"
+                }
+              ],
+              "dependentFieldForMediaType": "/http/mediaType",
+              "fieldId": "http.successMediaType",
+              "id": "http.successMediaType",
+              "name": "/http/successMediaType",
+              "defaultValue": "",
+              "helpKey": "connection.http.successMediaType"
+            },
+            "http.errorMediaType": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "isLoggable": true,
+              "type": "selectoverridemediatype",
+              "label": "Override media type for error responses",
+              "placeholder": "Do not override",
+              "options": [
+                {
+                  "label": "XML",
+                  "value": "xml"
+                },
+                {
+                  "label": "JSON",
+                  "value": "json"
+                }
+              ],
+              "dependentFieldForMediaType": "/http/mediaType",
+              "fieldId": "http.errorMediaType",
+              "id": "http.errorMediaType",
+              "name": "/http/errorMediaType",
+              "defaultValue": "",
+              "helpKey": "connection.http.errorMediaType"
+            },
+            "http.auth.type": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "isLoggable": true,
+              "type": "select",
+              "label": "Auth type",
+              "required": true,
+              "options": [
+                {
+                  "items": [
+                    {
+                      "label": "Basic",
+                      "value": "basic"
+                    },
+                    {
+                      "label": "Token",
+                      "value": "token"
+                    },
+                    {
+                      "label": "OAuth 2.0",
+                      "value": "oauth"
+                    },
+                    {
+                      "label": "Custom",
+                      "value": "custom"
+                    },
+                    {
+                      "label": "Cookie",
+                      "value": "cookie"
+                    },
+                    {
+                      "label": "Digest",
+                      "value": "digest"
+                    },
+                    {
+                      "label": "WSSE",
+                      "value": "wsse"
+                    },
+                    {
+                      "label": "OAuth 1.0",
+                      "value": "oauth1"
+                    }
+                  ]
+                }
+              ],
+              "fieldId": "http.auth.type",
+              "id": "http.auth.type",
+              "name": "/http/auth/type",
+              "defaultValue": "",
+              "helpKey": "connection.http.auth.type"
+            },
+            "http.auth.basic.username": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "type": "text",
+              "label": "Username",
+              "required": true,
+              "fieldId": "http.auth.basic.username",
+              "visibleWhenAll": [
+                {
+                  "field": "http.auth.type",
+                  "is": [
+                    "basic"
+                  ]
+                }
+              ],
+              "id": "http.auth.basic.username",
+              "name": "/http/auth/basic/username",
+              "defaultValue": "",
+              "helpKey": "connection.http.auth.basic.username"
+            },
+            "http.auth.basic.password": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "type": "text",
+              "label": "Password",
+              "inputType": "password",
+              "defaultValue": "",
+              "description": "Note: for security reasons this field must always be re-entered.",
+              "required": true,
+              "fieldId": "http.auth.basic.password",
+              "visibleWhenAll": [
+                null
+              ],
+              "id": "http.auth.basic.password",
+              "name": "/http/auth/basic/password",
+              "helpKey": "connection.http.auth.basic.password"
+            },
+            "http.auth.cookie.method": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "isLoggable": true,
+              "type": "select",
+              "label": "HTTP method",
+              "options": [
+                {
+                  "items": [
+                    {
+                      "label": "GET",
+                      "value": "GET"
+                    },
+                    {
+                      "label": "POST",
+                      "value": "POST"
+                    }
+                  ]
+                }
+              ],
+              "fieldId": "http.auth.cookie.method",
+              "required": true,
+              "visibleWhenAll": [
+                {
+                  "field": "http.auth.type",
+                  "is": [
+                    "cookie"
+                  ]
+                }
+              ],
+              "id": "http.auth.cookie.method",
+              "name": "/http/auth/cookie/method",
+              "defaultValue": "",
+              "helpKey": "connection.http.auth.cookie.method"
+            },
+            "http.auth.cookie.uri": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "type": "uri",
+              "showLookup": false,
+              "showExtract": false,
+              "label": "Absolute URL",
+              "fieldId": "http.auth.cookie.uri",
+              "required": true,
+              "visibleWhenAll": [
+                null
+              ],
+              "id": "http.auth.cookie.uri",
+              "name": "/http/auth/cookie/uri",
+              "defaultValue": "",
+              "helpKey": "connection.http.auth.cookie.uri"
+            },
+            "http.auth.cookie.body": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "type": "httprequestbody",
+              "label": "HTTP request body",
+              "fieldId": "http.auth.cookie.body",
+              "visibleWhenAll": [
+                {
+                  "field": "http.auth.cookie.method",
+                  "is": [
+                    "POST"
+                  ]
+                },
+                null
+              ],
+              "required": true,
+              "id": "http.auth.cookie.body",
+              "name": "/http/auth/cookie/body",
+              "defaultValue": "",
+              "helpKey": "connection.http.auth.cookie.body"
+            },
+            "http.auth.cookie.successStatusCode": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "isLoggable": true,
+              "type": "text",
+              "label": "Override HTTP status code for success",
+              "validWhen": [
+                {
+                  "matchesRegEx": {
+                    "pattern": "^[\\d]+$",
+                    "message": "Only numbers allowed"
+                  }
+                }
+              ],
+              "fieldId": "http.auth.cookie.successStatusCode",
+              "visibleWhenAll": [
+                null
+              ],
+              "id": "http.auth.cookie.successStatusCode",
+              "name": "/http/auth/cookie/successStatusCode",
+              "defaultValue": "",
+              "helpKey": "connection.http.auth.cookie.successStatusCode"
+            },
+            "http.custom.encrypted": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "id": "http.custom.encrypted",
+              "type": "editor",
+              "mode": "json",
+              "label": "Custom encrypted fields",
+              "helpKey": "connection.http.encrypted",
+              "defaultValue": "{\"field\": \"value\"}",
+              "visibleWhen": [
+                {
+                  "field": "http.auth.type",
+                  "is": [
+                    "custom"
+                  ]
+                }
+              ],
+              "description": "Note: for security reasons this field must always be re-entered.",
+              "name": "/http/custom/encrypted"
+            },
+            "http.custom.unencrypted": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "id": "http.custom.unencrypted",
+              "type": "editor",
+              "mode": "json",
+              "label": "Custom unencrypted fields",
+              "helpKey": "connection.http.unencrypted",
+              "visibleWhen": [
+                {
+                  "field": "http.auth.type",
+                  "is": [
+                    "custom"
+                  ]
+                }
+              ],
+              "defaultValue": "{\"field\": \"value\"}",
+              "name": "/http/custom/unencrypted"
+            },
+            "configureCutomAuthTokenRefresh": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "id": "configureCutomAuthTokenRefresh",
+              "type": "checkbox",
+              "label": "Configure refresh token",
+              "helpKey": "connection.configureTokenRefresh",
+              "defaultValue": false,
+              "visibleWhenAll": [
+                {
+                  "field": "http.auth.type",
+                  "is": [
+                    "custom"
+                  ]
+                }
+              ],
+              "fieldId": "configureCutomAuthTokenRefresh",
+              "name": "/configureCutomAuthTokenRefresh"
+            },
+            "http.auth.digest.username": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "id": "http.auth.digest.username",
+              "type": "text",
+              "label": "Username",
+              "required": true,
+              "helpKey": "connection.http.auth.basic.username",
+              "visibleWhenAll": [
+                {
+                  "field": "http.auth.type",
+                  "is": [
+                    "digest"
+                  ]
+                }
+              ],
+              "name": "/http/auth/digest/username"
+            },
+            "http.auth.digest.password": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "id": "http.auth.digest.password",
+              "type": "text",
+              "label": "Password",
+              "inputType": "password",
+              "defaultValue": "",
+              "description": "Note: for security reasons this field must always be re-entered.",
+              "required": true,
+              "helpKey": "connection.http.auth.basic.password",
+              "visibleWhenAll": [
+                null
+              ],
+              "name": "/http/auth/digest/password"
+            },
+            "http._iClientId": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "iClients",
+              "isLoggable": true,
+              "label": "OAuth 2.0 client",
+              "type": "dynaiclient",
+              "allowNew": true,
+              "allowEdit": true,
+              "fieldId": "http._iClientId",
+              "required": true,
+              "filter": {
+                "provider": "custom_oauth2"
+              },
+              "connectionId": "new-tYlmeK8H738",
+              "ignoreEnvironmentFilter": true,
+              "visibleWhenAll": [
+                {
+                  "field": "http.auth.type",
+                  "is": [
+                    "oauth"
+                  ]
+                }
+              ],
+              "id": "http._iClientId",
+              "name": "/http/_iClientId",
+              "defaultValue": "",
+              "helpKey": "connection.http._iClientId"
+            },
+            "http.auth.oauth.scope": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "id": "http.auth.oauth.scope",
+              "type": "text",
+              "label": "Scope",
+              "delimiter": ",",
+              "helpKey": "connection.generic.http.auth.oauth.scope",
+              "visibleWhenAll": [
+                null
+              ],
+              "name": "/http/auth/oauth/scope",
+              "defaultValue": ""
+            },
+            "http.auth.oauth.oauth1.signatureMethod": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "type": "select",
+              "label": "Signature method",
+              "helpKey": "http.auth.oauth.oauth1.signatureMethod",
+              "required": true,
+              "options": [
+                {
+                  "items": [
+                    {
+                      "label": "HMAC-SHA1",
+                      "value": "hmac-sha1"
+                    },
+                    {
+                      "label": "HMAC-SHA256",
+                      "value": "hmac-sha256"
+                    },
+                    {
+                      "label": "HMAC-SHA512",
+                      "value": "hmac-sha512"
+                    },
+                    {
+                      "label": "RSA-SHA1",
+                      "value": "rsa-sha1"
+                    },
+                    {
+                      "label": "RSA-SHA256",
+                      "value": "rsa-sha256"
+                    },
+                    {
+                      "label": "RSA-SHA512",
+                      "value": "rsa-sha512"
+                    },
+                    {
+                      "label": "PLAINTEXT",
+                      "value": "plaintext"
+                    }
+                  ]
+                }
+              ],
+              "fieldId": "http.auth.oauth.oauth1.signatureMethod",
+              "visibleWhenAll": [
+                {
+                  "field": "http.auth.type",
+                  "is": [
+                    "oauth1"
+                  ]
+                }
+              ],
+              "id": "http.auth.oauth.oauth1.signatureMethod",
+              "name": "/http/auth/oauth/oauth1/signatureMethod",
+              "defaultValue": ""
+            },
+            "http.auth.oauth.oauth1.consumerKey": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "type": "text",
+              "label": "Consumer key",
+              "helpKey": "http.auth.oauth.oauth1.consumerKey",
+              "required": true,
+              "fieldId": "http.auth.oauth.oauth1.consumerKey",
+              "visibleWhenAll": [
+                {
+                  "field": "http.auth.oauth.oauth1.signatureMethod",
+                  "is": [
+                    "hmac-sha1",
+                    "hmac-sha256",
+                    "hmac-sha512",
+                    "plaintext",
+                    "rsa-sha1",
+                    "rsa-sha256",
+                    "rsa-sha512"
+                  ]
+                },
+                {
+                  "field": "http.auth.type",
+                  "is": [
+                    "oauth1"
+                  ]
+                }
+              ],
+              "id": "http.auth.oauth.oauth1.consumerKey",
+              "name": "/http/auth/oauth/oauth1/consumerKey",
+              "defaultValue": ""
+            },
+            "http.auth.oauth.oauth1.consumerSecret": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "type": "text",
+              "inputType": "password",
+              "defaultValue": "",
+              "label": "Consumer secret",
+              "helpKey": "http.auth.oauth.oauth1.consumerSecret",
+              "required": true,
+              "description": "Note: for security reasons this field must always be re-entered.",
+              "fieldId": "http.auth.oauth.oauth1.consumerSecret",
+              "visibleWhenAll": [
+                {
+                  "field": "http.auth.oauth.oauth1.signatureMethod",
+                  "is": [
+                    "hmac-sha1",
+                    "hmac-sha256",
+                    "hmac-sha512",
+                    "plaintext"
+                  ]
+                },
+                null
+              ],
+              "id": "http.auth.oauth.oauth1.consumerSecret",
+              "name": "/http/auth/oauth/oauth1/consumerSecret"
+            },
+            "http.auth.oauth.oauth1.accessToken": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "type": "text",
+              "inputType": "password",
+              "defaultValue": "",
+              "label": "Access token",
+              "helpKey": "http.auth.oauth.oauth1.accessToken",
+              "required": true,
+              "description": "Note: for security reasons this field must always be re-entered.",
+              "fieldId": "http.auth.oauth.oauth1.accessToken",
+              "visibleWhenAll": [
+                {
+                  "field": "http.auth.oauth.oauth1.signatureMethod",
+                  "is": [
+                    "hmac-sha1",
+                    "hmac-sha256",
+                    "hmac-sha512",
+                    "plaintext",
+                    "rsa-sha1",
+                    "rsa-sha256",
+                    "rsa-sha512"
+                  ]
+                },
+                null
+              ],
+              "id": "http.auth.oauth.oauth1.accessToken",
+              "name": "/http/auth/oauth/oauth1/accessToken"
+            },
+            "http.auth.oauth.oauth1.tokenSecret": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "type": "text",
+              "inputType": "password",
+              "label": "Token secret",
+              "helpKey": "http.auth.oauth.oauth1.tokenSecret",
+              "defaultValue": "",
+              "required": true,
+              "description": "Note: for security reasons this field must always be re-entered.",
+              "fieldId": "http.auth.oauth.oauth1.tokenSecret",
+              "visibleWhenAll": [
+                {
+                  "field": "http.auth.oauth.oauth1.signatureMethod",
+                  "is": [
+                    "hmac-sha1",
+                    "hmac-sha256",
+                    "hmac-sha512",
+                    "plaintext"
+                  ]
+                },
+                null
+              ],
+              "id": "http.auth.oauth.oauth1.tokenSecret",
+              "name": "/http/auth/oauth/oauth1/tokenSecret"
+            },
+            "http.auth.oauth.oauth1.consumerPrivateKey": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "type": "text",
+              "inputType": "password",
+              "multiline": true,
+              "defaultValue": "",
+              "label": "Consumer private key",
+              "helpKey": "http.auth.oauth.oauth1.consumerPrivateKey",
+              "required": true,
+              "description": "Note: for security reasons this field must always be re-entered.",
+              "fieldId": "http.auth.oauth.oauth1.consumerPrivateKey",
+              "visibleWhenAll": [
+                {
+                  "field": "http.auth.oauth.oauth1.signatureMethod",
+                  "is": [
+                    "rsa-sha1",
+                    "rsa-sha256",
+                    "rsa-sha512"
+                  ]
+                },
+                null
+              ],
+              "id": "http.auth.oauth.oauth1.consumerPrivateKey",
+              "name": "/http/auth/oauth/oauth1/consumerPrivateKey"
+            },
+            "http.auth.oauth.oauth1.realm": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "type": "uri",
+              "label": "Realm",
+              "helpKey": "http.auth.oauth.oauth1.realm",
+              "showExtract": false,
+              "showLookup": false,
+              "fieldId": "http.auth.oauth.oauth1.realm",
+              "visibleWhenAll": [
+                {
+                  "field": "http.auth.oauth.oauth1.signatureMethod",
+                  "is": [
+                    "hmac-sha1",
+                    "hmac-sha256",
+                    "hmac-sha512",
+                    "plaintext",
+                    "rsa-sha1",
+                    "rsa-sha256",
+                    "rsa-sha512"
+                  ]
+                },
+                null
+              ],
+              "id": "http.auth.oauth.oauth1.realm",
+              "name": "/http/auth/oauth/oauth1/realm",
+              "defaultValue": ""
+            },
+            "http.auth.token.token": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "type": "text",
+              "label": "Token",
+              "inputType": "password",
+              "required": true,
+              "defaultValue": "",
+              "description": "Note: for security reasons this field must always be re-entered.",
+              "fieldId": "http.auth.token.token",
+              "visibleWhenAll": [
+                {
+                  "field": "http.auth.type",
+                  "is": [
+                    "token"
+                  ]
+                },
+                {
+                  "field": "http.auth.type",
+                  "is": [
+                    "token"
+                  ]
+                }
+              ],
+              "id": "http.auth.token.token",
+              "name": "/http/auth/token/token",
+              "helpKey": "connection.http.auth.token.token"
+            },
+            "http.auth.token.location": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "isLoggable": true,
+              "type": "select",
+              "label": "Send token via",
+              "required": true,
+              "options": [
+                {
+                  "items": [
+                    {
+                      "label": "URL parameter",
+                      "value": "url"
+                    },
+                    {
+                      "label": "HTTP header",
+                      "value": "header"
+                    },
+                    {
+                      "label": "HTTP body",
+                      "value": "body"
+                    }
+                  ]
+                }
+              ],
+              "fieldId": "http.auth.token.location",
+              "visibleWhenAll": [
+                null
+              ],
+              "id": "http.auth.token.location",
+              "name": "/http/auth/token/location",
+              "defaultValue": "",
+              "helpKey": "connection.http.auth.token.location"
+            },
+            "http.auth.token.headerName": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "isLoggable": true,
+              "type": "text",
+              "label": "Header name",
+              "defaultValue": "Authorization",
+              "fieldId": "http.auth.token.headerName",
+              "visibleWhenAll": [
+                {
+                  "field": "http.auth.token.location",
+                  "is": [
+                    "header"
+                  ]
+                },
+                null
+              ],
+              "required": true,
+              "id": "http.auth.token.headerName",
+              "name": "/http/auth/token/headerName",
+              "helpKey": "connection.http.auth.token.headerName"
+            },
+            "http.auth.token.scheme": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "isLoggable": true,
+              "type": "select",
+              "label": "Header scheme",
+              "skipDefault": true,
+              "defaultValue": " ",
+              "options": [
+                {
+                  "items": [
+                    {
+                      "label": "Bearer",
+                      "value": "Bearer"
+                    },
+                    {
+                      "label": "MAC",
+                      "value": "MAC"
+                    },
+                    {
+                      "label": "None",
+                      "value": " "
+                    },
+                    {
+                      "label": "Custom",
+                      "value": "Custom"
+                    }
+                  ]
+                }
+              ],
+              "fieldId": "http.auth.token.scheme",
+              "visibleWhenAll": [
+                {
+                  "field": "http.auth.token.location",
+                  "is": [
+                    "header"
+                  ]
+                },
+                null
+              ],
+              "id": "http.auth.token.scheme",
+              "name": "/http/auth/token/scheme",
+              "helpKey": "connection.http.auth.token.scheme"
+            },
+            "http.customAuthScheme": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "id": "http.customAuthScheme",
+              "type": "text",
+              "label": "Custom auth scheme",
+              "visibleWhenAll": [
+                {
+                  "field": "http.auth.token.location",
+                  "is": [
+                    "header"
+                  ]
+                },
+                {
+                  "field": "http.auth.token.scheme",
+                  "isNot": [
+                    "Bearer",
+                    "MAC",
+                    " "
+                  ]
+                },
+                null
+              ],
+              "required": true,
+              "defaultValue": "",
+              "name": "/http/customAuthScheme",
+              "helpKey": "connection.http.customAuthScheme"
+            },
+            "http.auth.token.paramName": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "isLoggable": true,
+              "type": "text",
+              "label": "Parameter name",
+              "required": true,
+              "fieldId": "http.auth.token.paramName",
+              "visibleWhenAll": [
+                {
+                  "field": "http.auth.token.location",
+                  "is": [
+                    "url"
+                  ]
+                },
+                null
+              ],
+              "defaultValue": "access_token",
+              "id": "http.auth.token.paramName",
+              "name": "/http/auth/token/paramName",
+              "helpKey": "connection.http.auth.token.paramName"
+            },
+            "configureTokenRefresh": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "id": "configureTokenRefresh",
+              "type": "checkbox",
+              "label": "Configure refresh token",
+              "defaultValue": false,
+              "visibleWhenAll": [
+                {
+                  "field": "http.auth.token.location",
+                  "isNot": [
+                    ""
+                  ]
+                },
+                {
+                  "field": "http.auth.type",
+                  "is": [
+                    "token"
+                  ]
+                },
+                null
+              ],
+              "name": "/configureTokenRefresh",
+              "helpKey": "connection.configureTokenRefresh"
+            },
+            "http.auth.token.refreshToken": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "type": "text",
+              "inputType": "password",
+              "required": true,
+              "defaultValue": "",
+              "description": "Note: for security reasons this field must always be re-entered.",
+              "label": "Refresh token",
+              "fieldId": "http.auth.token.refreshToken",
+              "visibleWhenAll": [
+                {
+                  "OR": [
+                    {
+                      "AND": [
+                        {
+                          "field": "http.auth.type",
+                          "is": [
+                            "token"
+                          ]
+                        },
+                        {
+                          "field": "http.auth.token.location",
+                          "isNot": [
+                            ""
+                          ]
+                        },
+                        {
+                          "field": "configureTokenRefresh",
+                          "is": [
+                            true
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "AND": [
+                        {
+                          "field": "http.auth.type",
+                          "is": [
+                            "custom"
+                          ]
+                        },
+                        {
+                          "field": "configureCutomAuthTokenRefresh",
+                          "is": [
+                            true
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "id": "http.auth.token.refreshToken",
+              "name": "/http/auth/token/refreshToken",
+              "helpKey": "connection.http.auth.token.refreshToken"
+            },
+            "http.auth.token.refreshMethod": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "isLoggable": true,
+              "type": "select",
+              "label": "HTTP method",
+              "options": [
+                {
+                  "items": [
+                    {
+                      "label": "GET",
+                      "value": "GET"
+                    },
+                    {
+                      "label": "POST",
+                      "value": "POST"
+                    }
+                  ]
+                }
+              ],
+              "fieldId": "http.auth.token.refreshMethod",
+              "required": true,
+              "visibleWhenAll": [
+                null
+              ],
+              "id": "http.auth.token.refreshMethod",
+              "name": "/http/auth/token/refreshMethod",
+              "helpKey": "connection.http.auth.token.refreshMethod"
+            },
+            "http.auth.token.refreshRelativeURI": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "isLoggable": true,
+              "type": "relativeuri",
+              "showLookup": false,
+              "showExtract": false,
+              "label": "Relative URI",
+              "fieldId": "http.auth.token.refreshRelativeURI",
+              "visibleWhenAll": [
+                null
+              ],
+              "id": "http.auth.token.refreshRelativeURI",
+              "name": "/http/auth/token/refreshRelativeURI",
+              "defaultValue": "",
+              "helpKey": "connection.http.auth.token.refreshRelativeURI"
+            },
+            "http.auth.token.refreshHeaders": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "type": "keyvalue",
+              "keyName": "name",
+              "valueName": "value",
+              "valueType": "keyvalue",
+              "label": "Configure HTTP headers",
+              "fieldId": "http.auth.token.refreshHeaders",
+              "visibleWhenAll": [
+                null
+              ],
+              "id": "http.auth.token.refreshHeaders",
+              "name": "/http/auth/token/refreshHeaders",
+              "defaultValue": "",
+              "helpKey": "connection.http.auth.token.refreshHeaders"
+            },
+            "http.auth.token.refreshMediaType": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "isLoggable": true,
+              "type": "select",
+              "label": "Override media type",
+              "placeholder": "Do not override",
+              "options": [
+                {
+                  "items": [
+                    {
+                      "label": "JSON",
+                      "value": "json"
+                    },
+                    {
+                      "label": "URL encoded",
+                      "value": "urlencoded"
+                    },
+                    {
+                      "label": "XML",
+                      "value": "xml"
+                    }
+                  ]
+                }
+              ],
+              "fieldId": "http.auth.token.refreshMediaType",
+              "visibleWhenAll": [
+                null
+              ],
+              "id": "http.auth.token.refreshMediaType",
+              "name": "/http/auth/token/refreshMediaType",
+              "defaultValue": "",
+              "helpKey": "connection.http.auth.token.refreshMediaType"
+            },
+            "http.auth.token.refreshBody": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "type": "httprequestbody",
+              "label": "HTTP request body",
+              "fieldId": "http.auth.token.refreshBody",
+              "visibleWhenAll": [
+                {
+                  "field": "http.auth.token.refreshMethod",
+                  "is": [
+                    "POST"
+                  ]
+                },
+                null
+              ],
+              "id": "http.auth.token.refreshBody",
+              "name": "/http/auth/token/refreshBody",
+              "defaultValue": "",
+              "helpKey": "connection.http.auth.token.refreshBody"
+            },
+            "http.auth.token.refreshTokenPath": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "type": "text",
+              "label": "Path to token field in HTTP response body",
+              "fieldId": "http.auth.token.refreshTokenPath",
+              "visibleWhenAll": [
+                null
+              ],
+              "id": "http.auth.token.refreshTokenPath",
+              "name": "/http/auth/token/refreshTokenPath",
+              "defaultValue": "",
+              "helpKey": "connection.http.auth.token.refreshTokenPath"
+            },
+            "http.auth.token.tokenPaths": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "id": "http.auth.token.tokenPaths",
+              "type": "text",
+              "label": "Paths to encrypted field in the HTTP response body",
+              "delimiter": ",",
+              "fieldId": "http.auth.token.tokenPaths",
+              "visibleWhenAll": [
+                {
+                  "field": "configureCutomAuthTokenRefresh",
+                  "is": [
+                    true
+                  ]
+                },
+                {
+                  "field": "http.auth.type",
+                  "is": [
+                    "custom"
+                  ]
+                },
+                null
+              ],
+              "name": "/http/auth/token/tokenPaths",
+              "defaultValue": "",
+              "helpKey": "connection.http.auth.token.tokenPaths"
+            },
+            "http.auth.wsse.username": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "id": "http.auth.wsse.username",
+              "type": "text",
+              "label": "Username",
+              "required": true,
+              "helpKey": "connection.http.auth.basic.username",
+              "visibleWhenAll": [
+                {
+                  "field": "http.auth.type",
+                  "is": [
+                    "wsse"
+                  ]
+                }
+              ],
+              "name": "/http/auth/wsse/username"
+            },
+            "http.auth.wsse.password": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "id": "http.auth.wsse.password",
+              "type": "text",
+              "label": "Password",
+              "inputType": "password",
+              "defaultValue": "",
+              "description": "Note: for security reasons this field must always be re-entered.",
+              "required": true,
+              "helpKey": "connection.http.auth.basic.password",
+              "visibleWhenAll": [
+                null
+              ],
+              "name": "/http/auth/wsse/password"
+            },
+            "http.auth.wsse.headerName": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "id": "http.auth.wsse.headerName",
+              "type": "text",
+              "label": "Header name",
+              "defaultValue": "X-WSSE",
+              "required": true,
+              "visibleWhenAll": [
+                null
+              ],
+              "name": "/http/auth/wsse/headerName",
+              "helpKey": "connection.http.auth.wsse.headerName"
+            },
+            "http.auth.failStatusCode": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "isLoggable": true,
+              "type": "text",
+              "label": "Override HTTP status code for auth errors",
+              "validWhen": [
+                {
+                  "matchesRegEx": {
+                    "pattern": "^[\\d]+$",
+                    "message": "Only numbers allowed"
+                  }
+                }
+              ],
+              "fieldId": "http.auth.failStatusCode",
+              "id": "http.auth.failStatusCode",
+              "name": "/http/auth/failStatusCode",
+              "defaultValue": "",
+              "helpKey": "connection.http.auth.failStatusCode"
+            },
+            "http.auth.failPath": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "isLoggable": true,
+              "type": "text",
+              "label": "Path to auth error field in HTTP response body",
+              "visibleWhen": [
+                {
+                  "field": "http.auth.type",
+                  "isNot": [
+                    "oauth"
+                  ]
+                }
+              ],
+              "fieldId": "http.auth.failPath",
+              "id": "http.auth.failPath",
+              "name": "/http/auth/failPath",
+              "defaultValue": "",
+              "helpKey": "connection.http.auth.failPath"
+            },
+            "http.auth.failPathForOauth": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "isLoggable": true,
+              "type": "text",
+              "helpKey": "connection.http.auth.failPath",
+              "label": "Override path to auth error field in HTTP response body",
+              "visibleWhen": [
+                {
+                  "field": "http.auth.type",
+                  "is": [
+                    "oauth"
+                  ]
+                }
+              ],
+              "fieldId": "http.auth.failPathForOauth",
+              "id": "http.auth.failPathForOauth",
+              "name": "/http/auth/failPathForOauth"
+            },
+            "http.auth.failValues": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "isLoggable": true,
+              "type": "text",
+              "delimiter": ",",
+              "label": "Auth error values",
+              "visibleWhen": [
+                {
+                  "field": "http.auth.type",
+                  "isNot": [
+                    "oauth"
+                  ]
+                }
+              ],
+              "fieldId": "http.auth.failValues",
+              "id": "http.auth.failValues",
+              "name": "/http/auth/failValues",
+              "defaultValue": "",
+              "helpKey": "connection.http.auth.failValues"
+            },
+            "http.auth.failValuesForOauth": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "isLoggable": true,
+              "type": "text",
+              "helpKey": "connection.http.auth.failPath",
+              "delimiter": ",",
+              "label": "Override auth error values",
+              "visibleWhen": [
+                {
+                  "field": "http.auth.type",
+                  "is": [
+                    "oauth"
+                  ]
+                }
+              ],
+              "fieldId": "http.auth.failValuesForOauth",
+              "id": "http.auth.failValuesForOauth",
+              "name": "/http/auth/failValuesForOauth"
+            },
+            "http.rateLimit.limit": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "isLoggable": true,
+              "type": "text",
+              "label": "Wait time between HTTP requests",
+              "validWhen": [
+                {
+                  "matchesRegEx": {
+                    "pattern": "^[\\d]+$",
+                    "message": "Only numbers allowed"
+                  }
+                }
+              ],
+              "fieldId": "http.rateLimit.limit",
+              "id": "http.rateLimit.limit",
+              "name": "/http/rateLimit/limit",
+              "defaultValue": "",
+              "helpKey": "connection.http.rateLimit.limit"
+            },
+            "http.rateLimit.failStatusCode": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "isLoggable": true,
+              "type": "text",
+              "label": "Override HTTP status code for rate-limit errors",
+              "validWhen": [
+                {
+                  "matchesRegEx": {
+                    "pattern": "^[\\d]+$",
+                    "message": "Only numbers allowed"
+                  }
+                }
+              ],
+              "fieldId": "http.rateLimit.failStatusCode",
+              "id": "http.rateLimit.failStatusCode",
+              "name": "/http/rateLimit/failStatusCode",
+              "defaultValue": "",
+              "helpKey": "connection.http.rateLimit.failStatusCode"
+            },
+            "http.rateLimit.failPath": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "isLoggable": true,
+              "type": "text",
+              "label": "Path to rate-limit error field in HTTP response body",
+              "fieldId": "http.rateLimit.failPath",
+              "id": "http.rateLimit.failPath",
+              "name": "/http/rateLimit/failPath",
+              "defaultValue": "",
+              "helpKey": "connection.http.rateLimit.failPath"
+            },
+            "http.rateLimit.failValues": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "type": "text",
+              "label": "Rate-limit error values",
+              "delimiter": ",",
+              "fieldId": "http.rateLimit.failValues",
+              "id": "http.rateLimit.failValues",
+              "name": "/http/rateLimit/failValues",
+              "defaultValue": "",
+              "helpKey": "connection.http.rateLimit.failValues"
+            },
+            "http.retryHeader": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "type": "text",
+              "label": "Override retry-after HTTP response header name",
+              "fieldId": "http.retryHeader",
+              "id": "http.retryHeader",
+              "name": "/http/retryHeader",
+              "defaultValue": "",
+              "helpKey": "connection.http.retryHeader"
+            },
+            "http.ping.method": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "isLoggable": true,
+              "type": "select",
+              "label": "HTTP method",
+              "options": [
+                {
+                  "items": [
+                    {
+                      "label": "GET",
+                      "value": "GET"
+                    },
+                    {
+                      "label": "POST",
+                      "value": "POST"
+                    },
+                    {
+                      "label": "PUT",
+                      "value": "PUT"
+                    }
+                  ]
+                }
+              ],
+              "fieldId": "http.ping.method",
+              "id": "http.ping.method",
+              "name": "/http/ping/method",
+              "defaultValue": "",
+              "helpKey": "connection.http.ping.method"
+            },
+            "http.ping.relativeURI": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "isLoggable": true,
+              "type": "relativeuri",
+              "showLookup": false,
+              "showExtract": false,
+              "label": "Relative URI",
+              "fieldId": "http.ping.relativeURI",
+              "id": "http.ping.relativeURI",
+              "name": "/http/ping/relativeURI",
+              "defaultValue": "",
+              "helpKey": "connection.http.ping.relativeURI"
+            },
+            "http.ping.body": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "isLoggable": true,
+              "type": "httprequestbody",
+              "label": "HTTP request body",
+              "fieldId": "http.ping.body",
+              "visibleWhenAll": [
+                {
+                  "field": "http.ping.method",
+                  "is": [
+                    "POST",
+                    "PUT"
+                  ]
+                }
+              ],
+              "id": "http.ping.body",
+              "name": "/http/ping/body",
+              "defaultValue": "",
+              "helpKey": "connection.http.ping.body"
+            },
+            "http.ping.failPath": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "isLoggable": true,
+              "type": "text",
+              "label": "Path to error field in HTTP response body",
+              "visibleWhen": [
+                {
+                  "field": "outputMode",
+                  "is": [
+                    "records"
+                  ]
+                }
+              ],
+              "fieldId": "http.ping.failPath",
+              "id": "http.ping.failPath",
+              "name": "/http/ping/failPath",
+              "defaultValue": "",
+              "helpKey": "connection.http.ping.failPath"
+            },
+            "http.ping.failValues": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "isLoggable": true,
+              "type": "text",
+              "delimiter": ",",
+              "label": "Error values",
+              "visibleWhen": [
+                {
+                  "field": "outputMode",
+                  "is": [
+                    "records"
+                  ]
+                }
+              ],
+              "fieldId": "http.ping.failValues",
+              "id": "http.ping.failValues",
+              "name": "/http/ping/failValues",
+              "defaultValue": "",
+              "helpKey": "connection.http.ping.failValues"
+            },
+            "http.ping.successPath": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "isLoggable": true,
+              "type": "text",
+              "label": "Path to success field in HTTP response body",
+              "fieldId": "http.ping.successPath",
+              "id": "http.ping.successPath",
+              "name": "/http/ping/successPath",
+              "defaultValue": "",
+              "helpKey": "connection.http.ping.successPath"
+            },
+            "http.ping.successValues": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "isLoggable": true,
+              "type": "text",
+              "label": "Success values",
+              "delimiter": ",",
+              "fieldId": "http.ping.successValues",
+              "id": "http.ping.successValues",
+              "name": "/http/ping/successValues",
+              "defaultValue": "",
+              "helpKey": "connection.http.ping.successValues"
+            },
+            "http.ping.errorPath": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "isLoggable": true,
+              "type": "text",
+              "label": "Path to detailed error message field in HTTP response body",
+              "fieldId": "http.ping.errorPath",
+              "id": "http.ping.errorPath",
+              "name": "/http/ping/errorPath",
+              "defaultValue": "",
+              "helpKey": "connection.http.ping.errorPath"
+            },
+            "http.disableStrictSSL": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "isLoggable": true,
+              "type": "checkbox",
+              "label": "Disable strict SSL",
+              "fieldId": "http.disableStrictSSL",
+              "id": "http.disableStrictSSL",
+              "name": "/http/disableStrictSSL",
+              "defaultValue": "",
+              "helpKey": "connection.http.disableStrictSSL"
+            },
+            "_borrowConcurrencyFromConnectionId": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "isLoggable": true,
+              "filter": {
+                "$and": [
+                  {
+                    "_id": {
+                      "$ne": "new-tYlmeK8H738"
+                    }
+                  },
+                  {
+                    "type": "http"
+                  }
+                ]
+              },
+              "type": "selectresource",
+              "label": "Borrow concurrency from",
+              "fieldId": "_borrowConcurrencyFromConnectionId",
+              "id": "_borrowConcurrencyFromConnectionId",
+              "name": "/_borrowConcurrencyFromConnectionId",
+              "defaultValue": "",
+              "helpKey": "connection._borrowConcurrencyFromConnectionId"
+            },
+            "http.concurrencyLevel": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "isLoggable": true,
+              "label": "Concurrency level",
+              "type": "select",
+              "options": [
+                {
+                  "items": [
+                    {
+                      "label": "1",
+                      "value": 1
+                    },
+                    {
+                      "label": "2",
+                      "value": 2
+                    },
+                    {
+                      "label": "3",
+                      "value": 3
+                    },
+                    {
+                      "label": "4",
+                      "value": 4
+                    },
+                    {
+                      "label": "5",
+                      "value": 5
+                    },
+                    {
+                      "label": "6",
+                      "value": 6
+                    },
+                    {
+                      "label": "7",
+                      "value": 7
+                    },
+                    {
+                      "label": "8",
+                      "value": 8
+                    },
+                    {
+                      "label": "9",
+                      "value": 9
+                    },
+                    {
+                      "label": "10",
+                      "value": 10
+                    },
+                    {
+                      "label": "11",
+                      "value": 11
+                    },
+                    {
+                      "label": "12",
+                      "value": 12
+                    },
+                    {
+                      "label": "13",
+                      "value": 13
+                    },
+                    {
+                      "label": "14",
+                      "value": 14
+                    },
+                    {
+                      "label": "15",
+                      "value": 15
+                    },
+                    {
+                      "label": "16",
+                      "value": 16
+                    },
+                    {
+                      "label": "17",
+                      "value": 17
+                    },
+                    {
+                      "label": "18",
+                      "value": 18
+                    },
+                    {
+                      "label": "19",
+                      "value": 19
+                    },
+                    {
+                      "label": "20",
+                      "value": 20
+                    },
+                    {
+                      "label": "21",
+                      "value": 21
+                    },
+                    {
+                      "label": "22",
+                      "value": 22
+                    },
+                    {
+                      "label": "23",
+                      "value": 23
+                    },
+                    {
+                      "label": "24",
+                      "value": 24
+                    },
+                    {
+                      "label": "25",
+                      "value": 25
+                    }
+                  ]
+                }
+              ],
+              "visibleWhen": [
+                {
+                  "field": "_borrowConcurrencyFromConnectionId",
+                  "is": [
+                    ""
+                  ]
+                }
+              ],
+              "fieldId": "http.concurrencyLevel",
+              "id": "http.concurrencyLevel",
+              "name": "/http/concurrencyLevel",
+              "defaultValue": "",
+              "helpKey": "connection.http.concurrencyLevel"
+            },
+            "http.clientCertificates.type": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "type": "select",
+              "label": "SSL certificate type",
+              "helpKey": "connection.http.clientCertificates.type",
+              "options": [
+                {
+                  "items": [
+                    {
+                      "label": "PFX",
+                      "value": "pfx"
+                    },
+                    {
+                      "label": "PEM",
+                      "value": "pem"
+                    }
+                  ]
+                }
+              ],
+              "defaultValue": "",
+              "fieldId": "http.clientCertificates.type",
+              "id": "http.clientCertificates.type",
+              "name": "/http/clientCertificates/type"
+            },
+            "http.clientCertificates.key": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "type": "uploadfile",
+              "placeholder": "SSL client key",
+              "label": "SSL client key",
+              "helpKey": "connection.http.clientCertificates.key",
+              "fieldId": "http.clientCertificates.key",
+              "visibleWhenAll": [
+                {
+                  "field": "http.clientCertificates.type",
+                  "is": [
+                    "pem"
+                  ]
+                }
+              ],
+              "id": "http.clientCertificates.key",
+              "name": "/http/clientCertificates/key",
+              "defaultValue": ""
+            },
+            "http.clientCertificates.cert": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "type": "uploadfile",
+              "placeholder": "SSL certificate",
+              "label": "SSL certificate",
+              "helpKey": "connection.http.clientCertificates.cert",
+              "fieldId": "http.clientCertificates.cert",
+              "visibleWhenAll": [
+                {
+                  "field": "http.clientCertificates.type",
+                  "is": [
+                    "pem"
+                  ]
+                }
+              ],
+              "id": "http.clientCertificates.cert",
+              "name": "/http/clientCertificates/cert",
+              "defaultValue": ""
+            },
+            "http.clientCertificates.pfx": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "type": "uploadfile",
+              "placeholder": "SSL certificate",
+              "label": "SSL certificate",
+              "helpKey": "connection.http.clientCertificates.pfx",
+              "fieldId": "http.clientCertificates.pfx",
+              "visibleWhenAll": [
+                {
+                  "field": "http.clientCertificates.type",
+                  "is": [
+                    "pfx"
+                  ]
+                }
+              ],
+              "id": "http.clientCertificates.pfx",
+              "name": "/http/clientCertificates/pfx",
+              "defaultValue": ""
+            },
+            "http.clientCertificates.passphrase": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "type": "text",
+              "label": "SSL passphrase",
+              "helpKey": "connection.http.clientCertificates.passphrase",
+              "fieldId": "http.clientCertificates.passphrase",
+              "visibleWhenAll": [
+                {
+                  "field": "http.clientCertificates.type",
+                  "is": [
+                    "pem",
+                    "pfx"
+                  ]
+                }
+              ],
+              "id": "http.clientCertificates.passphrase",
+              "name": "/http/clientCertificates/passphrase",
+              "defaultValue": ""
+            },
+            "http.encrypted": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "type": "editor",
+              "mode": "json",
+              "label": "Encrypted",
+              "description": "Note: for security reasons this field must always be re-entered.",
+              "fieldId": "http.encrypted",
+              "visibleWhen": [
+                {
+                  "field": "http.auth.type",
+                  "isNot": [
+                    "custom"
+                  ]
+                }
+              ],
+              "defaultValue": "{\"field\": \"value\"}",
+              "id": "http.encrypted",
+              "name": "/http/encrypted",
+              "helpKey": "connection.http.encrypted"
+            },
+            "http.unencrypted": {
+              "resourceId": "new-tYlmeK8H738",
+              "resourceType": "connections",
+              "isLoggable": true,
+              "type": "editor",
+              "mode": "json",
+              "label": "Unencrypted",
+              "fieldId": "http.unencrypted",
+              "visibleWhen": [
+                {
+                  "field": "http.auth.type",
+                  "isNot": [
+                    "custom"
+                  ]
+                }
+              ],
+              "defaultValue": "{\"field\": \"value\"}",
+              "id": "http.unencrypted",
+              "name": "/http/unencrypted",
+              "helpKey": "connection.http.unencrypted"
+            }
+          },
+          "actions": [
+            {
+              "id": "saveandcontinuegroup",
+              "isHTTPForm": true
+            },
+            {
+              "id": "oauthandtest",
+              "isHTTPForm": true
+            },
+            {
+              "id": "saveandclosegroup",
+              "visibleWhenAll": [
+                {
+                  "field": "http.auth.type",
+                  "is": [
+                    ""
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "testandsavegroup",
+              "visibleWhenAll": [
+                {
+                  "field": "http.auth.type",
+                  "isNot": [
+                    "oauth"
+                  ]
+                },
+                {
+                  "field": "http.auth.type",
+                  "isNot": [
+                    ""
+                  ]
+                }
+              ]
+            }
+          ]
+        }
       },
       {
         "value": "rest",

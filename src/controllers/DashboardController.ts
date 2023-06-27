@@ -1,5 +1,7 @@
-import { UIController, UIView, Text, HStack, cTopLeading, UIDataTable,
-    VStack, UIFormController, CodeEditor, State, ScrollView , cVertical} from "@tuval/forms";
+import {
+    UIController, UIView, Text, HStack, cTopLeading, UIDataTable,
+    VStack, UIFormController, CodeEditor, State, ScrollView, cVertical, useProtocol, IntegrationProtocol, DirectoryProtocol
+} from "@tuval/forms";
 import { LeftSideMenuView } from "../views/LeftMenu";
 import { FormBuilder } from "../formbuilder/FormBuilder";
 
@@ -12,7 +14,11 @@ export class DashboardController extends UIFormController {
     public override LoadView(): UIView {
 
 
-        this.GetFormData()
+        const { gql } = useProtocol(IntegrationProtocol)
+        const { data: { connections }, isLoading } = gql`
+                                                   connections
+                                                    `
+
         return (
             HStack({ alignment: cTopLeading })(
                 LeftSideMenuView('', 'Overview'),
@@ -23,9 +29,9 @@ export class DashboardController extends UIFormController {
                             .width(600)
                             .height('100%')
                             .onChange((e) => this.code = e),
-                            ScrollView({axes:cVertical, alignment:cTopLeading})(
-                                 FormBuilder.render(this.code)
-                            ).padding()
+                        ScrollView({ axes: cVertical, alignment: cTopLeading })(
+                            FormBuilder.render(this.code)
+                        ).padding()
 
                     )
                 ).padding()

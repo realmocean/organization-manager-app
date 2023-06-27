@@ -130,7 +130,7 @@ const menuModel = [
         title: 'Integration',
         icon: Icons.Integrations,
         subItems: [
-            {
+              {
                 name: 'Connectors',
                 icon: '\\e73a',
                 link: '/app/com.tuvalsoft.app.organizationmanager/marketplace/brokers'
@@ -138,7 +138,7 @@ const menuModel = [
             {
                 name: 'Connections',
                 icon: '\\d235',
-                link: '/app/com.tuvalsoft.app.organizationmanager/brokers/installed'
+                link: '/app/com.tuvalsoft.app.organizationmanager/company/list/connection/active-connections'
             },
             {
                 name: 'Imports',
