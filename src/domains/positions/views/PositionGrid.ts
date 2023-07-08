@@ -4,7 +4,7 @@ import { DeletePositionDialog } from "../dialogs/DeletePositionDialog"
 import { moment } from "@tuval/core"
 import { DeleteDepartmentDialog } from "../../departments/dialogs/DeleteDepartmentDialog"
 import { AddPositionDialog } from "../dialogs/AddPositionDialog"
-import { AddPositionDialogData } from "../dialogs/AddPositionDialogData"
+import { AddPositionDialogData, EditPositionDialogData } from "../dialogs/AddPositionDialogData"
 
 const columns: ITableViewColumn[] = [
     {
@@ -39,12 +39,12 @@ const columns: ITableViewColumn[] = [
             HStack({ alignment: cLeading })(
                 Views.ActionContextMenu([
                     {
-                        title: '_Edit',
+                        title: '__Edit',
                         icon: Icons.Edit,
                         tooltip: 'Edit',
                         iconColor: '#505A64',
                         action: () => {
-                            const formData = Object.assign(AddPositionDialogData, { mode: 'edit', resourceId: employee.id });
+                            const formData = EditPositionDialogData(employee.id);
                             AddPositionDialog.Show(formData)
                         },
                         //link: `/app(tenantmanager)/company/positions/${employee.id}/edit`,

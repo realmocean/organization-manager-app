@@ -1,5 +1,7 @@
-import { UIController } from '@tuval/forms';
+import { FormBuilder, UIController } from '@tuval/forms';
 import { MyTestController } from './AppController';
+import { PositionSelectWidget } from './widgets/PositionSelectWidget';
+import { EmployeeSelectWidget } from './widgets/EmployeeSelectWidget';
 
 const manifest = require('./manifest');
 
@@ -20,6 +22,9 @@ export class ProcessMining {
        return MyTestController;
     }
 }
+
+FormBuilder.injectView('positionselect', PositionSelectWidget);
+FormBuilder.injectView('employeeselect', EmployeeSelectWidget);
 
 
 

@@ -8,15 +8,14 @@ import {
     TabList,
     UIController, UIRecordsContext, VStack, Text,
     cLeading, cTopLeading,
-    cVertical, useNavigate, WorkProtocol, useProtocol, MenuButton, TextField, UIViewBuilder, cCenter
+    cVertical, useNavigate, WorkProtocol, useProtocol, MenuButton, TextField, UIViewBuilder, cCenter, FormBuilder, DirectoryProtocol
 } from "@tuval/forms";
 import { RealmDataContext } from "../../../views/DataContexts";
 import { PositionGrid } from "../views/PositionGrid";
 import { SelectPositionViewDialog } from "../dialogs/SelectPositionViewDialog";
 import { moment } from "@tuval/core";
-import { FormBuilder } from "../../../formbuilder/FormBuilder";
 import { AddPositionDialog } from "../dialogs/AddPositionDialog";
-import { AddPositionDialogData } from "../dialogs/AddPositionDialogData";
+import { AddPositionDialogData, EditPositionDialogData } from "../dialogs/AddPositionDialogData";
 import { DeletePositionDialog } from "../dialogs/DeletePositionDialog";
 
 
@@ -89,6 +88,7 @@ export class ActivePositionsController extends UIController {
                         id: "datatable",
                         name: "datatable",
                         type: "datatable",
+                        protocol:DirectoryProtocol,
                         resource: 'positions',
                         columns: [
                             {
@@ -105,13 +105,8 @@ export class ActivePositionsController extends UIController {
                                         )
                                     ).cursor('pointer')
                                     .onClick(() => {
-                                        const formData = Object.assign(AddPositionDialogData,
-                                            {
-                                                title: 'Update position',
-                                                mode: 'update',
-                                                resourceId: row.id
-                                            });
-                                        AddPositionDialog.Show(formData)
+                                        const formData = EditPositionDialogData(row.id);
+                                        AddPositionDialog.Show(formData);
                                     })
                                 ),
                                 /* editor: ({ rowData }) => (
@@ -156,13 +151,8 @@ export class ActivePositionsController extends UIController {
                                                             title: 'Edit',
                                                             icon: Icons.Edit,
                                                             onClick: () => {
-                                                                const formData = Object.assign(AddPositionDialogData,
-                                                                    {
-                                                                        title: 'Update position',
-                                                                        mode: 'update',
-                                                                        resourceId: department.id
-                                                                    });
-                                                                AddPositionDialog.Show(formData)
+                                                                const formData = EditPositionDialogData(department.id);
+                                                                AddPositionDialog.Show(formData);
                                                             },
                                                             //  onClick: () => navigate(`/app/com.tuvalsoft.app.organizationmanager/company/edit/position/${department.id}`)
                                                         },

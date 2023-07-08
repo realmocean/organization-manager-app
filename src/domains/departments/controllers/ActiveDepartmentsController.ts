@@ -3,15 +3,14 @@ import { useSessionService } from "@realmocean/services";
 import { UserFileDownloader, moment } from "@tuval/core";
 import {
     cLeading, cTopLeading, cTrailing, Heading, HStack,
-    Spacer, Spinner, State, Text, TextField, UIController, UIRecordsContext, VStack, TabList, cVertical, useNavigate, useProtocol, DirectoryProtocol, Icons, MenuButton, UIViewBuilder, cCenter, UIFormController
+    Spacer, Spinner, State, Text, TextField, UIController, UIRecordsContext, VStack, TabList, cVertical, useNavigate, useProtocol, DirectoryProtocol, Icons, MenuButton, UIViewBuilder, cCenter, UIFormController, FormBuilder
 } from "@tuval/forms";
 import { RealmDataContext } from "../../../views/DataContexts";
 import { LeftSideMenuView } from "../../../views/LeftMenu";
 import { Views } from "../../../views/Views";
 import { DepartmentsGrid } from "../views/DepartmentsGrid";
-import { FormBuilder } from "../../../formbuilder/FormBuilder";
 import { DeleteDepartmentDialog } from "../dialogs/DeleteDepartmentDialog";
-import { AddDepartmentDialogData } from "../dialogs/AddDepartmentDialogData";
+import { AddDepartmentDialogData, EditDepartmentDialogData } from "../dialogs/AddDepartmentDialogData";
 import { AddPositionDialog } from "../../positions/dialogs/AddPositionDialog";
 
 
@@ -89,7 +88,25 @@ export class ActiveDepartmentsController extends UIFormController {
                         name: "datatable",
                         type: "datatable",
                         resource: 'departments',
-                        columns:[
+                        filter: {
+                            'tenant_id': useSessionService().TenantId,
+                            ...(this.searchText != null && this.searchText.length > 2 && {
+                                'employee_name': this.searchText
+                            })
+                        },
+                        sort: {
+                            field: 'created_at',
+                            order: 'DESC'
+                        },
+
+                        protocol: DirectoryProtocol,
+                        /*   query:`departments {
+                              id
+                              org_unit_name
+                              created_at
+                              updated_at
+                          }`, */
+                        columns: [
                             {
                                 field: 'org_unit_name',
                                 header: 'Department',
@@ -136,12 +153,7 @@ export class ActiveDepartmentsController extends UIFormController {
                                                             title: 'Edit',
                                                             icon: Icons.Edit,
                                                             onClick: () => {
-                                                                const formData = Object.assign(AddDepartmentDialogData,
-                                                                    {
-                                                                        title: 'Update department',
-                                                                        mode: 'update',
-                                                                        resourceId: department.id
-                                                                });
+                                                                const formData = EditDepartmentDialogData(department.id);
                                                                 AddPositionDialog.Show(formData)
                                                             },
                                                             //onClick: () => navigate(`/app/com.tuvalsoft.app.organizationmanager/company/edit/department/${department.id}`)
@@ -180,16 +192,7 @@ export class ActiveDepartmentsController extends UIFormController {
                                 }
                             }
                         ],
-                        filter: {
-                            'tenant_id': useSessionService().TenantId,
-                            ...(this.searchText != null && this.searchText.length > 2 && {
-                                'employee_name': this.searchText
-                            })
-                        },
-                        sort: {
-                            field: 'created_at',
-                            order: 'DESC'
-                        },
+
                         helpText: "Tell us your middle name,<br /> initial, or type N/A."
                     }
 

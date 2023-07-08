@@ -1,9 +1,9 @@
 import {
     UIController, UIView, Text, HStack, cTopLeading, UIDataTable,
-    VStack, UIFormController, CodeEditor, State, ScrollView, cVertical, useProtocol, IntegrationProtocol, DirectoryProtocol
+    VStack, UIFormController, CodeEditor, State, ScrollView, cVertical, useProtocol, IntegrationProtocol, DirectoryProtocol, FormBuilder
 } from "@tuval/forms";
 import { LeftSideMenuView } from "../views/LeftMenu";
-import { FormBuilder } from "../formbuilder/FormBuilder";
+import { useSessionService } from "@realmocean/services";
 
 
 
@@ -14,12 +14,11 @@ export class DashboardController extends UIFormController {
     public override LoadView(): UIView {
 
 
-        const { gql } = useProtocol(IntegrationProtocol)
-        const { data: { connections }, isLoading } = gql`
-                                                   connections
-                                                    `
+        const { getList } = useProtocol(DirectoryProtocol);
+        const { data: employees, isLoading } = getList('employees', { tenant_id: useSessionService().TenantId });
 
         return (
+            //Text(JSON.stringify(employees))
             HStack({ alignment: cTopLeading })(
                 LeftSideMenuView('', 'Overview'),
                 VStack(
@@ -35,10 +34,6 @@ export class DashboardController extends UIFormController {
 
                     )
                 ).padding()
-
-                /* UIDataTable().model([{
-                    name: 'test'
-                }]) */
             )
         )
     }

@@ -1,19 +1,28 @@
-import { FormBuilder } from './../../../formbuilder/FormBuilder';
+
 //import { useSessionService } from '@realmocean/common';
 import { useSessionService } from "@realmocean/services";
-import { UserFileDownloader, moment } from "@tuval/core";
+import { moment } from "@tuval/core";
 import {
-    cLeading, cTopLeading, cTrailing, Heading, HStack,
-    Spacer, Spinner, State, Text, TextField, UIController, UIRecordsContext, VStack, TabList, cVertical, useNavigate, UIFormController, UIViewBuilder, Icons, MenuButton, cCenter
+    DirectoryProtocol,
+    FormBuilder,
+    HStack,
+    Icons, MenuButton,
+    Spinner, State,
+    TabList,
+    Text,
+    UIFormController,
+    UIRecordsContext,
+    UIViewBuilder,
+    VStack,
+    cCenter,
+    cLeading, cTopLeading,
+    cVertical, useNavigate
 } from "@tuval/forms";
 import { RealmDataContext } from "../../../views/DataContexts";
-import { LeftSideMenuView } from "../../../views/LeftMenu";
-import { Views } from "../../../views/Views";
-import { AddUserDialog } from "../dialogs/AddUserDialog";
-import { UsersGrid } from "../views/UsersGrid";
 import { AddPositionDialog } from '../../positions/dialogs/AddPositionDialog';
-import { AddUserDialogData } from '../dialogs/AddUserDialogData';
+import { AddUserDialogData, EditUserDialogData } from '../dialogs/AddUserDialogData';
 import { DeleteUserDialog } from '../dialogs/DeleteUserDialog';
+import { UsersGrid } from "../views/UsersGrid";
 
 
 
@@ -92,7 +101,16 @@ export class ActiveEmployeesController extends UIFormController {
                         id: "datatable",
                         name: "datatable",
                         type: "datatable",
-                        resource: 'employees',
+                        protocol:DirectoryProtocol,
+                       /*  query: `employees {
+                            id
+                            employee_full_name
+                            title_name
+                            org_unit_name
+                            created_at
+                            updated_at
+                        }`, */
+                        resource:'employees',
                         columns: [
                             {
                                 field: 'employee_full_name',
@@ -100,11 +118,11 @@ export class ActiveEmployeesController extends UIFormController {
                                 width: '20%',
                                 filter: true,
                                 sortable: true,
-                                body: (row: any) => (
+                                body: /*'{{concat employee_name employee_last_name}}'*/ (row: any) => (
                                     HStack({ spacing: 15 })(
                                         //Icon(Icons.Acc).size(35),
                                         VStack({ alignment: cLeading })(
-                                            Text(`${row.employee_full_name}`).fontFamily('source sans pro').fontSize(16).foregroundColor('#1D76C7')
+                                            Text(`${row.employee_full_name || ''}`).fontFamily('source sans pro').fontSize(16).foregroundColor('#1D76C7')
                                         )
                                     )
                                 )
@@ -162,12 +180,7 @@ export class ActiveEmployeesController extends UIFormController {
                                                             title: 'Edit',
                                                             icon: Icons.Edit,
                                                             onClick: () => {
-                                                                const formData = Object.assign(AddUserDialogData,
-                                                                    {
-                                                                        title: 'Update employee',
-                                                                        mode: 'update',
-                                                                        resourceId: employee.id
-                                                                    });
+                                                                const formData = EditUserDialogData(employee.id)
                                                                 AddPositionDialog.Show(formData)
                                                             },
                                                             // onClick: () => navigate(`/app/com.tuvalsoft.app.organizationmanager/company/edit/employee/${employee.id}`)

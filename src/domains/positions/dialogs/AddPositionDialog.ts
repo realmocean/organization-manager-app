@@ -1,9 +1,8 @@
 import { UITextBoxView } from "@realmocean/inputs";
 import { useSessionService } from "@realmocean/services";
-import { DialogView, UICreateContext, VStack, cTopLeading, RequiredRule, HStack, UIRecordsContext, cTrailing, Text, TextField, Button, cLeading, State, Spinner, ViewProperty } from "@tuval/forms";
+import { DialogView, UICreateContext, VStack, cTopLeading, RequiredRule, HStack, UIRecordsContext, cTrailing, Text, TextField, Button, cLeading, State, Spinner, ViewProperty, FormBuilder } from "@tuval/forms";
 import { RealmDataContext } from "../../../views/DataContexts";
 import { Views } from "../../../views/Views";
-import { FormBuilder } from "../../../formbuilder/FormBuilder";
 
 export class AddPositionDialog extends DialogView {
 
@@ -82,6 +81,7 @@ export class AddPositionDialog extends DialogView {
 
     public static Show(formData: any) {
         const dialog = new AddPositionDialog();
+        dialog.ShowHeader = false;
         dialog.Header = formData.title || '';
         dialog.BindRouterParams(formData)
         return dialog.ShowDialogAsync();

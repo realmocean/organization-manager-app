@@ -1,9 +1,5 @@
-import { UITextBoxView } from "@realmocean/inputs";
-import { useSessionService } from "@realmocean/services";
-import { DialogView, UICreateContext, VStack, cTopLeading, RequiredRule, HStack, UIRecordsContext, cTrailing, Text, TextField, Button, cLeading, State, Spinner, ViewProperty } from "@tuval/forms";
+import { DialogView, FormBuilder, Spinner, VStack, ViewProperty } from "@tuval/forms";
 import { RealmDataContext } from "../../../views/DataContexts";
-import { Views } from "../../../views/Views";
-import { FormBuilder } from "../../../formbuilder/FormBuilder";
 
 export class EditPositionDialog extends DialogView {
 
